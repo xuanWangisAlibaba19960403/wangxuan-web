@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		body {
+			margin: 0;
+		}
+		button {
+			width: 100px;
+			height: 30px;
+		}
+		#box {
+			width: 100px;
+			height: 100px;
+			background: red;
+			position: absolute;
+			left: 0;
+			top: 40px;
+		}
+
+	</style>
+</head>
+<body>
+	<button id="btn1">运动到400</button>
+	<button id="btn2">运动到800</button>
+	<div id="box"></div>
+	<script type="text/javascript">
+		var btn1 = document.getElementById('btn1');
+		var btn2 = document.getElementById('btn2');
+		var box = document.getElementById('box');
+
+		btn1.onclick = function () {
+			animate(box, 400);			
+		};
+
+		btn2.onclick = function () {
+			animate(box, 800);			
+		};
+
+		function animate (element, target) {
+
+			// 清除上一次的定时器
+			clearInterval(element.timerId);
+
+			// 开启定时器 让元素开始运动
+			element.timerId = setInterval(function () {
+
+				// 元素的当前值
+				var current = element.offsetLeft;
+
+				// 计算运动速度
+				var speed = 0;
+
+				// 如果当前值 小于 目标点 向上取整
+				if (current < target) {
+					speed = Math.ceil((target - current) / 10);
+				}else{
+					// 如果当前值 大于目标点  向下取整
+					speed = Math.floor((target - current) / 10);
+				}
+
+				// 如果当前值等于目标点
+				if (element.offsetLeft == target) {
+
+					// 清除定时器 让运动停止
+					clearInterval(element.timerId);
+
+				} else {
+
+					// 元素朝着目标点进行运动
+					element.style.left = current + speed + 'px';
+
+				}
+
+			}, 30);
+
+		}
+	</script>
+</body>
+</html>

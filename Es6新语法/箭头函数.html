@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 返回对象 需要用小括号包起来。
+    const count = (num1, num2) => ({
+      num1,
+      num2
+    });
+    console.log(count(1, 2));
+
+    // 如果箭头函数只有一行语句，且不需要返回值，可以采用下面的写法，就不用写大括号了。
+    function doesNotReturn() {
+      console.log(1);
+    }
+    let fn = () => void doesNotReturn();
+    fn();
+
+    // 箭头函数可以与变量解构结合使用。
+    const full = ({
+      first,
+      middle,
+      last
+    }) => first + middle + last;
+
+    // 等同于
+    // function full(person) {
+    //   return person.first + middle + person.last;
+    // }
+    const obj = {
+      first: 'w',
+      middle: 's',
+      last: 'z'
+    }
+    console.log(full(obj));
+
+    // 箭头函数写法
+    const arr = [1, 2, 3].map(x => x * x);
+
+    const numbers = (...nums) => nums;
+
+    numbers(1, 2, 3, 4, 5)
+    // [1,2,3,4,5]
+
+    const headAndTail = (head, ...tail) => [head, tail];
+
+    headAndTail(1, 2, 3, 4, 5)
+  </script>
+</body>
+
+</html>

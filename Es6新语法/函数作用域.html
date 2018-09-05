@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // let x = 1;
+
+    // function f(y = x) {
+    //   let x = 2;
+    //   console.log(y);
+    // }
+
+    // f(); // 1
+    // /*
+    // 上面代码中，函数f调用时，参数y = x形成一个单独的作用域。
+    // 这个作用域里面，变量x本身没有定义，所以指向外层的全局变量x。
+    // 函数调用时，函数体内部的局部变量x影响不到默认值变量x
+    // */
+
+    // //如果此时， 全局变量x不存在， 就会报错。
+
+    // function f(y = x) {
+    //   let x = 2;
+    //   console.log(y);
+    // }
+
+    // f();
+
+    // var x = 1;
+
+    // function foo(x = x) {
+    //   // ...
+    // }
+
+    // foo(); // ReferenceError: x is not defined
+    // /* 上面代码中， 参数x = x形成一个单独作用域。 实际执行的是let x = x,
+    // 由于暂时性死区的原因， 这行代码会报错” x 未定义“。*/
+
+    // let foo = 'outer';
+
+    // function bar(func = () => foo) {
+    //   let foo = 'inner';
+    //   console.log(func());
+    // }
+
+    // bar(() => {
+    //   alert(1);
+    // }); // outer
+
+    var x = 1;
+
+    function foo(x, y = function () {
+      x = 2;
+    }) {
+      var x = 3;
+      y();
+      console.log(x);
+    }
+
+    foo(); // 3
+    x; // 1
+    /*上面代码中， 函数foo的参数形成一个单独作用域。 这个作用域里面， 首先声明了
+    变量x， 然后声明了变量y， y的默认值是一个匿名函数。 这个匿名函数内部的变量x， 
+    指向同一个作用域的第一个参数x。 函数foo内部又声明了一个内部变量x， 该变量与
+    第一个参数x由于不是同一个作用域， 所以不是同一个变量， 因此执行y后， 内部
+    变量x和外部全局变量x的值都没变。
+    如果将var x = 3 的var去除， 函数foo的内部变量x就指向第一个参数x， 
+    与匿名函数内部的x是一致的， 所以最后输出的就是2， 而外层的全局变量x依然不受
+    影响。*/
+    var x = 1;
+
+    function foo(x, y = function () {
+      x = 2;
+    }) {
+      x = 3;
+      y();
+      console.log(x);
+    }
+
+    foo(); // 2
+    x; // 1
+
+    function throwIfMissing() {
+      throw new Error('Missing parameter');
+    }
+
+    function foo(mustBeProvided = throwIfMissing()) {
+      return mustBeProvided;
+    }
+
+    foo();
+
+    // 另外， 可以将参数默认值设为undefined， 表明这个参数是可以省略的。
+
+    function foo(optional = undefined) {
+      // ···
+    };
+  </script>
+</body>
+
+</html>

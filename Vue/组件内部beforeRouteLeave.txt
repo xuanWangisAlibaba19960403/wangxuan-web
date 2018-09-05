@@ -1,0 +1,17 @@
+beforeRouteLeave(to, from, next) {
+      if (!this.userchange) {
+        console.log(this);
+        this.$confirm('您的设置未保存, 是否保存?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }).then(() => {
+          this.submit1();
+          next();
+        }).catch(() => {
+          next();
+        });
+      } else {
+        next();
+      }
+    },

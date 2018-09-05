@@ -1,0 +1,274 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<style>
+		    * {
+		        margin: 0;
+		        padding: 0;
+		        text-decoration: none;
+		    }
+		    
+		    body {
+		        padding: 20px;
+		    }
+		    
+		    #container {
+		        position: relative;
+		        width: 520px;
+		        height: 280px;
+		        margin: 100px auto 0 auto;
+		        border: 3px solid #333;
+		        overflow: hidden;
+		    }
+		    
+		    #imgs {
+		        position: absolute;
+		        z-index: 1;
+		        width: 2000%;
+		        height: 280px;
+		    }
+		    
+		    #imgs img {
+		        float: left;
+		        width: 520px;
+		        height: 280px;
+		    }
+		    
+		    #points {
+		        position: absolute;
+		        left: 0;
+		        bottom: 20px;
+		        z-index: 2;
+		        height: 10px;
+		        width: 85px;
+		        width: 100%;
+		        text-align: center;
+		    }
+		    
+		    #points span {
+		    	display: inline-block;
+		        margin: 0 3px;
+		        width: 10px;
+		        height: 10px;
+		        border: 1px solid #fff;
+		        border-radius: 50%;
+		        background: #333;
+		        cursor: pointer;
+		    }
+		    
+		    #points .active {
+		        background: orangered;
+		    }
+		    
+		    .arrow {
+		        position: absolute;
+		        top: 120px;
+		        z-index: 2;
+		        display: none;
+		        width: 40px;
+		        height: 40px;
+		        font-size: 36px;
+		        font-weight: bold;
+		        line-height: 39px;
+		        text-align: center;
+		        color: #fff;
+		        background-color: rgba(0, 0, 0, 0.3);
+		        cursor: pointer;
+		    }
+		    
+		    .arrow:hover {
+		        background-color: rgba(0, 0, 0, 0.7);
+		    }
+		    
+		    #container:hover .arrow {
+		        display: block;
+		    }
+		    
+		    #prev {
+		        left: 20px;
+		    }
+		    
+		    #next {
+		        right: 20px;
+		    }
+		</style>
+	</head>
+	<body>
+		<div id="container">
+		    <div id="imgs" style="left: -520px">
+		    	<img src="images/5.jpg" />
+		        <img src="images/1.jpg" />
+		        <img src="images/2.jpg" />
+		        <img src="images/3.jpg" />
+		        <img src="images/4.jpg" />
+		        <img src="images/5.jpg" />
+		        <img src="images/1.jpg" />
+		    </div>
+		    <div id="points">
+		        <span index="1" class="active"></span>
+		        <span index="2"></span>
+		        <span index="3"></span>
+		        <span index="4"></span>
+		        <span index="5"></span>
+		    </div>
+		    <a href="javascript:;" id="prev" class="arrow">&lt;</a>
+		    <a href="javascript:;" id="next" class="arrow">&gt;</a>
+		</div>
+		<script type="text/javascript">
+
+			/*
+				1. 切换图片
+				2. 更改按钮样式
+			*/
+			
+			var next = document.getElementById('next');
+			var prev = document.getElementById('prev');
+			var imgs = document.getElementById('imgs');
+			var spans = document.getElementById('points').children;
+			var container = document.getElementById('container');
+
+			var current = 1;
+
+			// 点击下一个按钮
+			next.onclick = function () {
+
+				// 下一张图片的索引
+				current++;
+
+				// 限制切换的范围
+				if (current > 6) {
+
+					// 使用样式拽到视觉上的第0张
+					imgs.style.left = '-520px';
+
+					current = 2;
+				}
+
+				next.style.display = 'none';
+				prev.style.display = 'none';
+
+				// 切换图片 更改按钮样式
+				change (current);
+
+			};
+
+			// 点击上一个按钮
+			prev.onclick = function () {
+
+				current--;
+
+				if (current < 0) {
+
+					
+					imgs.style.left = -5 * 520 + 'px';
+
+					current = 4;
+					
+				}
+
+				next.style.display = 'none';
+				prev.style.display = 'none';
+
+				// 切换图片 更改按钮样式
+				change (current);
+
+			};
+
+			// 切换图片 更改按钮样式
+			function change (a) {
+
+				// 让跟索引对应的图片显示
+				// imgs.style.left = -a * 520 + 'px';
+				animate(imgs, 'left', -a * 520, function () {
+					next.style.display = 'block';
+					prev.style.display = 'block';
+				});
+
+				// 去掉所有按钮的选中样式
+				for (var i = 0; i < spans.length; i++) {
+					spans[i].className = '';
+				}
+
+				if (a == 0) {
+					spans[4].className = 'active';
+				}else if (a == 6) {
+					spans[0].className = 'active';
+				}else{
+					// 给当前的按钮添加选中样式
+					spans[a - 1].className = 'active';
+				}
+				
+
+			}
+
+			for (var i = 0; i < spans.length; i++) {
+
+				spans[i].onclick = function () {
+
+					// 获取当前点击的按钮的索引
+					var index = this.getAttribute('index');
+
+					// 同步索引变量
+					current = index;
+
+					change (index);
+
+				};
+
+			}
+
+
+			function animate (element, attr, target, fn) {
+
+				// 清除上一次的定时器
+				clearInterval(element.timerId);
+
+				// 开启定时器 让元素开始运动
+				element.timerId = setInterval(function () {
+
+					// 元素的当前值
+					var current = parseInt(getComputedStyle(element)[attr]);
+
+					// getComputedStyle(element)[attr] =>  100px
+
+					// parseInt(100px)  => 100
+
+
+					// 计算运动速度
+					var speed = 0;
+
+					// 如果当前值 小于 目标点 向上取整
+					if (current < target) {
+						speed = Math.ceil((target - current) / 10);
+					}else{
+						// 如果当前值 大于目标点  向下取整
+						speed = Math.floor((target - current) / 10);
+					}
+
+					// 如果当前值等于目标点
+					if (current == target) {
+
+						// 清除定时器 让运动停止
+						clearInterval(element.timerId);
+
+						// 如果传递了fn函数 就调用
+						if (fn) {
+							fn();
+						}
+						
+
+					} else {
+
+						// 元素朝着目标点进行运动
+						element.style[attr] = current + speed + 'px';
+
+					}
+
+				}, 30);
+
+			}
+		
+		</script>
+	</body>
+</html>

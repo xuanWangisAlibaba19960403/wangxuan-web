@@ -1,0 +1,103 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+import Home from '@/views/index'
+import Life from './life/index'
+import Mine from './mine/index'
+import Login from './login/index'
+import Wonder from './wonder/index'
+import Rbcf from './rbcf/index'
+import Trx from './trx/index'
+import Wt from './wt/index'
+import Lingmoney from './lingmoney/index'
+import Extredu from './extredu/index'
+
+Vue.use(Router)
+// 挂载路由
+
+export default new Router({
+  mode: 'history',
+  // url地址栏中带＃号
+  routes: [
+    // 首页
+    {
+      path: '/',
+      // 路由地址
+      component: Home,
+      // 组件名
+      name: 'Home',
+      // 路由名称
+      alias: '/index',
+      // 路由备用地址
+      meta: {
+        // meta 路由信息
+        // 基本上都是自定义的信息
+        module: 'Home',
+        // 引入的模块名字
+        showbar: true,
+        showmap: true,
+        navIndex: 1,
+        requiresAuth: false,
+        // 这个路由信息是否需要检测 false为不用检测
+        keepAlive: true,
+        title: '首页'
+        // 要实现的title
+      }
+    },
+    ...Life,
+    ...Mine,
+    ...Login,
+    ...Wonder,
+    ...Rbcf,
+    ...Trx,
+    ...Wt,
+    ...Lingmoney,
+    ...Extredu,
+    // ... 为es6中的展开符
+    // search
+    {
+      path: '/search',
+      name: 'search',
+      component: r => require.ensure([], () => r(require('@/views/search')), 'Search'),
+      /*require.ensure相信大家都听过。那这
+      个家伙到底是用来干嘛的？其实说白了，它就是把js模块给独立导出一个.js文件的，然后使用这个
+      模块的时候，webpack会构造script dom元素，由浏览器发起异步请求这个js文件。
+      等同于实现实现了懒加载*/
+      meta: {
+        title: '搜索',
+        module: 'Search'
+      }
+    }
+    // ,
+    // 404
+    // {
+    //   path: '*',
+    //   name: 'Error',
+    //   component (resolve) {
+    //     require(['@/views/index'], resolve)
+    //   },
+    //   meta: {
+    //     module: 'Home',
+    //     showbar: true,
+    //     showmap: true,
+    //     navIndex: 1,
+    //     keepAlive: true,
+    //     title: '首页'
+    //   }
+    // }
+  ],
+  // Vue scrollBehavior 滚动行为
+  /*使用前端路由，当切换到新路由时，想要页面滚到顶部，或者是保持原先的滚动位置，就像重新加载页面那样。
+  vue-router 能做到，而且更好，它让你可以自定义路由切换时页面如何滚动。scrollBehavior 方法接收 to 
+  和 from 路由对象。第三个参数 savedPosition 当且仅当 popstate 导航 (通过浏览器的 前进/后退 按钮触发) 时才可用。 */
+  scrollBehavior (to, from, savedPosition) {
+    // return 期望滚动到哪个的位置
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      if (from.meta.keepAlive) {
+        from.meta.savedPosition = document.body.scrollTop
+      }
+      return {x: 0, y: to.meta.savedPosition || 0}
+    }
+  }
+})

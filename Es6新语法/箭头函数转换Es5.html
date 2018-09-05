@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 所以， 箭头函数转成 ES5 的代码如下。
+
+        // ES6
+        function foo() {
+            setTimeout(() => {
+                console.log('id:', this.id);
+            }, 100);
+        }
+
+        // ES5
+        function foo() {
+            var _this = this;
+
+            setTimeout(function () {
+                console.log('id:', _this.id);
+            }, 100);
+        }
+        // 上面代码中， 转换后的 ES5 版本清楚地说明了， 箭头函数里面根本没有自己的this， 而是引用外层的this
+    </script>
+</body>
+
+</html>

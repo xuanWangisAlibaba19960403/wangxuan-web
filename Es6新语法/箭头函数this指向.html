@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function foo() {
+      return () => {
+        return () => {
+          return () => {
+            console.log('id:', this.id);
+          };
+        };
+      };
+    }
+
+    var f = foo.call({
+      id: 1
+    });
+    console.log(f);
+    var t1 = f.call({
+      id: 2
+    })()(); // id: 1
+    var t2 = f().call({
+      id: 3
+    })(); // id: 1
+    var t3 = f()().call({
+      id: 4
+    }); // id: 1
+    
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>抽奖</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <style>
+        .g-content {
+            width: 100%;
+            background: #fbe3cc;
+            height: auto;
+            font-family: "微软雅黑", "microsoft yahei";
+        }
+
+        .g-content .g-lottery-case {
+            width: 500px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .g-content .g-lottery-case .g-left h2 {
+            font-size: 20px;
+            line-height: 32px;
+            font-weight: normal;
+            margin-left: 20px;
+        }
+
+        .g-content .g-lottery-case .g-left {
+            width: 450px;
+            float: left;
+        }
+
+        .g-lottery-box {
+            width: 400px;
+            height: 400px;
+            margin-left: 30px;
+            position: relative;
+            background: url('./img/989466-20170822185418355-190841559.gif') no-repeat;
+        }
+
+        .g-lottery-box .g-lottery-img {
+            width: 340px;
+            height: 340px;
+            position: relative;
+            background: url(bg-lottery.png) no-repeat;
+            left: 30px;
+            top: 30px;
+        }
+
+        .g-lottery-box .playbtn {
+            width: 186px;
+            height: 186px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -94px;
+            margin-top: -94px;
+            background: url(playbtn.png) no-repeat;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="g-content">
+        <div class="g-lottery-case">
+            <div class="g-left">
+                <h2>您已拥有
+                    <span class="playnum"></span>次抽奖机会，点击立刻抽奖！~</h2>
+                <div class="g-lottery-box">
+                    <div class="g-lottery-img">
+                        <img src="./img/989466-20170822185355808-957746337.png" alt="">
+                    </div>
+                    <a class="playbtn" href="javascript:;" title="开始抽奖">
+                        <img src="./img/989466-20170822185513558-2145175185.png" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/jquery.rotate.min.js"></script>
+    <script>
+        $(function () {
+            var $btn = $('.g-lottery-img'); // 旋转的div
+            var playnum = 1; //初始次数，由后台传入
+            $('.playnum').html(playnum); //显示还剩下多少次抽奖机会
+            var isture = 0; //是否正在抽奖
+            var probability = { // 概率对象 可以 接着传递 四五六等奖的概率 概率总数请保证100%
+                0: '15%',// 一等奖
+                1: '20%',// 二等奖
+                2: '15%',// 三等奖
+                length: 3
+            };
+            var peoples = 100; // 抽奖总人数
+            var clickfunc = function (probability, peoples) { // 概率  人数
+                let data = [];
+                const arr = Array.from(probability);
+                const probabilityArr = arr.map(item => {
+                    return (item.slice(0,-1) - 0);
+                })
+                // console.log(probabilityArr);
+                // 一等奖人数
+                const No1 = peoples * (probabilityArr[0] / 100);
+                // 二等奖人数
+                const No2 = peoples * (probabilityArr[1] / 100);
+                // 三等奖人数
+                const No3 = peoples * (probabilityArr[2] / 100);
+                function addData(length,num) {
+                    for(let i = 0;i < length;i++) {
+                        data.push(num);
+                    }
+                }
+                addData(No1,1);
+                addData(No2,2);
+                addData(No3,3);
+                let Surplus = peoples - No1 -No2 -No3;// 剩余数组个数
+                let temp = Math.floor(Math.random() * (Surplus + 1));// 四等奖个数
+                addData(temp, 4);
+                Surplus = Surplus - temp;// 剩余数组个数
+                temp = Math.floor(Math.random() * (Surplus + 1))// 五等奖个数 
+                addData(temp, 5);
+                Surplus = Surplus - temp;// 剩余数组个数 也是 六等奖个数
+                addData(Surplus, 6);
+                console.log(data);
+                //data为随机出来的结果，根据概率后的结果
+                // Math.floor(Math.random() * data.length) 0-49
+                data = data[Math.floor(Math.random() * data.length)]; //1~6的随机数
+                console.log(data);
+                switch (data) {
+                    case 1:
+                        rotateFunc(1, 0, '恭喜您一等奖');
+                        break;
+                    case 2:
+                        rotateFunc(2, 0, '恭喜您二等奖');
+                        break;
+                    case 3:
+                        rotateFunc(3, 0, '恭喜您三等奖');
+                        break;
+                    case 4:
+                        rotateFunc(4, -60, '谢谢参与');
+                        break;
+                    case 5:
+                        rotateFunc(5, 120, '谢谢参与');
+                        break;
+                    case 6:
+                        rotateFunc(6, 120, '谢谢参与');
+                        break;
+                }
+            }
+            $(".playbtn").click(function () {
+                if (isture) return; // 如果在执行就退出
+                isture = true; // 标志为 在执行
+                if (playnum <= 0) { //当抽奖次数为0的时候执行
+                    alert("没有次数了");
+                    $('.playnum').html(0); //次数显示为0
+                    isture = false;
+                } else { //还有次数就执行
+                    playnum = playnum - 1; //执行转盘了则次数减1
+                    if (playnum <= 0) {
+                        playnum = 0;
+                    }
+                    $('.playnum').html(playnum);
+                    clickfunc(probability, 100);
+                }
+            });
+            var rotateFunc = function (awards, angle, text) {
+                isture = true;
+                $btn.stopRotate();
+                $btn.rotate({
+                    angle: 0, //旋转的角度数
+                    duration: 4000, //旋转时间
+                    animateTo: angle + 1440, //给定的角度,让它根据得出来的结果加上1440度旋转
+                    callback: function () {
+                        isture = false; // 标志为 执行完毕
+                        alert(text);
+                    }
+                });
+            };
+        });
+    </script>
+</body>
+
+</html>

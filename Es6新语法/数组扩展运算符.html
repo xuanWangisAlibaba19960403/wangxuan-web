@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const a1 = [1, 2];
+
+        const a2 = [...a1];
+
+        const [...a3] = a1;
+
+        a1[2] = 3;
+        
+        console.log(a2, a3);
+    </script>
+</body>
+</html>

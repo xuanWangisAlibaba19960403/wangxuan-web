@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<form id="mainForm">
+用户名: <input type="text" name="name"><br>
+密　码: <input type="text" name="pwd"><br>
+头　像: <input type="file" name="pic"><br>
+<input type="button" value="提交" id="btn">
+</form>
+
+<script type="text/javascript">
+document.getElementById('btn').onclick = function () {
+    //使用formdata获取表单数据
+    //1. 获取form表单对象 -- DOM
+    var fm = document.getElementById('mainForm');
+    //2. 实例化formdata对象
+    var fd = new FormData (fm);
+
+    //3. 发送ajax请求
+    var xhr = new XMLHttpRequest ();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            alert(xhr.responseText);
+        }
+    }
+    //formdata必须使用post请求
+    xhr.open ('post', 'fd.php');
+    //将formdata对象作为参数传入
+    xhr.send (fd);
+}
+
+</script>
+</body>
+</html>

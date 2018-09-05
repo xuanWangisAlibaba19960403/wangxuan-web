@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const arr = [1, 2, 3];
+    const [a, , c] = arr;
+    console.log(a, c);
+    // ES5
+    // const a = list[0], rest = list.slice(1);
+    // ES6
+    // const [a, ...rest] = list;
+    // 字符串
+    const str =   [...'hello'];
+    console.log(str);
+  </script>
+</body>
+
+</html>

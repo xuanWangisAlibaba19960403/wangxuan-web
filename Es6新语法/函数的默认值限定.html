@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // let x = 99;
+    // // 参数可以是表达式。
+    // function foo(p = x + 1) {
+    //   console.log(p);
+    // }
+
+    // foo(); // 100
+
+    // x = 100;
+    // foo();
+
+    // // 解构赋值
+    // // 必须传递一个对象
+    // function foo({
+    //   x,
+    //   y = 5
+    // }) {
+    //   console.log(x, y);
+    // }
+
+    // foo({}); // undefined 5
+    // foo({
+    //   x: 1
+    // }); // 1 5
+    // foo({
+    //   x: 1,
+    //   y: 2
+    // }); // 1 2
+    // foo();
+    // // 默认值是一个对象
+    // function foo({
+    //   x,
+    //   y = 5
+    // } = {}) {
+    //   console.log(x, y);
+    // };
+
+    // foo();
+    // // 必须传递一个对象
+    // function fetch(url, {
+    //   body = '',
+    //   method = 'GET',
+    //   headers = {}
+    // }) {
+    //   console.log(method);
+    // };
+
+    // fetch('http://example.com', {});
+    // // "GET"
+
+    // fetch('http://example.com');
+    // // 报错
+
+    function m1({ x = 0, y = 0 } = {}) {
+      return [x, y];
+    };
+    console.log(m1({}));
+
+    function m2({x, y} = { x: 0, y: 0 }) {
+      return [x, y];
+    };
+    console.log(m2({ x: 0, y: 0 }));
+    // undefined null
+    function m3( x = 5, y = 10 ) {
+      console.log(x, y);
+    }
+    m3(undefined, null);
+
+    
+  </script>
+</body>
+
+</html>

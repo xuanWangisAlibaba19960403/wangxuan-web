@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  body, ul {
+    margin: 0px;
+  }
+  ul, li{
+    list-style: none;
+  }
+  li {
+    overflow: hidden;
+    
+  }
+  li > div {
+    float: left;
+  }
+  li > div:nth-child(2) {
+    position: relative;
+  }
+  .tips {
+    width: auto;
+    height: auto;
+    position: absolute;
+    z-index: 1;
+    left: 132px;
+    top: 2px;
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #949494;
+  }
+  </style>
+</head>
+
+<body>
+  <ul>
+    <li>
+      <div>联系人</div>
+      <div>
+        <input type="text" placeholder="请输入手机号码" value=""></input>
+        <span class="tips">(必填)</span>
+      </div>
+    </li>
+    <li>
+      <div>手机号码</div>
+      <div>
+        <input type="text" placeholder="请输入手机号码" value=""></input>
+        <span class="tips">(必填)</span>
+      </div>
+    </li>
+    <li>
+      <div>地址</div>
+      <div>
+        <input type="text" placeholder="请输入地址信息"></input>
+      </div>
+    </li>
+  </ul>
+</body>
+
+</html>

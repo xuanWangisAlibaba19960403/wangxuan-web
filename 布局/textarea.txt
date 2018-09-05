@@ -1,0 +1,2 @@
+1. 禁止拉伸文本域{ resize:none; }
+2. placeholder="请输入地址信息" 通过padding去限制里面的文本位置。

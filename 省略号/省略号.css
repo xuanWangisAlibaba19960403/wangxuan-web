@@ -1,0 +1,26 @@
+/* autoprefixer: off*/
+
+width: 57px;
+
+font-size: 14px;
+
+color: #808080;
+
+margin-right: 15px;
+
+max-height: 60px;
+
+
+overflow: hidden;
+
+text-overflow: ellipsis;
+
+display: -webkit-box;
+
+-webkit-line-clamp: 3;
+
+-webkit-box-orient: vertical;
+
+word-break: break-all;
+
+/* autoprefixer: on*/
