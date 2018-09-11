@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/table'
+import Index from '@/components/ceshi'
 
 Vue.use(Router)
 
