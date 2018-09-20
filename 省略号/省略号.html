@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            /*宽度为必设置属性，等同于给文字限制一个范围*/
+            width: 57px;
+            font-size: 14px;
+            color: #808080;
+            margin-right: 15px;
+            max-height: 60px;
+            /*溢出隐藏*/
+            overflow: hidden;
+            /*clip	修剪文本。
+              ellipsis	显示省略符号来代表被修剪的文本。
+              string	使用给定的字符串来代表被修剪的文本。*/
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            /*-webkit为chrome浏览器兼容属性*/
+            /*行数*/
+            -webkit-line-clamp: 1;
+            /*vertical	从上向下垂直排列子元素。*/
+            -webkit-box-orient: vertical;
+            /*break-all	允许在单词内换行。
+              keep-all 只能在半角空格或连字符处换行。*/
+            word-break: break-all;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        这是一个有省略号的css样式
+    </div>
+</body>
+
+</html>
