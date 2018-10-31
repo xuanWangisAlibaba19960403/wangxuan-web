@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  </style>
+</head>
+
+<body>
+  <script>
+    function* helloWorldGenerator() {
+      yield 'hello';
+      yield 'world';
+      return 'ending';
+    }
+
+    var hw = helloWorldGenerator();
+    hw.next();// { value: 'hello', done: false }
+    hw.next();// { value: 'world', done: false }
+    hw.next();// { value: 'ending', done: true }
+    hw.next();// { value: undefined, done: true }
+
+    function* gen() {
+      return 123 + 456;
+    }
+    var result = gen();
+    console.log(result.next());
+    // 可以用来当数据缓存
+    function* f() {
+      console.log('执行了！')
+      return 'ending';
+    }
+
+    var generator = f();
+    const res = generator.next();
+    //
+    function* demo() {
+      // console.log('Hello' + yield); // SyntaxError
+      // console.log('Hello' + yield 123); // SyntaxError
+
+      console.log('Hello' + (yield)); // OK
+      console.log('Hello' + (yield 123)); // OK
+    }
+    var demoResult = demo();
+    console.log(demoResult);
+    console.log(demoResult.next());
+    console.log(demoResult.next());
+
+    function* bar() {
+      for (var i = 0; true; i++) {
+        var reset = yield i;
+        // 参数
+        if (reset) { i = -1; }
+      }
+    }
+
+    var g = bar();
+
+    console.log(g.next()); // { value: 0, done: false }
+    console.log(g.next()); // { value: 1, done: false }
+    console.log(g.next()); // { value: 2, done: false }
+    console.log(g.next(true)); // { value: 0, done: false }
+
+    function* foo(x) {
+      var y = 2 * (yield (x + 1));
+      var z = yield (y / 3);
+      return (x + y + z);
+    }
+
+    var a = foo(5);
+    a.next() // Object{value:6, done:false}
+    a.next() // Object{value:NaN, done:false}
+    a.next() // Object{value:NaN, done:true}
+
+    var b = foo(5);
+    console.log(b.next()) // { value:6, done:false }
+    console.log(b.next(12)) // { value:8, done:false }
+    console.log(b.next(13)) // { value:42, done:true }
+
+    function* objectEntries() {
+      let propKeys = Object.keys(this);
+
+      for (let propKey of propKeys) {
+        yield [propKey, this[propKey]];
+      }
+    }
+
+    let jane = { first: 'Jane', last: 'Doe' };
+
+    jane[Symbol.iterator] = objectEntries;
+
+    for (let [key, value] of jane) {
+      console.log(`${key}: ${value}`);
+    }
+
+    var g = function* () {
+      try {
+        yield;
+      } catch (e) {
+        console.log('内部捕获', e);
+      }
+    };
+
+    var i = g();
+    i.next();
+
+    try {
+      i.throw('a');
+      i.throw('b');
+    } catch (e) {
+      console.log('外部捕获', e);
+    }
+    // 内部捕获 a
+    // 外部捕获 b
+    let delegatedIterator = (function* () {
+      yield 'Hello!';
+      yield 'Bye!';
+    }());
+
+    let delegatingIterator = (function* () {
+      yield 'Greetings!';
+      yield* delegatedIterator;
+      yield 'Ok, bye.';
+    }());
+
+    for (let value of delegatingIterator) {
+      console.log(value);
+    }
+    console.log(delegatingIterator.next());
+  </script>
+</body>
+
+</html>
