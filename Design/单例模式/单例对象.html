@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function g(id) {
+            document.getElementById(id);
+        }
+
+        function css(id, key, value) {
+            // 简单样式属性设置
+            g(id).style[key] = value;
+        }
+
+        function attr(id, key, value) {
+            g(id)[key] = value;
+        }
+
+        function html(id, value) {
+            g(id).innerHTML = value;
+        }
+
+        function on(id, type, fn) {
+            g(id)['on' + type] = fn;
+        }
+
+        var Conf = (function() {
+            var conf = {
+                MAX_NUM: 1,
+                MIN_NUM: 1,
+                COUNT: 100
+            }
+
+            return {
+                get(name) {
+                    return conf[name] ? conf[name] : null;
+                }
+            }
+        })();
+        console.log(Conf.get('COUNT'));
+        console.log(Conf)
+    </script>
+</body>
+</html>

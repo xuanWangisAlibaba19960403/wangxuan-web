@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 用对象收编变量
+        var checkObject = {
+            checkName() {
+            },
+            checkEmail() {
+            },
+            checkPassword() {
+            }
+        };
+
+        // 链式调用
+        var checkObject = {
+            checkName() {
+                return this;
+            },
+            checkEmail() {
+                return this;
+            },
+            checkPassword() {
+                return this;
+            }
+        }
+        checkObject.checkName().checkEmail().checkPassword();
+    </script>
+</body>
+
+</html>

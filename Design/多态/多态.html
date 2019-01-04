@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 多态
+        function add(...arg) {
+            var len = arg.length;
+            switch(len) {
+                case 0:
+                return 10;
+                case 1:
+                return 10 + arg[0];
+                case 2:
+                return arg[0] + arg[1];
+            }
+        }
+
+        function Add() {
+            // 无参数算法
+            function zero() {
+                return 10;
+            }
+            // 一个参数算法
+            function one(num) {
+                return 10 + num;
+            }
+            // 二个参数算法
+            function two(num1, num2) {
+                return num1 + num2;
+            }
+            // 相加共有方法
+            this.add = function(...arg) {
+                console.log(arg)
+                var len = arg.length;
+                console.log(len);
+                switch(len) {
+                    case 0:
+                    return zero();
+                    case 1:
+                    return one(arg[0]);
+                    case 2:
+                    return two(arg[0], arg[1]);
+                }
+            }
+        }
+        var a = new Add();
+        console.log(a.add(3));
+    </script>
+</body>
+
+</html>

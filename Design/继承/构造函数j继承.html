@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function SuperClass(id) {
+            // 引用类型公有属性
+            this.books = ['javascript', 'html', 'css'];
+            this.id = id;
+        }
+        SuperClass.prototype.showBooks = function() {
+            console.log(this.books); 
+        }
+        function SubClass(id) {
+            SuperClass.call(this, id);
+        }
+        // 实例1
+        var instance1 = new SubClass(10);
+        // 实例2
+        var instance2 = new SubClass(11);
+
+        instance1.books.push('设计模式');
+        console.log(instance2.books);
+    </script>
+</body>
+</html>

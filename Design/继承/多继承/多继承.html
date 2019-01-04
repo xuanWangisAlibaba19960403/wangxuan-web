@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 混入
+        var mix  = function(...arg) {
+            var i = 1,
+                lem = arg.length,
+                // 需要继承的对象
+                target = arg[0];
+            for (; i < len; i++) {
+                for (var property in arg[i]) {
+                    target[property] = arg[i][property];
+                }
+            }
+            return target;
+        }
+    </script>
+</body>
+</html>

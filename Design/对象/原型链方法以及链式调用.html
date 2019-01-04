@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 原型共用方法
+        var CheckObject = function () { };
+        CheckObject.prototype.checkName = function () { };
+        CheckObject.prototype.checkEmail = function () { };
+        CheckObject.prototype.checkPassword = function () { };
+
+
+        // 原型共用方法
+        var CheckObject = function () { };
+        CheckObject.prototype.checkName = function () { return this; };
+        CheckObject.prototype.checkEmail = function () { return this; };
+        CheckObject.prototype.checkPassword = function () { return this; };
+        var a = new CheckObject();
+        a.checkName().checkEmail().checkPassword();
+    </script>
+</body>
+
+</html>

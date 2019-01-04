@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var LoginAlert = function(text) {
+            this.content = text;
+        }
+
+        LoginAlert.prototype.show = function() {
+            // 显示警示框
+        }
+        
+        var userNameAlert = new LoginAlert('16个字母或数字');
+        userNameAlert.show();
+
+        var passwordAlert = new LoginAlert('输入的密码不正确');
+        passwordAlert.show();
+
+        var LoginConfirm = function(text) {
+            this.content = text;
+        }
+        loginConfirm.prototype.show = function() {
+            // 显示确认框
+        }
+
+        var loginFailConfirm = new loginConfirm('您的用户名不存在,请重新输入');
+        loginFailConfirm.show();
+
+        var LoginPrompt = function(text) {
+            this.content = text;
+        }
+        LoginPrompt.prototype.show = function() {
+            // 显示提示框
+        }
+
+        // 工厂方法
+        // 如果这些类继承同一个父类，那么他们的父类原型上的方法时可以公用的。
+        var PopFactory =function(name) {
+            switch(name) {
+                case 'alert':
+                return new LoginAlert();
+                case 'confirm':
+                return new LoginConfirm();
+                case 'prompt':
+                return new LoginPrompt();
+            }
+        }
+
+        // 工厂模式
+        // 寄生方式创建的对象都是一个新的个体 他们的方法是不能共用的
+        function CreateBook(name, time, type) {
+            var o = new Object();
+            o.name = name;
+            o.time = time;
+            o.type = type;
+            o.getName = function() {
+                console.log(this.name);
+            }
+            return o;
+        }
+
+        function CreatePop(type, text) {
+            var o = new Object();
+            o.content = text;
+            o.show = function() {
+                // 显示方法
+            }
+
+            if (type === 'alert') {
+                // 差异
+            } 
+            if (type === 'prompt') {
+                // 差异
+            } 
+            if (type === 'confirm') {
+                // 差异
+            } 
+
+            // 返回对象
+            return o;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 如果子类继承于父类没有重写方法就会报错
+        // 方便与确定是否重写方法并确定错误
+        var Car = function() {};
+        Car.prototype = {
+            getPrice() {
+                return new Error('抽象方法不能调用');
+            },
+            getSpeed() {
+                return new Error('抽象方法不能调用');
+            }
+        }
+
+        // 抽象工厂
+        var VehicleFactory = function(subType, superType) {
+            // 判断抽象工厂中是否有该抽象类
+            if (typeof VehicleFactory[superType] === 'function') {
+                // 缓存类
+                function F() {};
+                // 继承父类属性和方法
+                F.prototype = new VehicleFactory[superType] ();
+                // 将子类constructor指向子类
+                subType.constructor = subType;
+                // 子类原型继承'父类'
+                subType.prototype = new F();
+            } else {
+                // 不存在该抽象类抛出错误
+                throw new Error('未创建该抽象类');
+            }
+        }
+        // 小汽车的抽象类
+        VehicleFactory.Car = function() {
+            this.type = 'car';
+        };
+
+        VehicleFactory.Car.prototype = {
+            getPrice() {
+                return new Error('抽象方法不能调用');
+            },
+            getSpeed() {
+                return new Error('抽象方法不能调用');
+            }
+        };
+
+        VehicleFactory.Bus = function() {
+            this.type = 'bus';
+        };
+
+        VehicleFactory.Bus.prototype = {
+            getPrice() {
+                return new Error('抽象方法不能调用');
+            },
+            getSpeed() {
+                return new Error('抽象方法不能调用');
+            }
+        };
+
+        VehicleFactory.Truck = function() {
+            this.type = 'truck';
+        };
+
+        VehicleFactory.Truck.prototype = {
+            getPrice() {
+                return new Error('抽象方法不能调用');
+            },
+            getSpeed() {
+                return new Error('抽象方法不能调用');
+            }
+        };
+
+        // 宝马汽车类
+        var BMW = function(price, speed) {
+            this.price = price;
+            this.speed = speed;
+        }
+
+        // 抽象工厂实现对Car抽象类的继承
+        VehicleFactory(BMW, 'Car');
+        BMW.prototype.getPrice = function() {
+            return this.price;
+        }
+        console.log(new BMW())
+    </script>
+</body>
+</html>

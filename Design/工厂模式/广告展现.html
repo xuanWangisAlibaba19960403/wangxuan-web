@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 每增加一个需要增加一个类
+        // 创建java类
+        var Java = function(content) {
+            this.content = content;
+            (function(content) {
+                var div = document.createElement('div');
+                div.innerHTML = content;
+                div.style.color = 'green';
+                document.getElementById('container').appendChild(div);
+            })(content)
+        }
+
+        // 创建php类
+        var Php = function(content) {
+            this.content = content;
+            (function(content) {
+                var div = document.createElement('div');
+                div.innerHTML = content;
+                div.style.color = 'green';
+                document.getElementById('container').appendChild(div);
+            })(content)
+        }
+
+        // 创建JavaScript类
+        var JavaScript = function(content) {
+            this.content = content;
+            (function(content) {
+                var div = document.createElement('div');
+                div.innerHTML = content;
+                div.style.color = 'green';
+                document.getElementById('container').appendChild(div);
+            })(content)
+        }
+        // 学科类工厂
+        function SubjectFactory(type, content) {
+            switch(type) {
+                case 'java':
+                    return new Java(content);
+                case 'php':
+                    return new Php(content);
+                case 'javascript':
+                    return new JavaScript(content);
+            }
+        }
+
+        var Factory = function(type, content) {
+            if (this instanceof Factory) {
+                var s = new this[type] (content);
+                return s;
+            } else {
+                return new Factory(type, content);
+            }
+        }
+
+        Factory.prototype = {
+            Java() {
+
+            },
+            JavaScript() {
+
+            },
+            Php() {
+
+            },
+            UI() {
+
+            },
+            // ...
+        }
+    </script>
+</body>
+</html>

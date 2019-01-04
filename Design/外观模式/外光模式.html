@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="myinput">myinput</div>
+    <script>
+        document.onclick = (e) => {
+            var myinput = document.getElementById('myinput');
+            e.preventDefault();
+            if (e.target !== myinput) {
+                hidePageAlert();
+            }
+        }
+
+        function hidePageAlert() {
+            // 隐藏提示框
+        }
+
+        // 外光模式实现
+        function addEvent(dom, type, fn) {
+            if (dom.addEventListener) {
+                dom.addEventListener(type, fn, false);
+            } else if (dom.attachEvent) {
+                dom.attachEvent('on' + type, fn);
+            } else {
+                dom['on' + type] = fn;
+            }
+        }
+
+        addEvent(myinput, 'click', () => {
+            console.log('绑定第一个事件');
+        })
+        addEvent(myinput, 'click', () => {
+            console.log('绑定第二个事件');
+        })
+        addEvent(myinput, 'click', () => {
+            console.log('绑定第三个事件');
+        })
+
+        // 获取事件对象
+        var getEvent = function(event) {
+            // 标准浏览器返回event, IE下window.event
+            return event || window.event;
+        }
+
+        // 获取元素
+        var getTarget = function(event) {
+            var event = getEvent(event);
+            // 标准浏览器下event.target, IE下event.srcElement
+            return event.target || event.srcElement;
+        }
+
+        // 阻止默认行为
+        var preventDefault = function(event) {
+            var event = getEvent(event);
+            // 标准浏览器
+            if (event.preventDefault) {
+                event.preventDefault();
+            // IE浏览器
+            } else {
+                event.returnValue = false;
+            }
+        }
+
+        document.onclick = function(e) {
+            // 阻止默认行为
+            preventDefault(e);
+            var myinput = document.getElementById('myinput');
+            // 获取事件源目标对象
+            if (getTarget(e) !== myinput) {
+                hideInputSug();
+            }
+        }
+    </script>
+</body>
+</html>

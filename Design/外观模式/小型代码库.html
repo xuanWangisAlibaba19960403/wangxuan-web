@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    // 简约版属性样式方法库
+    var A = {
+        // 通过id获取元素
+        g(id) {
+            return document.getElementById(id);
+        },
+        // 设置元素css属性
+        css(id, key, value) {
+            document.getElementById(id).style[key] = value;
+        },
+        // 设置元素的属性
+        attr(id, key, value) {
+            document.getElementById(id)[key] = value;
+        },
+        html(id, html) {
+            document.getElementById(id).innerHTML = html;
+        },
+        // 为元素绑定事件
+        on(id, type, fn) {
+            document.getElementById(id)['on' + type] = fn;
+        }
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 原型是继承
+        function inheritObject(o) {
+            // 构造函数
+            function F() {};
+            // 继承父对象
+            F.prototype = o;
+            // 返回实例
+            return new F();
+        }
+        var book = {
+            name: 'js book',
+            alikeBook: ['css book', 'html book']
+        };
+        var newBook = inheritObject(book);
+        console.log(newBook);
+        // 共享属性在原型上
+    </script>
+</body>
+
+</html>

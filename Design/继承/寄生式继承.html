@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 原型是继承
+        function inheritObject(o) {
+            // 构造函数
+            function F() {};
+            // 继承父对象
+            F.prototype = o;
+            // 返回实例
+            return new F();
+            // var o = new F();
+            // o.getName = function() {
+            //     console.log(name);
+            // }
+            // return o;
+        }
+
+        // 寄生式继承
+        var book = {
+            name: 'js book',
+            alikeBook: ['css book', 'html book']
+        };
+        // var o = new inheritObject(book);
+        // console.log(o);
+        function createBook(obj) {
+            var o = inheritObject(obj);
+            // 拓展新对象
+            o.getName = function() {
+                console.log(name);
+            }
+            // 返回拓展后的新对象
+            return o;
+        }
+        var o = new createBook(book);
+        console.log(o);
+    </script>
+</body>
+
+</html>

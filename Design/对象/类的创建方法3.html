@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var Book = function (id, name, price) {
+            // 私有属性
+            var num = 1;
+            // 私有方法
+            function checkId() {
+                return num;
+            };
+            // 特权方法
+            this.getName = function () { };
+            this.getPrice = function () { };
+            this.setName = function () { };
+            this.setPrice = function () { };
+            // 对象公有
+            this.id = id;
+            // 对象公有方法
+            this.copy = function () { };
+            // 构造器
+            this.setName(name);
+            this.setPrice(price);
+        }
+        // 类静态公有属性(对象不能访问)
+        Book.isChinese = true;
+        Book.resetTime = function () {
+            console.log('new Time');
+        }
+        Book.prototype = {
+            isJSBook: false,
+            display() {
+            }
+        }
+        var book = new Book(1, 'javascript', 1);
+        console.log(book.num);
+        console.log(book.isJSBook);
+        console.log(book.id);
+        console.log(book.isChinese);
+        console.log(Book.isChinese);
+        Book.resetTime();
+    </script>
+</body>
+
+</html>

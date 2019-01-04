@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function SuperClass(name) {
+            this.name = name;
+            this.books = ['html', 'css', 'javascript'];
+        }
+        SuperClass.prototype.getName = function() {
+            console.log(this.name);
+        }
+        function SubClass(name, time) {
+            SuperClass.call(this, name);
+            this.time = time;
+        }
+        SubClass.prototype = new SuperClass();
+        SubClass.prototype.getTime = function() {
+            console.log(this.time);
+        }
+    </script>
+</body>
+</html>
