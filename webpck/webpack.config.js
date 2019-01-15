@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  // mode: 'development',
   entry: './main.js',
   output: {
     // 所有依赖文件的模块合并输出到一个bundle.js
@@ -10,10 +11,12 @@ module.exports = {
   },
   // 引入Loader
   module: {
-    rules: {
+    rules: [
+      {
       // 正则匹配css文件
       test: /\.css$/,
-      use: ['style-loader', 'css-loader?minimize'],
-    }
+      use: [ 'style-loader', 'css-loader' ]
+      }
+    ]
   }
 };
