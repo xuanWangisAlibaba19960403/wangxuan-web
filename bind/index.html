@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+  <button id="btn">点击</button>
+  <script>
+    // bind
+    window.x = 10;
+
+    function show() {
+      console.log(x);
+    }
+
+    show();
+
+
+    const TestX = {
+      x: 20
+    }
+    
+    const newShow = show.bind(TestX);
+    newShow();
+    // 单对象编程
+
+    // index.js
+    const list = {
+      init() {
+        this.msg = 'btn';
+        this.dom = document.getElementById('btn');
+        this.bindEvent();
+      },
+      bindEvent() {
+        // this list
+        this.dom.onclick = this.showMessage.bind(this);
+      },
+      showMessage() {
+        alert(this.msg);
+        console.log(this);
+      }
+    };
+    list.init();
+  </script>
+</body>
+
+</html>
