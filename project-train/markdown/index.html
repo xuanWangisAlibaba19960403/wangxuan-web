@@ -1,0 +1,47 @@
+<html>
+<head>
+  <title>Notebook</title>
+  <!-- Icons & Stylesheets -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Include the library in the page -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/marked"></script>
+
+  <!-- Notebook app -->
+  <div id="notebook">
+    
+    <aside class="side-bar">
+      <!-- 工具栏 -->
+      <div class="toolbar">
+        <button @click="addNote" :title="notes.length + 'note(s) already'"><i class="material-icons">add</i> Add note</button>
+      </div>
+      <div class="notes">
+        <div class="note" v-for="note in notes" @click="selectNote(note)"
+        :class="{selected: note === selectedNote}">{{note.title}}</div>
+      </div>
+    </aside>
+    
+    <!-- 主面板 -->
+    <section class="main" v-if="selectedNote">
+      <div class="toolbar">
+        <input type="text" v-model="selectedNote.title" placeholder="Note title">
+        <button @click="favoriteNote" title="Favorite note">
+          <i class="material-icons">{{selectedNote.favorite ? 'star' : 'star_border'}}</i>
+        </button>
+        <button @click="removeNote" title="Remove note">
+          <i class="material-icons">delete</i>
+        </button>
+      </div>
+      <textarea v-model="selectedNote.content"></textarea>
+    </section>
+    <!-- 预览面板 -->
+    <aside class="preview" v-html="notePreview"></aside>
+  </div>
+
+  <!-- Some JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>

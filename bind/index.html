@@ -12,40 +12,42 @@
   <button id="btn">点击</button>
   <script>
     // bind
-    window.x = 10;
+    // window.x = 10;
 
-    function show() {
-      console.log(x);
-    }
+    // function show() {
+    //   console.log(x);
+    // }
 
-    show();
+    // show();
 
 
-    const TestX = {
-      x: 20
-    }
+    // const TestX = {
+    //   x: 20
+    // }
     
-    const newShow = show.bind(TestX);
-    newShow();
-    // 单对象编程
+    // const newShow = show.bind(TestX);
+    // newShow();
+    // // 单对象编程
 
-    // index.js
-    const list = {
-      init() {
-        this.msg = 'btn';
-        this.dom = document.getElementById('btn');
-        this.bindEvent();
-      },
-      bindEvent() {
-        // this list
-        this.dom.onclick = this.showMessage.bind(this);
-      },
-      showMessage() {
-        alert(this.msg);
-        console.log(this);
-      }
-    };
-    list.init();
+    // // index.js
+    // const list = {
+    //   init() {
+    //     this.msg = 'btn';
+    //     this.dom = document.getElementById('btn');
+    //     this.bindEvent();
+    //   },
+    //   bindEvent() {
+    //     // this list
+    //     this.dom.onclick = this.showMessage.bind(this);
+    //   },
+    //   showMessage() {
+    //     alert(this.msg);
+    //     console.log(this);
+    //   }
+    // };
+    // list.init();
+    // 总结
+    // 1.
   </script>
 </body>
 
