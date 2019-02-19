@@ -1,3 +1,4 @@
+Vue.filter('date', time => moment(time).format('DD/MM/YY， HH:mm'))
 // New VueJS instance
 new Vue({
   // CSS selector of the root DOM element
@@ -17,6 +18,9 @@ new Vue({
     },
     selectedNote() {
       return this.notes.find(note => note.id === this.selectedId);
+    },
+    sorteNotes() {
+      return this.notes.slice().sort((a, b) => a.created - b.created).sort((a, b) => (a.favorite === b.favorite) ? 0 : a.favorite ? -1 : 1);
     }
   },
 

@@ -9,6 +9,7 @@
   <!-- Include the library in the page -->
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/marked"></script>
+  <script src="https://unpkg.com/moment"></script>
 
   <!-- Notebook app -->
   <div id="notebook">
@@ -19,8 +20,11 @@
         <button @click="addNote" :title="notes.length + 'note(s) already'"><i class="material-icons">add</i> Add note</button>
       </div>
       <div class="notes">
-        <div class="note" v-for="note in notes" @click="selectNote(note)"
-        :class="{selected: note === selectedNote}">{{note.title}}</div>
+        <div class="note" v-for="note in sorteNotes" @click="selectNote(note)"
+        :class="{selected: note === selectedNote}">
+          <i class="icon material-icons" v-if="note.favorite">star</i>
+          {{note.title}}
+        </div>
       </div>
     </aside>
     
@@ -36,6 +40,12 @@
         </button>
       </div>
       <textarea v-model="selectedNote.content"></textarea>
+      <div class="toolbar status-bar">
+        <span class="date">
+          <span class="label" style="font-style: normal;">Created</span>
+          <span class="value" style="font-style: normal;">{{ selectedNote.created | date }}</span>
+        </span>
+      </div>
     </section>
     <!-- 预览面板 -->
     <aside class="preview" v-html="notePreview"></aside>
