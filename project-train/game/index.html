@@ -15,7 +15,8 @@
   
   <!-- Game app -->
   <div id="app">
-    <top-bar :turn="turn" :players="players" :current-playing-index="currentPlayerIndex"></top-bar>
+    <top-bar :turn="turn" :players="players" :current-player-index="currentPlayerIndex"></top-bar>
+    <card :def="testCard" @click.native="handlePlay"></card>
   </div>
   
   <!-- Scripts -->
