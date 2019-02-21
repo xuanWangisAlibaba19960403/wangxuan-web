@@ -1,0 +1,31 @@
+.hand-enter,
+.hand-leave-to {
+  transition: opacity 1s;
+}
+
+.hand-enter-active,
+.hand-leave-active {
+  transition: opacity 1s;
+}
+
+.hand-enter-active .warpper,
+.hand-leave-active .warpper {
+  transition: transform 0.8s cubic-bezier(.08, .74, .34, 1);
+  transform-origin: bottom center;
+}
+
+.hand-enter .warpper,
+.hand-leave-to .warpper{
+  transform: rotateX(90deg);
+}
+
+.hand-enter-active .card,
+.hand-leave-active .card {
+  transition: margin 0.8s cubic-bezier(.08, .74, .34, 1);
+  transform-origin: bottom center;
+}
+
+.hand-enter .card,
+.hand-leave-to .card{
+  margin: 0 -100px;
+}

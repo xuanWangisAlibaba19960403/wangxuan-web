@@ -14,7 +14,7 @@ Vue.component('top-bar', {
 });
 
 Vue.component('card', {
-  template: `<div class="card" :class="'type-' + def.type">
+  template: `<div class="card" :class="'type-' + def.type" @click="play">
     <div class="title">{{ def.title }}</div>
     <img class="separator" src="svg/card-separator.svg" />
     <div class="description">
@@ -26,9 +26,25 @@ Vue.component('card', {
   </div>`,
   props: ['def'],
   methods: {
-    handlePlay() {
-      console.log('You played a card!');
-    }
+    play() {
+      console.log('play');
+      this.$emit('play');
+    },
   },
+})
+
+Vue.component('hand', {
+  template: `<div class="hand">
+    <div class="wrapper">
+      <card v-for="card of cards" :def="card.def" @play="handlePlay(card)"/>
+    </div>
+  </div>`,
+  props: ['cards'],
+  methods: {
+    handlePlay(card) {
+      console.log(card);
+      this.$emit('card-play', card);
+    }
+  }
 })
 

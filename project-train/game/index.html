@@ -6,6 +6,7 @@
   <!-- Icons & Stylesheets -->
   <link href="https://fonts.googleapis.com/css?family=Signika+Negative:600" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="transition.css" />
 </head>
 <body>
   <!-- Include the library in the page -->
@@ -16,7 +17,10 @@
   <!-- Game app -->
   <div id="app">
     <top-bar :turn="turn" :players="players" :current-player-index="currentPlayerIndex"></top-bar>
-    <card :def="testCard" @click.native="handlePlay"></card>
+    <card v-for="card in testHand" :def="card.def"></card>
+    <transition name="hand">
+      <hand :cards="testHand" v-if="!activeOverlay" @card-paly="testPlayCard"></hand>
+    </transition>
   </div>
   
   <!-- Scripts -->

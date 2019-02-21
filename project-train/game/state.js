@@ -19,5 +19,8 @@ var state = {
     }
   ],
   currentPlayerIndex: Math.round(Math.random()),
+  testHand: [],
+  activeOverlay: null,
+  
   // TODO Other things
 }
