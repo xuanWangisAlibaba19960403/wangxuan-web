@@ -15,13 +15,7 @@
   <script src="https://unpkg.com/tween.js"></script>
   
   <!-- Game app -->
-  <div id="app">
-    <top-bar :turn="turn" :players="players" :current-player-index="currentPlayerIndex"></top-bar>
-    <card v-for="card in testHand" :def="card.def"></card>
-    <transition name="hand">
-      <hand :cards="testHand" v-if="!activeOverlay" @card-paly="testPlayCard"></hand>
-    </transition>
-  </div>
+  <div id="app"></div>
   
   <!-- Scripts -->
   <script src="utils.js"></script>
