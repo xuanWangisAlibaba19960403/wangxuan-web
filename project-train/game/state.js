@@ -7,8 +7,11 @@ var currentPlayingCard = null
 
 // The consolidated state of our app
 var state = {
+  // UI
+  activeOverly: null,
   // World
   worldRatio: getWorldRatio(),
+  // Game
   turn: 1,
   players: [
     {
