@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function Person() {};
+
+    Person.prototype = {
+      constructor: Person,
+      name: 'Nicholas',
+      age: 29,
+      job: 'software Engineer',
+      friends: ['Tom', 'Bob'],
+      sayName() {
+        console.log(this.name);
+      }
+    }
+
+    const person1 = new Person();
+    const person2 = new Person();
+    console.log(typeof person1.__proto__);
+    console.log(Array.isArray(person1.__proto__));
+    console.log(person1.__proto__ === person2.__proto__);
+    person1.friends.push('Ann');
+    console.log(person2.friends);
+    // 共用一个原型(指针)
+  </script>
+</body>
+
+</html>

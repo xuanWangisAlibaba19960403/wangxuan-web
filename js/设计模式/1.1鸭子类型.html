@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var duck = {
+      duckSinging() {
+        console.log('嘎嘎嘎');
+      }
+    }
+
+    var chicken = {
+      duckSinging() {
+        console.log('嘎嘎嘎');
+      }
+    }
+
+    var choir = []; // 合成班
+
+    var joinChoir = function(animal) {
+      if (animal && typeof animal.duckSinging === 'function') {
+        choir.push(animal);
+        console.log('恭喜加入和成团');
+        console.log('和成团' + choir.length);
+      }
+    }
+  </script>
+</body>
+
+</html>

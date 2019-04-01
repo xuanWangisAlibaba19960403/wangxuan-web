@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    Function.prototype.bind = function () {
+      var self = this,
+          context = [].shift.call(arguments), // 第一个参数
+          arg = [].slice.call(arguments) // 实际传递的参数
+      return function () {
+        self.apply(context, [].concat(arg, [].slice.call(arguments)));
+      }
+    }
+
+    function foo() {
+      console.log(this.name);
+    }
+
+    var obj = {
+      name: 'zs'
+    }
+
+    var foo1 = foo.bind(obj, 1, 2);
+    foo1(3, 4);
+  </script>
+</body>
+
+</html>

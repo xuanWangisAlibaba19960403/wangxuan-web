@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var longRunningFunction = (ip) => {
+      // do long running tasks and return
+    }
+    /* 
+      假设有一个做耗时计算的函数，名为longRunningFunction
+      如果longRunningFunction函数是纯函数，我们知道对于给定的输入
+      它总会返回相同的输出！考虑到这一点，我们可以用函数的上一个结果代替函数调用
+      (此时再次注意我们是如何使用引用透明性概念的，因此，用上一个结果值代替
+      函数不会改变上下文)
+      假设我们有一个记账对象，它存储了longRunningFunction函数的所有调用结果，如下所示
+    */
+    var longRunningFnBookKeeper = { 2: 3, 4: 5 };
+    // 检查key是否在longRunningFnBookKeeper中
+    longRunningFnBookKeeper.hasOwnProperty(ip) ?
+        longRunningFnBookKeeper[ip] :
+        longRunningFnBookKeeper[ip] = longRunningFunction(ip);
+  </script>
+</body>
+
+</html>

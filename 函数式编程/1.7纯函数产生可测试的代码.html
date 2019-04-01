@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var percentValue = 5;
+    var calculateTax = (value) => {
+      return value / 100 * (100 + percentValue)
+      // 依赖外部环境的percentValue变量
+    }
+
+    // 假设打算对calculateTax函数进行运算测试，分别执行三次不同的税值
+    calculateTax(5) === 5.25;
+    calculateTax(6) === 6.3;
+    calculateTax(7) === 7.35;
+    // 测试通过了但是calculateTax依赖外部环境percentValue假设你在运行相同的测试用例时
+    // 外部环境也正在改变变量percenteValue:
+    calculateTax(5) === 5.25;
+    // percenteValue 被其他函数改成2
+    calculateTax(6) === 6.3; // 能通过吗?
+    // percenteValue 被其他函数改成0
+    calculateTax(7) === 7.35; // 能通过吗?
+
+    // 依赖外部环境的函数很难测试
+    var calculateTax = (value, percentValue) => {
+      return value / 100 * (100 + percentValue)
+    }
+    // 1.纯函数不应依赖任何外部变量
+    // 2.也不应该改变任何外部变量
+  </script>
+</body>
+
+</html>

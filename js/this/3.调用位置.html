@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 首先要理解调用位置： 这个this到底引用的是什么
+    // 分析调用栈(就是为了到达当前执行位置所调用的所有函数)
+    // 什么是调用栈(call stack)和调用位置
+    function baz() {
+      // 当前调用栈是： baz
+      // 因此当前调用位置是全局作用域
+
+      console.log('baz');
+      bar() // bar的调用位置 
+    }
+
+    function bar() {
+      // 当前调用栈是baz -> bar
+      // 因此当前调用位置在baz中
+
+      console.log('bar');
+      foo();
+    }
+
+    function foo() {
+      // 当前调用栈是baz -> bar -> foo (chrome浏览器 call stack)
+      debugger;
+      // 当前调用位置是在bar
+
+      console.log('foo');
+    }
+
+    baz(); // -> baz的调用位置 
+  </script>
+</body>
+
+</html>

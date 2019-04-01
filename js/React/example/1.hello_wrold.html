@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .red {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 渲染元素 -->
+  <div id="app">
+  </div>
+
+  <script src="../react/build/react.js"></script>
+  <script src="../react/build/react-dom.js"></script>
+  <script>
+    // ReactDOM.render(
+    //   React.DOM.h1({
+    //     className: 'red', // class for 为 js 关键字
+    //     htmlFor: 'me'
+    //   }, 'world'),
+    //   document.getElementById("app")
+    // );
+    // 自定义组件
+    const Component = React.createClass({
+      render() {
+        return React.DOM.span(null, "I' m so custom");
+      }
+    });
+
+    // ReactDOM.render(
+    //   React.createElement(Component),
+    //   document.getElementById("app")
+    // )
+    // 工厂模式
+    const ComponentFactory = React.createFactory(Component);
+
+    ReactDOM.render(
+      ComponentFactory(),
+      document.getElementById("app")
+    )
+
+    /* 请注意，我们之前介绍的 React.DOM.* 方法实际上只是在 React.createElement() 的基础上
+    进行了一层封装。换句话说，以下代码同样可以渲染 DOM 组件 */
+    
+    ReactDOM.render(
+      React.createElement("span", null, "Hello"),
+      document.getElementById("app")
+    );
+  </script>
+</body>
+
+</html>

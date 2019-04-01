@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var Single = function (name) {
+      this.name = name;
+      this.instance = null;
+    }
+
+    Single.prototype.getName = function () {
+      alert(this.name);
+    }
+
+    Single.getInstance = function (name) {
+      if (!this.instance) {
+        this.instance = new Single(name);
+      }
+      return this.instance;
+    }
+
+    Single.getInstance = (function () {
+      var instance = null;
+      return function (name) {
+        if (!instance) {
+          this.instance = new Single(name);
+        }
+        return instance;
+      }
+    })();
+
+    var a = Single.getInstance('sven1');
+    var b = Single.getInstance('sven1');
+    console.log(a, b);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // var A = function() {
+    //   console.log(this.name);
+    // }
+
+    // var B = function() {
+    //   A.apply(this, arguments); // 借用函数
+    // }
+
+    // B.prototype.getName = function() {
+    //   return this.name;
+    // }
+
+    // Array.prototype.push = function() {
+    //   var n = this.length;
+    //   var m = arguments.length;
+    //   for (var i = 0; i < m; i++) {
+    //     this[i + n] = arguments[i];
+    //   }
+    //   this.length = n + m;
+    //   return this.length;
+    // };
+
+    (function () {
+      Array.prototype.push.call(arguments, 3);
+    })(1, 2);
+
+    var a = {};
+    Array.prototype.push.call(a, 'first');
+
+    var b = function () { };
+    Object.defineProperties(b, {
+      'length': {
+        value: true,
+        writable: true
+      }
+    });
+    Array.prototype.push.call(b, 'first');
+  </script>
+</body>
+
+</html>

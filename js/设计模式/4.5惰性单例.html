@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="loginBtn">登录</button>
+  <script>
+    var loginLayer = (function () {
+      var div = document.createElement('div');
+      div.innerHTML = '我是登陆浮窗';
+      div.style.display = 'none';
+      document.body.appendChild(div);
+      return div;
+    })(); // 自动创建 可能我不需要登录
+
+    document.getElementById('loginBtn').onclick = function () {
+      loginLayer.style.display = 'block';
+    }
+
+    var CreateLoginLayer = function () {
+      var div = document.createElement('div');
+      div.innerHTML = '我是登陆浮窗';
+      div.style.display = 'none';
+      document.body.appendChild(div);
+      return div;
+    };
+
+    document.getElementById('loginBtn').onclick = function () {
+      var loginLayer = CreateLoginLayer();
+      loginLayer.style.display = 'block';
+    } // 达到了单例的效果 但是每次点击都会创建一个新的div
+
+    var CreateLoginLayer = (function () {
+      var div;
+      return function () {
+        if (!div) {
+          div = document.createElement('div');
+          div.innerHTML = '我是登陆浮窗';
+          div.style.display = 'none';
+          document.body.appendChild(div);
+        }
+        return div;
+      }
+    })();
+
+    document.getElementById('loginBtn').onclick = function () {
+      var loginLayer = CreateLoginLayer();
+      loginLayer.style.display = 'block';
+    }
+
+    // 创建和管理都在CreateLoginLayer中 把变的 和 不变的 拆分出来
+
+    var CreateLoginLayer = function () {
+      div = document.createElement('div');
+      div.innerHTML = '我是登陆浮窗';
+      div.style.display = 'none';
+      document.body.appendChild(div);
+      return div;
+    };
+
+    var getSingle = function(fn) {
+      var result;
+      return function() {
+        return result || (result = fn.apply(this, arguments));
+      }
+    };
+
+    var createSingleLoginLayer = getSingle(CreateLoginLayer);
+
+    document.getElementById('loginBtn').onclick = function () {
+      var loginLayer = createSingleLoginLayer();
+      loginLayer.style.display = 'block';
+    }
+  </script>
+</body>
+
+</html>

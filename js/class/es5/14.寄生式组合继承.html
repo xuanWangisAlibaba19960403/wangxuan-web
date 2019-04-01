@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 组合继承
+        // function SuperType(name) {
+        //     this.name = name;
+        //     this.colors = ['red', 'blue', 'green'];
+        // }
+
+        // SuperType.prototype.sayName = function () {
+        //     console.log(this.name);
+        // }
+
+        // function SubType(name, age) {
+        //     // 继承
+        //     SuperType.call(this, name); // 第二次执行SuperType
+
+        //     this.age = age;
+        // }
+
+        // SubType.prototype = new SuperType(); // 第一次执行SuperType
+
+        // SubType.prototype.sayAge = function () {
+        //     console.log(this.age);
+        // }
+
+        /* 组合继承的缺点无论什么情况，都会执行了2次超类型构造函数，一次是在子类型构造原型时，
+           另一次是在子类型构造函数内部
+        */
+
+        // function inheritPrototype(subType, superType) {
+        //     const prototype = Object.create(superType.prototype); // 创建对象
+        //     // 第一步创建超类型原型的一个副本
+        //     prototype.constructor = subType; // 增强对象
+        //     // 第二步是为创建的副本添加constructor属性，从写原型失去了默认的constructor属性
+        //     subType.prototype = prototype; // 指定对象
+        //     // 第三步将新创建的对象赋值给子类型的原型
+        // }
+
+        function inheritPrototype(subType, superType) {
+            function F() {};
+            F.prototype = superType.prototype;
+            F.prototype.constructor = subType;
+            F.prototype.uber = superType.prototype;
+            subType.prototype = F.prototype;
+        }
+
+        function SuperType(name) {
+            this.name = name;
+            this.colors = ['red', 'blue', 'green'];
+        }
+
+        SuperType.prototype.sayName = function () {
+            console.log(this.name);
+        }
+
+        function SubType(name, age) {
+            SuperType.call(this, name); // 借用
+            this.age = age;
+        }
+
+        inheritPrototype(SubType, SuperType);
+
+        SubType.prototype.sayAge = function () {
+            console.log(this.age);
+        }
+
+        const s1 = new SubType('zs', 13);
+        console.log(s1);
+        console.log(s1.uber.sayName.call(s1));
+        console.log(SubType.prototype.uber === SuperType.prototype); // 公用
+    </script>
+</body>
+
+</html>

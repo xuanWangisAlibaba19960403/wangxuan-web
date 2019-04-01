@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*
+      rules: 绩效为s的人年终奖为4倍工资
+             绩效为a的人年终奖为3倍工资
+             绩效为b的人年终奖是2倍工资
+    */
+
+    /*
+    var calculateBonus = function (performanceLevel, salary) {
+      if (performanceLevel === 'S') {
+        return salary * 4
+      }
+
+      if (performanceLevel === 'A') {
+        return salary * 3
+      }
+
+      if (performanceLevel === 'B') {
+        return salary * 2
+      }
+    }
+    */
+
+    /* 
+      可以发现，这段代码十分简单，但是存在着显而易见的缺点
+      1.calculateBonus包含了很多if-else语句，这些语句需要覆盖所有的逻辑分支
+      2.calculateBonus缺乏弹性，如果增加了一种新的绩效成绩c,或者想把绩效s的奖金系数改成5,
+        那么我们必须修改calculateBonus函数内部的实现，这是违反开放-封闭原则的
+      3.算法复用性差，如果程序的其他地方需要重用这些计算奖金的算法?我们的选择只有复制粘贴
+    */
+    /*
+    var performanceS = function (salary) {
+      return salary * 4;
+    }
+
+    var performanceA = function (salary) {
+      return salary * 3;
+    }
+
+    var performanceB = function (salary) {
+      return salary * 2;
+    }
+
+    var calculateBonus = function (performanceLevel, salary) {
+      if (performanceLevel === 'S') {
+        return performanceS(salary)
+      }
+
+      if (performanceLevel === 'A') {
+        return performanceA(salary)
+      }
+
+      if (performanceLevel === 'B') {
+        return performanceB(salary)
+      }
+    }
+    */
+
+    // 目前我们的程序得到了一定的改善，但是改善非常有限，我们依然没有解决最重要的问题
+    // calculateBonus函数有可能越来越庞大了，而且在系统变化的时候缺乏弹性
+
+    // 定义绩效等级
+    // 策略模式重构代码
+
+    var performanceS = function () {};
+    performanceS.prototype.calculate = function (salary) {
+      return salary * 4;
+    }
+
+    var performanceA = function () {};
+    performanceA.prototype.calculate = function (salary) {
+      return salary * 3;
+    }
+    var performanceB = function () {};
+    performanceB.prototype.calculate = function (salary) {
+      return salary * 2;
+    }
+
+    // 奖金
+    var Bonus = function() {
+      this.salary = null; // 原始工资
+      this.strategy = null; // 绩效等级对应的策略对象
+    };
+
+    Bonus.prototype.setSalary = function(salary) {
+      this.salary = salary; // 设置员工的原始工资
+    }
+
+    Bonus.prototype.setStrategy = function(strategy) {
+      this.strategy = strategy; // 设置员工的绩效等级
+    }
+
+    Bonus.prototype.getBonus = function() { //取得奖金数额
+      console.log(this.strategy);
+      return this.strategy.calculate(this.salary); // 把计算奖金的操作委托给对应的策略对象
+    }
+
+    var bonus = new Bonus();
+    bonus.setSalary(2000);
+    bonus.setStrategy(new performanceA());
+    console.log(bonus.getBonus());
+  </script>
+</body>
+
+</html>

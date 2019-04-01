@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    console.time();
+    console.log(window.location.href);
+    console.timeEnd();
+
+    console.time();
+    console.log(location.href);
+    console.timeEnd();
+
+    // 每嵌套一层就会增加性能的消耗
+  </script>
+</body>
+
+</html>

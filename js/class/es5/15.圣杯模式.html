@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function inherit(target, origin) {
+      function F() {};
+      F.prototype = origin.prototype; // 复制原型
+      target.prototype = new F();
+      target.prototype.constructor = target;
+      target.prototype.uber = origin.prototype;
+    }
+
+    const inherit = (function () {
+      function F() {};
+      return function(target, origin) {
+        F.prototype = origin.prototype; // 复制原型
+        target.prototype = new F();
+        target.prototype.constructor = target;
+        target.prototype.uber = origin.prototype;
+      }
+    })();
+
+    function SuperType(name) {
+      this.name = name;
+      this.colors = ['red', 'blue', 'green'];
+    }
+
+    SuperType.prototype.sayName = function () {
+      console.log(this.name);
+    }
+
+    function SubType(name, age) {
+      SuperType.call(this, name); // 借用
+      this.age = age;
+    }
+
+    inherit(SubType, SuperType);
+
+    SubType.prototype.sayAge = function () {
+      console.log(this.age);
+    }
+
+    const s1 = new SubType('zs', 13);
+    const s2 = new SubType('zs', 13);
+    console.log(s1.colors.push('black'));
+    console.log(SubType instanceof SuperType);
+  </script>
+</body>
+
+</html>

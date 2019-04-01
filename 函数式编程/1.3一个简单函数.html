@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var simple = (a) => {
+      return a;
+    }
+    simple(5) // 调用位置
+    /*
+      定义了一个简单函数，无论传入什么作为输入，该函数都会把它返回。
+      也就是说，如果你传入5，它就会返回5(换言之， 该函数就像一个面镜子或一个恒等式)
+      注意，我们的函数只根据传入的参数i进行操作，在函数内部没用全局引用.
+      该函数满足了引用透明性条件
+    */
+
+    sum(4, 5) + simple(1)
+    /* 
+      根据引用透明性的定义，我们可以把上面的语句转换为
+     */
+     sum(4, 5) + 1
+
+     /*
+      这个过程被称为替换模型，因为你可以直接替换函数的结果(主要因为函数的逻辑不依赖其他全局变量),
+      这与它的值是一样的。这使并发代码和缓存成为可能。根据模型想象一下，你可以轻松地用多线程运行
+      上面的代码，甚至不需要同步！为什么？同步的问题在于线程不应该在并发运行的时候依赖全局数据。
+      遵循引用透明性的函数只能依赖来自参数的输入。因此，线程可以自由地运行，没有任何锁机制
+     */
+  </script>
+</body>
+
+</html>

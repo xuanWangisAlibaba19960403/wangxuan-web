@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var Something = {
+      cool: function() {
+        this.greeting = 'hello world';
+        this.count = this.count ? this.count + 1 : 1;
+      }
+    }
+
+    Something.cool();
+    Something.greeting;
+    Something.count;
+
+    var Another = {
+      cool: function() {
+        // 隐式把Something混入Another
+        Something.cool.call(this); // 通过this的绑定 Something.cool中的赋值操作都会应用在Another对象
+        // 因此我们把Something混入到了Another中
+      }
+    }
+  </script>
+</body>
+
+</html>

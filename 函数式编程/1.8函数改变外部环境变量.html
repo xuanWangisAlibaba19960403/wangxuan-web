@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var global = 'globalValue';
+    var badFuntion = (value) => { 
+      global = 'changed';
+      return value * 2;
+    }
+    /* 
+      当badFunction函数被调用时,它将全局变量global的值改成changed
+      假设另一个函数的逻辑依赖global变量。调用badFuntion就影响了其他函数的行为
+      具有这种性质的函数(也就是具有副作用的函数)会使代码库变得难以测试。
+      在调试的时候这些副作用会使系统的行为变得非常难以可测！
+    */
+  </script>
+</body>
+
+</html>

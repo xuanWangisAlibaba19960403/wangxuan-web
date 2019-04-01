@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function Person(name, age, job) {
+      this.name = name;
+      this.age = age;
+      this.job = job;
+      this.friends = ['Tom', 'Bob'];
+    }
+
+    Person.prototype = {
+      constructor: Person,
+      sayName() {
+        console.log(this.name);
+      }
+    }
+
+    function Man(name, age, job) {
+      Person.call(this, name, age, job);
+      this.male = 'male';
+    }
+    // 最为广泛的一种类型
+  </script>
+</body>
+
+</html>

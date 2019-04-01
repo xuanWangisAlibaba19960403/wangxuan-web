@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 毫无疑问 默认绑定是优先级最低的一条规则
+    // function foo() {
+    //   console.log(this.a);
+    // }
+
+    // var obj1 = {
+    //   a: 2,
+    //   foo: foo
+    // }
+
+    // var obj2 = {
+    //   a: 3,
+    //   foo: foo
+    // }
+
+    // obj1.foo() // 2
+    // obj2.foo() // 3
+    // 显示绑定 比 默认绑定 优先级更高
+    // obj1.foo.call(obj2); // 3
+    // obj2.foo.call(obj1); // 2
+
+    // new 和 隐式绑定的优先级
+    // function foo(something) {
+    //   this.a = something;
+    // }
+
+    // var obj1 = {
+    //   foo: foo
+    // }
+
+    // var obj2 = {}
+
+    // obj1.foo(2)
+    // console.log(obj1);
+    // console.log(obj1.a); // 2
+
+    // obj1.foo.call(obj2, 3)
+    // console.log(obj2);
+    // console.log(obj2.a); // 3
+
+    // var bar = new obj1.foo(4)
+    // // new绑定比隐式绑定优先级更高
+    // console.log(obj.a); // 2
+    // console.log(bar.a); // 4
+
+    // new 和 硬绑定优先级
+    function foo(something) {
+      this.a = something;
+    }
+
+    var obj1 = {};
+
+    var bar = foo.bind(obj1);
+    bar(2);
+    console.log(obj1.a); // 2
+
+    var baz = new bar(3);
+    console.log(obj1.a); // 2
+    console.log(baz.a); // 3obj1.foo.call(obj2, 3)
+    console.log(obj2);
+    console.log(obj2.a); // 3
+
+    /* 出乎意料! bar被硬绑定到了obj1上，但是new bar(3)并没有像我们预料的那样把obj1.a变成3
+       new修改了硬绑定(到obj1的)调用bar中的this.因为使用了new绑定，
+       我们得到了一个名字为baz的新对象，并且baz.a的值是3
+    */
+
+    
+  </script>
+</body>
+
+</html>

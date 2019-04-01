@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function Person() {
+    }
+
+    Person.prototype.name = 'Nicholas';
+    Person.prototype.age = 18;
+    Person.prototype.job = '前端';
+    Person.prototype.sayName = function () {
+      console.log(this.name);
+    };
+    // 创建的实例每次都是固定得
+
+    const p1 = new Person();
+    p1.sayName();
+
+
+    function Person() { }
+
+    Person.prototype = {
+      constructor: Person,
+      name: 'Nicholas',
+      age: 29,
+      job: '前端',
+      sayName: function() {
+        console.log(this.name);
+      }
+    }
+    // 手动指向prototype会令constructor属性会导致它的[[Enumerable]]特性被设置为true
+    // 默认情况下，原生得constructor属性是不可枚举的
+    Person.prototype = {
+      name: 'Nicholas',
+      age: 29,
+      job: '前端',
+      sayName: function() {
+        console.log(this.name);
+      }
+    }
+    // 手动constructor属性是不可枚举的
+    Object.defineProperty(Person.prototype, 'constructor', {
+      enumerable: false,
+      value: Person
+    });
+  </script>
+</body>
+
+</html>

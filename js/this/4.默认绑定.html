@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 默认绑定
+    function foo() {
+      // 当前调用栈是： baz
+      // 因此当前调用位置是全局作用域
+      console.log(this.a);
+    }
+
+    var a = 2;
+    // 声明在全局作用域中的变量比如var a = 2; 
+    // 就是全局对象的一个同名属性，他们本质上就是一个东西
+    foo(); // 2
+
+    // 严格模式
+    function foo() {
+      "use strict";
+      console.log(this.a);
+    }
+
+    foo(); // this is undefinedS
+    // 虽然this的绑定规则完全取决于调用位置，但是只有foo()运行在非strict mode下时,
+    // 默认绑定才能绑定在全局对象；严格模式下于foo()的调用位置无关
+
+    function foo() {
+      console.log(this.a);
+    }
+
+    var a = 2;
+    (function() {
+      "use strict";
+
+      foo(); // 2
+    })()
+    // 要么都严格要么都不严格
+  </script>
+</body>
+
+</html>

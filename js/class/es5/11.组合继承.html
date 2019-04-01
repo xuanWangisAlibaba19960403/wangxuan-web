@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function SuperType(name) {
+      this.name = name;
+      this.colors = ['red', 'blue', 'green'];
+    }
+
+    SuperType.prototype.sayName = function() {
+      console.log(this.name);
+    }
+
+    function SubType(name, age) {
+      // 继承
+      SuperType.call(this, name);
+
+      this.age = age;
+    }
+
+    SubType.prototype = new SuperType();
+    SubType.prototype.constructor = SubType;
+    SubType.prototype.sayAge = function() {
+      console.log(this.age);
+    }
+
+    /* 组合继承避免了原型链和借用构造函数的缺陷，融合了它们的优点，
+       而且，instanceof和isPrototype()也能够用于识别基于组合继承创建的对象
+       组合继承的缺点无论什么情况，都会执行了2次超类型构造函数，一次是在子类型构造原型时，
+       另一次是在子类型构造函数内部
+    */
+  </script>
+</body>
+
+</html>

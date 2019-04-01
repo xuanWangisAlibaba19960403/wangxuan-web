@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function foo(num) {
+      console.log('foo' + num);
+      // 记录foo被调用的次数
+      this.count++;
+    }
+
+    foo.count = 0;
+
+    for (var i = 0; i < 10; i++) {
+      if (i > 5) {
+        foo(i);
+      }
+    }
+
+
+    function foo(num) {
+      console.log('foo' + num);
+      // 记录foo被调用的次数
+      // this.count++
+      foo.count++; //通过foo记录次数 跳过了this
+    }
+
+    foo.count = 0;
+
+    for (var i = 0; i < 10; i++) {
+      if (i > 5) {
+        foo(i);
+      }
+    }
+
+    function foo(num) {
+      console.log('foo' + num);
+      // 记录foo被调用的次数
+      this.count++;
+    }
+    foo.count = 0;
+
+    for (var i = 0; i < 10; i++) {
+      if (i > 5) {
+        foo.call(foo, i); // 强制改变this
+      }
+    }
+  </script>
+</body>
+
+</html>

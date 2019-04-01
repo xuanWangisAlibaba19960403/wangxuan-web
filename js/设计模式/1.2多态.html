@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var makeSound = function(animal) {
+      if (animal instanceof Duck) {
+        console.log('嘎嘎嘎');
+      } else if (animal instanceof Chiken) {
+        console.log('咯咯咯');
+      }
+    }
+
+    var Duck = function() {};
+    var Chiken = function() {};
+
+    makeSound(new Duck()); // 嘎嘎嘎
+    makeSound(new Chiken()); // 咯咯咯
+
+    /*
+      后来又增加了其他动物，比如狗，显然狗的叫声是“汪汪汪”,
+      此时我们必须改动makeSound函数，才能让狗也发出叫声，
+      修改的地方越多，程序越容易出错，而且当动物的种类越来越多
+      makeSound有可能变成一个巨大的函数
+    */
+
+    /* 
+      多态的思想是将作什么和谁去做以及怎样做分离开来
+      也就是将不变的事物和可能改变得事物分离开来
+    */
+
+     function Animal() {};
+     Animal.prototype.makeSound = function(voice) {
+       console.log(voice);
+     }
+  </script>
+</body>
+
+</html>

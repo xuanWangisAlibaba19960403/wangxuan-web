@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <a>可爱</a>
+  <script>
+    function initUI() {
+      var bd = document.body,
+        links = document.getElementsByTagName('a'),
+        i = 0,
+        len = links.length;
+
+      while (i < len) {
+        update(links[i++]);
+      }
+
+      document.getElementById('go-btn').onclick = function () {
+        start();
+      }
+
+      document.body.className = 'active';
+    }
+    // 减少全局变量
+    function initUI() {
+      var doc = document,
+      // 因为doc是局部变量所以访问document更快
+        bd = doc.body,
+        links = doc.getElementsByTagName('a'),
+        i = 0,
+        len = links.length;
+
+      while (i < len) {
+        update(links[i++]);
+      }
+
+      doc.getElementById('go-btn').onclick = function () {
+        start();
+      }
+
+      bd.className = 'active';
+    }
+  </script>
+</body>
+
+</html>

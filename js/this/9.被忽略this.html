@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function foo() {
+      console.log(this.a);
+    }
+
+    var a = 2;
+
+    foo.call(null); // 2 此时应用的默认绑定this
+
+
+    var a = 2;
+    var o = { a: 3, foo: foo };
+    var p = { a: 4 };
+    o.foo(); // 3
+    (p.foo = o.foo)(); // 1
+    // 赋值表达式p.foo = o.foo的返回值是目标函数的引用
+    // 因此调用位置是foo()而不是p.foo或者o.foo
+  </script>
+</body>
+
+</html>

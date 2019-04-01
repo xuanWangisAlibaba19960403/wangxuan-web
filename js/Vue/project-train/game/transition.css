@@ -1,0 +1,79 @@
+/* fade */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* hand */
+.hand-enter,
+.hand-leave-to {
+  transition: opacity 1s;
+}
+
+.hand-enter-active,
+.hand-leave-active {
+  transition: opacity 1s;
+}
+
+.hand-enter-active .warpper,
+.hand-leave-active .warpper {
+  transition: transform 0.8s cubic-bezier(.08, .74, .34, 1);
+  transform-origin: bottom center;
+}
+
+.hand-enter .warpper,
+.hand-leave-to .warpper{
+  transform: rotateX(90deg);
+}
+
+.hand-enter-active .card,
+.hand-leave-active .card {
+  transition: margin 0.8s cubic-bezier(.08, .74, .34, 1);
+  transform-origin: bottom center;
+}
+
+.hand-enter .card,
+.hand-leave-to .card{
+  margin: 0 -100px;
+}
+
+/* card */
+.card {
+  transition: all .3s;
+}
+
+.card-enter {
+  opacity: 0;
+  /* 从右向左划入 */
+  transform: scale(.8) translateX(100px);
+}
+
+.card-leave-active {
+  /* 离开过渡的时间不同 */
+  transition: all 1s, opacity .5s .5s;
+  position: absolute !important;
+  z-index: 10;
+  /* 过渡期间不允许点击 */
+  pointer-events: none;
+}
+
+.card-leave-to {
+  opacity: 0;
+  /* 卡牌上升的同时放大 */
+  transform: translateX(-106px) translateY(-300px) scale(1.5);
+}
+
+.card-move {
+  transition: transform .3s;
+}
+
+.zoom-enter,
+.zoom-leave-to {
+  opacity: 0;
+  transform: scale(0.7);
+}

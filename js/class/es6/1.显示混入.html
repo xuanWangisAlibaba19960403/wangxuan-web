@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function mixin(sourceObj, targetObj) {
+      for (var key in sourceObj) {
+        // 只会在不存在的情况下复制
+        if(!(key in targetObj)) {
+          targetObj[key] = sourceObj[key];
+        }
+      }
+      return targetObj;
+    }
+
+    var Vehicle = {
+      engines: 1,
+      ignition: function() {
+        console.log('ignition');
+      },
+      drive: function() {
+        this.ignition(); // 隐式绑定
+        console.log('drive');
+      }
+    };
+
+    var Car = mixin(Vehicle, {
+      wheels: 4,
+      drive: function() {
+        Vehicle.drive.call(this); // this硬绑定 显示多态
+        console.log('rolling on all' + this.wheels + 'wheels'); // 隐式绑定
+      }
+    })
+
+    // Car中的ignition只是从Vehicle中复制过来的对于ignition函数的引用
+    // 属性engines就是直接从Vehicle中复制了值1
+  </script>
+</body>
+
+</html>

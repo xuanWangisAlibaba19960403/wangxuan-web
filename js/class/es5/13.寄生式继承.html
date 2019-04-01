@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const person = {
+      name: 'Tom',
+      friends: ['Ann', 'Ken']
+    }
+
+    function object(o) {
+      function F() { };
+      F.prototype = o;
+      return new F();
+    }
+    
+    function createAnother(original) {
+      const clone = object(original); //创建一个新对象
+      clone.sayHi = function() {
+        console.log('Hi');
+      }
+      return clone;
+    }
+
+   const p1 = createAnother(person);
+   console.log(p1);
+   /* 使用寄生式继承来为对象添加函数，会由于不能做到函数复用而降低效率；
+      这一点与构造函数模式类似 */
+  </script>
+</body>
+
+</html>

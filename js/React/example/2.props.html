@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  </style>
+</head>
+
+<body>
+  <!-- 渲染元素 -->
+  <div id="app">
+  </div>
+
+  <script src="../react/build/react.js"></script>
+  <script src="../react/build/react-dom.js"></script>
+  <script>
+    const Mycomponent = React.createClass({
+      propTypes: {
+        name: React.PropTypes.string.isRequired, /* 这样的好处虽然也可以不使用 propTypes，但是使用 propTypes 有以下两方面的好处。
+                                                  1. 通过预先声明组件期望接收的参数，让使用组件的用户不需要在 render() 方法的源代
+                                                  码中到处寻找该组件可配置的属性（这可能需要花费很长时间）。
+                                                  2. React 会在运行时验证属性值的有效性。这使得你可以放心编写 render() 函数，而不需
+                                                  要对组件接收的数据类型有所顾虑（甚至过分怀疑）。*/
+      },
+      getDefaultProps: function() { // 默认值
+        return {
+          name: 'Bob'
+        }
+      },
+      render: function() {
+        return React.DOM.span(null, 'my name is ' + this.props.name);
+      }
+    })
+
+    ReactDOM.render(
+      React.createElement(Mycomponent, {}),
+      document.getElementById('app')
+    )
+  </script>
+</body>
+
+</html>

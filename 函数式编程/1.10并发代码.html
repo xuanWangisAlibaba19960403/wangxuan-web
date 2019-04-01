@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 非纯函数
+    let global = 'something';
+    let functiona1 = (input) => {
+      // 处理input
+      // 改变global
+      global = 'somethingElse';
+    }
+    let function2 = () => {
+      if (global === 'something') {
+        // 业务逻辑
+      }
+    }
+    // 纯函数
+    let functiona1 = (input, global) => {
+      // 处理input
+      // 改变global
+      global = 'somethingElse';
+    }
+    let function2 = (global) => {
+      if (global === 'something') {
+        // 业务逻辑
+      }
+    }
+  </script>
+</body>
+
+</html>
