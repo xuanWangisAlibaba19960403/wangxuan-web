@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .ul {
+            display: flex;
+            width: 240px;
+        }
+
+        li {
+            width: 33.33%;
+        }
+    </style>
+</head>
+
+<body>
+    <ul class="ul">
+        <li>第一项</li>
+        <li>等级
+            <em>9</em>
+        </li>
+        <li>消息
+            <em>5</em>
+        </li>
+    </ul>
+    <script>
+        const lis = document.getElementsByTagName('li');
+
+        // lis[0].onmouseover = function () {
+        //     this.style.color = 'red';
+        //     this.style.background = '#ddd';
+        // }
+
+        // lis[0].onmouseout = function () {
+        //     this.style.color = '#333';
+        //     this.style.background = '#fff';
+        // }
+
+        function changeColor(dom, color, bg) {
+            dom.style.color = color;
+            dom.style.background = bg;
+        }
+
+        lis[0].onmouseover = function() {
+            changeColor(this, 'red', '#ddd');
+        }
+
+        lis[0].onmouseout = function() {
+            changeColor(this, '#333', '#fff');
+        }
+    </script>
+</body>
+
+</html>

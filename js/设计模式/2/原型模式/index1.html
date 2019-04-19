@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 原型继承所有属性
+    function prototypeExtend() {
+      function F() { };
+      const args = arguments,
+        len = args.length;
+      // 遍历多个对象
+      for (let i = 0; i < len; i++) {
+        for (let k in args[i]) {
+          F.prototype[k] = args[i][k];
+        }
+      }
+      return new F();
+    }
+
+    const obj = prototypeExtend({ speed: 20, swim() { console.log('swim') } });
+    // 更改实例自身上的属性
+    obj.diy = 1;
+    console.log(obj);
+  </script>
+</body>
+
+</html>

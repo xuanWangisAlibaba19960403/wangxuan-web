@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function LoopImages(imgArr, container) {
+      this.imagesArray = imgArr; // 轮播图片数组
+      this.container = container;// 轮播图片容器
+    }
+
+    LoopImages.prototype.createImage = function () { }; // 创建轮播图片
+    LoopImages.prototype.changeImage = function () { }; // 切换下一张图片
+
+    function SlideLoopImg(imgArr, container) {
+      LoopImages.call(this, imgArr, container)
+    }
+
+    SlideLoopImg.prototype = new LoopImages(); // 获得LoopImages的原型
+    SlideLoopImg.prototype.changeImage = function () { };
+
+    function FadeLoopImg(imgArr, container, arrow) {
+      LoopImages.call(this, imgArr, container)
+      this.arrow = arrow;
+    }
+
+    FadeLoopImg.prototype = new LoopImages();
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function inheritPrototype(subClass, superClass) {
+            function F() { };
+            F.prototype = superClass.prototype;
+            const p = new F();
+            p.constructor = subClass;
+            subClass.prototype = p;
+        }
+        // 接口的统一，在javascript中我们可以通过继承同一个虚拟类来实现
+        // 所有的新闻都继承一个新闻虚拟父类News
+        function News() {
+            // 子组件
+            this.children = [];
+            // 当前组件元素
+            this.element = null;
+        }
+
+        News.prototype = {
+            constructor: News,
+            init() {
+                throw new Error('请重写你的方法');
+            },
+            add() {
+                throw new Error('请重写你的方法');
+            },
+            getElement() {
+                throw new Error('请重写你的方法');
+            }
+        }
+        // 容器构造函数
+        function Container(id, parent) {
+            News.call(this);
+            this.id = id;
+            this.parent = parent;
+            this.init();
+        }
+
+        inheritPrototype(Container, News);
+
+        Container.prototype.add = function (child) {
+            // 在子元素容器中插入子元素
+            this.children.push(child);
+            // 插入当前组件元素树中
+            this.element.appendChild(child.getElement());
+            return this;
+        }
+
+        Container.prototype.getElement = function () {
+            return this.element;
+        }
+
+        Container.prototype.show = function () {
+            this.parent.appendChild(this.element);
+        }
+
+        function Item(className) {
+            News.call(this);
+            this.className = className || '';
+            this.init();
+        }
+
+        inheritPrototype(Item, News);
+
+        Item.prototype.init = function() {
+            this.element = document.createElement('li');
+            this.element.className = this.className;
+        }
+
+        Item.prototype.add = function(child) {
+            // 在子元素容器中插入子元素s
+            this.children.push(child);
+            // 插入当前组件元素树中
+            this.element.appendChild(child.getElement());
+            return this;
+        }
+
+        Item.prototype.getElement = function() {
+            return this.element;
+        }
+
+        function NewsGroup(className) {
+            News.call(this);
+            this.className = className;
+            this.init();
+        }
+
+        inheritPrototype(NewsGroup, News);
+
+        NewsGroup.prototype.init = function() {
+            this.element = document.createElement('div');
+            this.element.className = this.className;
+        }
+
+        NewsGroup.prototype.add = function(child) {
+            this.children.push(child);
+            this.element.appendChild(child.getElement());
+            return this;
+        }
+
+        NewGroup.prototype.getElement = function() {
+            return this.element;
+        }
+    </script>
+</body>
+
+</html>

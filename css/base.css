@@ -1,40 +1,46 @@
-body,h1,h2,h3,h4,h5,h6,hr,ul,ol,li,dl,dt,dd {
+body, h1, h2, h3, h4, h5, h6, hr, ul, ol, li, dl, dt, dd {
 	margin: 0;
 	padding: 0;
 }
+
 body {
 	background-color: #fff;
 }
-ul,li {
+
+ul, li {
 	list-style: none;
 }
+
 img {
 	border: none;
 }
+
 .fl {
 	float: left;
 }
+
 .fr {
 	float: right;
 }
-.clearfix:before,.clearfix:after {
+
+.clearfix:before, .clearfix:after {
 	content: "";
 	display: table;
 }
+
 .clearfix:after {
 	clear: both;
 }
+
 .clearfix {
 	*zoom: 1;
 }
-.w {
-	width: 1200px;
-	margin: 0 auto;
-}
+
 a {
 	text-decoration: none;
 }
-img,input {
+
+img, input {
 	border: 0 none;
 	outline-style: none;
 	padding: 0;

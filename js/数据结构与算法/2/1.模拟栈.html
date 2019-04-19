@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function ArrayStack(length) {
+            this.container = Object.create(null, []); // 创建一个纯净的数组
+            this.container.length = length;
+            this.count = 0;
+        }
+
+        const arr = new ArrayStack(10);
+
+        ArrayStack.prototype.push = function(ele) {
+            if (this.count === this.container.length) {
+                console.log('空间不足');
+                return false;
+            }
+            this.container[this.count] = ele;
+            this.count++;
+            console.log('成功添加');
+            return true;
+        }
+
+        ArrayStack.prototype.pop = function() {
+            if (this.count === 0) {
+                console.log('无数据,操作失败');
+                return null;
+            }
+            const tmp = this.container[this.count - 1];
+            this.container[this.count - 1] = null;
+            this.count--;
+            return tmp;
+        }
+
+        arr.pop();
+
+        
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Speed(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        Speed.prototype.run = function () {
+            console.log('run');
+        }
+
+        function Color(cl) {
+            this.color = cl;
+        }
+
+        Color.prototype.draw = function () {
+            console.log('draw');
+        }
+
+        function Shape(sp) {
+            this.shape = sp;
+        }
+
+        Shape.prototype.change = function () {
+            console.log('change');
+        }
+
+        function Speak(wd) {
+            this.word = wd;
+        }
+
+        Speak.prototype.say = function () {
+            console.log('font-family');
+        }
+
+        function Ball(x, y, c) {
+            this.speed = new Speed(x, y);
+            this.color = new Color(c);
+        }
+
+        Ball.prototype.init = function () {
+            this.speed.run();
+            this.color.draw();
+        }
+
+        function People(x, y, f) {
+            this.speed = new Speed(x, y);
+            this.font = new Speak(f);
+        }
+
+        People.prototype.init = function() {
+            this.speed.run();
+            this.font.say();
+        }
+
+        const p = new People(10, 12, 16);
+        p.init();
+    </script>
+</body>
+
+</html>

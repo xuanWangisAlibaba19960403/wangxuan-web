@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 外观模式处理
+    function addEvent(dom, type, fn) {
+      if (dom.addEventListener) {
+        dom.addEventListener('type', fn, false);
+      } else if (dom.attachEvent) {
+        dom.addEvent('on' + type, fn);
+      } else {
+        dom['on' + type] = fn;
+      }
+    }
+    // 获取事件对象
+    function getEvent(event) {
+      return event || window.event;
+    }
+
+    function getTarget(event) {
+      const event = getEvent(event);
+      return event.target || event.srcElement;
+    }
+
+    function preventDefault(event) {
+      const event = getEvent(event);
+      if (event.preventDefault) {
+        event.preventDefault();
+      } else {
+        event.returnValue = false;
+      }
+    }
+    // 外观模式可以将不兼容的方法变得简单又兼容，然而这只是
+    // 外观的一部分功能
+  </script>
+</body>
+
+</html>

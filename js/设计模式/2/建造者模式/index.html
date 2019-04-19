@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 人类
+    function Human(param) {
+      this.skill = param && param.skill || '保密';
+      this.hobby = param && param.hobby || '保密';
+    }
+
+    Human.prototype = {
+      constructor: Human,
+      getSkill() {
+        return this.skill;
+      },
+      getHobby() {
+        return this.hobby;
+      }
+    }
+
+    // 实例化姓名类
+    function Named(name) {
+      var self = this;
+      (function (name, self) {
+        self.wholeName = name;
+        if (name.indexOf(' ') > -1) {
+          self.FirstName = name.slice(0, name.indexOf(' '));
+          self.secondName = name.slice(name.indexOf(' '));
+        }
+      })(name, self);
+    }
+
+    //实例化职位类
+    function Work(work) {
+      console.log(work);
+      var self = this;
+      (function (work, self) {
+        switch (work) {
+          case 'code':
+            self.work = '工程师';
+            self.workDescript = '写bug';
+            break;
+          case 'UI':
+            self.work = '工程师';
+            self.workDescript = '设计';
+          default:
+            self.work = work;
+            self.workDescript = '对不起,不清楚';
+        }
+      })(work, self);
+    }
+
+    Work.prototype.changeWork = function (work) {
+      this.work = work;
+    }
+
+    Work.prototype.changeDescript = function (setence) {
+      this.workDescript = setence;
+    }
+
+    function Person(param, name, work) {
+      const _person = new Human(param);
+      _person.name = new Named(name);
+      _person.work = new Work(work);
+      return _person;
+    }
+    console.log(Person({ skill: '技巧', hobby: '打篮球' }, 'wang xuan', 'code'))
+  </script>
+</body>
+
+</html>
