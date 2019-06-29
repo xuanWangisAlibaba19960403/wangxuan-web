@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="btn">点击</div>
+  <script>
+    function click(ele, fn) {
+      const el = document.getElementById(ele);
+      el.onclick = fn;
+    }
+
+    // const p = new Promise((resolve, reject) => {
+    //   click('btn', resolve);
+    // })
+
+    // console.log(p);
+
+    // p.then((evt) => {
+    //   console.log(evt);
+    // })
+
+    // 只能执行一次 一旦promise决议就不会再次执行
+
+    // 每次赋予一个新的promise
+
+    const p = new Promise((resolve, reject) => {
+      click('btn', (evt) => {
+        new Promise((resolve, reject) => {
+          resolve(evt);
+        }).then((evt) => console.log(evt));
+      });
+    })
+  </script>
+</body>
+
+</html>

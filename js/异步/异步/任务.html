@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 事件循环类似于一个游乐园游戏：玩过了一个游戏之后，你需要重新到队尾排队才能
+    // 再玩一次 而任务队列类似于玩过了游戏之后，插队接着玩
+
+    // 一个任务可能引起更多任务被添加到同一个队列末尾。所以，理论上说，任务循环（job-loop）
+    // 可能无限循环（一个任务总是添加另一个任务，以此类推），进而导致程序的饿死，无法转移到下一个事件循环tick
+    // 从概念上看，这和代码中的无限循环（就像while（true）的体验几乎一样）
+
+    // 设想一个调度任务（直接地，不要hack）的API，称其为schedule(..)
+    
+    console.log('A');
+
+    setTimeout(() => {
+      console.log('B');
+    }, 0);
+    
+    schedule(() => {
+      console.log('C');
+
+      schedule(() => {
+        console.log('D');
+      })
+    })
+
+    // js代码的执行顺序 是基于任务的 So: ACDB
+  </script>
+</body>
+
+</html>

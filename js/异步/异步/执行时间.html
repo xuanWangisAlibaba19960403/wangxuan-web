@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var a = 20;
+
+    function foo() {
+      a = a + 1;
+    }
+
+    function bar() {
+      a = a * 2;
+    }
+    /*
+    ajax('http://xxx.html', foo);
+    ajax('http://xxx.html', bar);    
+    */
+
+    /* 
+      根据javaScript的单线程运行特性，如果foo先于bar之前执行，a的结果是42，而如果bar运行在foo之前，a的结果就是41
+      如果共享同一数据的JavaScript事件并行执行的话，那么问题就变得更加微妙了，
+      线程1（x和y是临时内存地址）：
+        foo():
+          a. 把a的值加载到x
+          b. 把1保存在y
+          c. 执行x+y，结果保存在x
+          d. 把x的值保存在a
+      线程2（x和y是临时内存地址）： 
+        bar():
+          a. 把a的值加载到x
+          b. 把2保存在y
+          c. 执行x*y，结果保存在x
+          d. 把x的值保存在a
+      现在，假设两个线程并行执行，你可能已经发现了这个程序的问题，是吧？它们在临时步骤中使用了共享的内存地址x和y；
+      1a (把a得值加载到x ==> 20)
+      2a (把a得值加载到x ==> 20)
+      1b (把1的值加载y ==> 1)
+      2b (把2的值加载y ==> 2)
+      1c (把1的值加载y ==> 1)
+      2c (把1的值加载y ==> 1)
+      1b (把1的值加载y ==> 1)
+    */
+  </script>
+</body>
+
+</html>

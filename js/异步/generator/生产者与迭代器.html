@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // const gimmeSomething = (() => {
+    //   let nextVal;
+    //   return () => {
+    //     if (nextVal === undefined) {
+    //       nextVal = 1;
+    //     } else {
+    //       nextVal = (3 * nextVal) + 6;
+    //     }
+    //     return nextVal;
+    //   }
+    // })();
+    // gimmeSomething();
+    // gimmeSomething();
+    // gimmeSomething();
+    // gimmeSomething();
+
+    const something = (() => {
+      let nextVal;
+      return {
+        [Symbol.iterator]: function() {
+          return this;
+        },
+        next() {
+          if (nextVal === undefined) {
+            nextVal = 1;
+          } else {
+            nextVal = (3 * nextVal) + 6;
+          }
+          return { done: false, value: nextVal };
+        }
+      }
+    })();
+
+    // for (let v of something) {
+    //   console.log(v);
+
+    //   if (v > 500) {
+    //     break;
+    //   }
+    // }
+
+    // for (var ret; (ret = (something.next())) && !ret.done;) {
+    //   console.log(ret.value);
+    //   if (ret.value > 500) {
+    //     break;
+    //   }
+    // }
+
+    const a = [1, 3, 5, 7, 9];
+    const it = a[Symbol.iterator]();
+    console.log(it.next());
+    console.log(it.next());
+    console.log(it.next());
+    console.log(it.next());
+    console.log(it.next());
+    console.log(it.next());
+
+    
+  </script>
+</body>
+
+</html>

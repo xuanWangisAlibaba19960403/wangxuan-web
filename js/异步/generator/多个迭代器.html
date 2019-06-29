@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function *foo() {
+      const x = yield 2;
+      z++;
+      const y = yield(x * z);
+      console.log(x, y, z);
+    }
+
+    let z = 1;
+
+    const it1 = foo();
+    const it2 = foo();
+
+    let val1 = it1.next().value;
+    console.log(2 === val1);
+    let val2 = it2.next().value;
+    // console.log(4 === val2);
+    console.log(2 === val2); // 是2不是4
+
+    val1 = it1.next(val2 * 10).value;
+    console.log(val1 === 40);
+    val2 = it2.next(val1 * 5).value;
+    console.log(val2 === 600);
+
+    it1.next(val2 / 2); // 20 300 3
+
+    it2.next(val1 / 4); // 200 10 3
+  </script>
+</body>
+
+</html>

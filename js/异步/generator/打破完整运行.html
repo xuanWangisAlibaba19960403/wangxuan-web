@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    let x = 1;
+
+    // function foo() {
+    //   x++;
+    //   bar();
+    //   console.log('x:', x);
+    // }
+
+    // function bar() {
+    //   x++;
+    // }
+
+    // foo();
+
+    function *foo() {
+      x++;
+      console.log(1);
+      yield;
+      console.log('x:', x);
+    }
+
+    function bar() {
+      x++;
+    }
+
+    // foo()这样不会执行foo
+
+    const it = foo(); // 构建迭代器
+    it.next(); // 启动生成器foo
+    it.next();
+  </script>
+</body>
+
+</html>

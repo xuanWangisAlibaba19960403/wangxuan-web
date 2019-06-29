@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var a = 42; //声明表达式 // 结果值 undefined
+    var b = a++; // a++表达式 // 结果值42 //声明表达式 // undefined
+
+    var a = 42;
+    a++; // 42
+    a; // 43
+    ++a; // 44
+    a; // 44
+    // ++a，它的副作用产生在表达式返回结果值之前，而a++的副作用则产生在之后
+    var a = 42;
+    var b = (a++);
+    b = (a++, a);
+  </script>
+</body>
+
+</html>

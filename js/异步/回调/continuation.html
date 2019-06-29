@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    console.log('1'); // A
+    ajax('...', () => {
+      console.log('2'); // C
+    });
+    console.log('3'); // B
+
+    // A 和 // B表示程序的前半部分（也就是现在的部分）
+    // 而// C表示了程序的后半部分（也就是未来的部分）
+    // 前半部分立刻执行，然后是一段时间不确定的停顿
+    // 在未来的某个时刻，如果Ajax调用完成，程序就会从停下的位置继续执行后半部分
+    // 换句话说回调函数包裹或者说封装了程序的延续（continuation）
+
+    console.log('1'); // A
+    setTimeout(() => {
+      console.log('2'); // C
+    }, 1000);
+    console.log('3'); // B
+    
+    // 场景
+    /*
+      我要去商店，但是路上肯定会接到电话。“嗨，妈妈。”然后她开始说话的时候
+      我要在gps上查找商店的地址，但是gps加载需要几秒钟的时间，于是我把收音
+      机声音关小，以便听清妈妈讲话。接着我意识到望穿了外套，外面有点冷，不
+      过没关系，继续开车，继续和妈妈打电话。这时候安全带警告响起，提醒我系
+      好安全带。‘是的，妈妈，我系着安全带呢。我一直都有系着’啊，gps终于找
+      到了方向，于是。。。
+    */
+  </script>
+</body>
+
+</html>

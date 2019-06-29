@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // function thunkify(fn) {
+    //   console.log(fn);
+    //   const args = [].slice.call(arguments, 1);
+    //   return function(cb) {
+    //     args.push(cb);
+    //     return fn.apply(null, args);
+    //   }
+    // }
+
+    // function foo(num1, num2) {
+    //   return num1 + num2;
+    // }
+
+    // const fooThunk = thunkify(foo, 3, 4);
+
+    // fooThunk(function(sum) {
+    //   console.log(sum);
+    // });
+
+    // const fooThunkory = thunkify(foo);
+
+    // const fooThunkory1 = fooThunkory(3, 4);
+    // fooThunkory1((sum) => {
+    //   console.log(sum)
+    // })
+
+    function foo(x, y, cb) {
+      setTimeout(() => cb(null, x + y), 1000);
+    }
+
+    
+  </script>
+</body>
+
+</html>

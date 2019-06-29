@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    listen('click', function handler(e) {
+      setTimeout(function request() {
+        ajax('http://some.url.1', function response(text) {
+          if (text === 'hello') {
+            handler();
+          } else if (text === 'world') {
+            response();
+          }
+        })
+      }, 500);
+    });
+    // 这种情况叫做回调地狱
+    // 实际上回调地狱与嵌套和缩进几乎没有什么关系。他引起的问题要比这些严重得多
+
+    // 首先(现在)我们有：
+    listen('..', function handler(..) {
+      // ..
+    })
+    // 然后是将来，我们有：
+    setTimeout(function request() {
+      // ..
+    }, 500);
+    // 接着还是将来，我们有：
+    ajax('..', function response(..) {
+      // ..
+    })
+    // 最后（最晚得将来），我们有：
+    if (..) {
+      //..
+    } else ..
+
+    listen('click', handler);
+
+    function handler() {
+      setTimeout(request, 500);
+    }
+
+    function request() {
+      ajax('http://some.url.1', reesponse);
+    }
+
+    function reesponse(text) {
+      if (text === 'hello') {
+        handler();
+      } else if (text === 'world') {
+        request();
+      }
+    }
+  </script>
+</body>
+
+</html>

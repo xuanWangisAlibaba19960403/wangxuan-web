@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function getY(x) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(3 * x - 1);
+        }, 100);
+      })
+    }
+
+    function foo(bar, baz) {
+      var x = bar * baz;
+      return [
+        Promise.resolve(x),
+        getY(x)
+      ]
+    }
+
+    Promise.all(foo(20, 10))
+      .then((data) => {
+        console.log(data);
+      })
+
+    // function spread(fn) {
+    //   console.log(fn);
+    //   return Function.prototype.apply.bind(fn, null);
+    // }
+
+    // Promise.all(foo(20, 10))
+    //   .then(spread((x, y) => {
+    //     console.log(x, y);
+    //   }));
+
+    // Promise.all(foo(20, 10))
+    //   .then(Function.apply.bind((x, y) => {
+    //     console.log(x, y);
+    //   }, null));
+
+    Promise.all(foo(20, 10))
+      .then(([x, y]) => {
+        console.log(x, y);
+      });
+  </script>
+</body>
+
+</html>

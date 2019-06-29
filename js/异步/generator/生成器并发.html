@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function response(data) {
+      if (data.url === 'http://some.url.1') {
+        res[0] = data;
+      } else if (data.url === 'http://some.url.2') {
+        res[1] = data;
+      }
+    }
+
+    // request(..)是一个支持promise的ajax工具
+
+    const res = [];
+
+    function *reqData(url) {
+      res.push(yield request(url));
+    }
+
+    const it1 = reqData('http://some.url.1');
+    const it2 = reqData('http://some.url.2');
+
+    const p1 = it1.next();
+    const p2 = it2.next();
+
+    p1
+      .then((data) => {
+        it1.next(data);
+        return p2;
+      })
+      .then((data) => {
+        it2.next(data);
+      })
+  </script>
+</body>
+
+</html>

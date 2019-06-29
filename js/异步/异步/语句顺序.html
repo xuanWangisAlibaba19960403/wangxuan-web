@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // // 代码中的顺序和javaScript引擎执行语句的顺序并不一定要一致
+    // var a, b;
+
+    // a = 10;
+
+    // b = 30;
+
+    // ++a;
+    // ++b;
+
+    // console.log(a + b);
+    // // 这段代码中没有显示的异步，所以很可能它的执行顺序是从上到下
+    // // javaScript引擎编译这段代码之后可能会发现通过（安全地）重新安排这些语句的顺序有可能提高执行速度/重点是，
+    // // 只要这个重新编排是不可兼得一切都没问题
+
+    // // 比如，引擎发现这样可能执行更快
+
+    // var a, b;
+
+    // a = 10;
+    // a++;
+
+    // b = 30;
+    // b++;
+
+    // console.log(a + b);
+
+    // // 或者这样：
+    // var a, b;
+
+    // a = 11;
+    // b = 31;
+
+    // console.log(a + b);
+
+    // // 或者甚至这样
+    // // 因为a和b不会被再次使用
+    // // 我们可以inline，从而完全不需要他们！
+    // console.log(42); // 42
+
+    // // 但是这里有一种场景，其中特定的优化是不安全的，因此也是不允许的
+    // // (当然，不用说这其实也根本不能称为优化)
+
+    // var a, b;
+
+    // a = 10;
+    // b = 30;
+
+    // // 我们需要a和b处于递增之前的状态!
+    // console.log(a * b); // 300
+    // ++a;
+    // ++b;
+
+    // console.log(a + b);
+
+    function foo() {
+      console.log(b);
+      return 1;
+    }
+
+    var a, b, c;
+
+    // es5.1 getter字面量语法
+    c = {
+      get bar() {
+        console.log(a);
+        return 1;
+      }
+    }
+
+    a = 10;
+    b = 30;
+
+    a += foo(); // 30
+    b += c.bar  // 11
+
+    console.log(a + b); // 42
+    // 如果不是因为代码片段中语句console.log()
+    // javaScript引擎如果愿意的话，本来可以自由地把代码重新排序如下
+
+    /*
+    a = 10 + foo();
+    b = 30 + c.bar;
+    */
+
+    // 尽管javaScript语义让我们不会见到编译器语句重新排序可能导致的噩梦，这事一种幸运
+    // 但是代码编写的方式（从上到下的模式）和编译后执行的方式之间的联系非常脆弱，理解这一点也非常重要
+    
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 需求：考虑一个需要遍历很长的结果列表进行值转换的
+    // Ajax响应处理函数 我们会使用Array#map让代码更简洁
+    var res = [];
+
+    function response(data) {
+      res = res.concat(
+        data.map(val => val * 2)
+      )
+    }
+
+    // ajax('http://www.xxx1.com', response)
+    // ajax('http://www.xxx2.com', response)
+
+    // 如果有1000万条记录的话，那需要相当多的一段时间
+    // 可以分批次添加
+
+    var res = [];
+    function response(data) {
+      var chunk = data.splice(0, 1000);
+
+      res = res.concat(data.map(v => v * 2));
+
+      if (data.length > 0) {
+        setTimeout(() => {
+          response(data);
+        }, 0);
+      }
+    }
+
+    // 把数据集合放到最多包含1000条项目的块中。这样我们就确保了“进程”（我的理解就是单个个任务）
+    // 运行时间会很短。即使这意味着需要更多的后续“进程”，因为时间循环队列的交替运行会提高站点/App的响应（性能）;
+
+    // 当然我们并没有协调这些“进程”的顺序，所以结果的顺序是不可预测的。如果需要排序的话
+    // 就要使用和前面提到类似的交互技术，或者本书后面章节将要介绍的技术
+
+    // 这里使用setTimeout(..0) (hack) 进行异步调度基本上它的意思就是“把这个函数插入到当前事件循环队列的结尾处”
+    
+  </script>
+</body>
+
+</html>
