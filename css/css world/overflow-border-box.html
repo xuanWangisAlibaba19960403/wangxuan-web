@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    
+    .box {
+      border: 10px solid #000;
+      height: 80px;
+      margin: auto;
+      overflow: hidden;
+      padding: 10px;
+      width: 200px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <img src="./img/bird.jpg" alt="brid.jpg">
+  </div>
+
+  <div class="hack">
+    <img src="./img/hack.jpg" alt="">
+  </div>
+  <script>
+    const box = document.getElementsByClassName('box')[0];
+    box.onclick = function() {
+      console.log(this.style)
+      this.style.overflow = 'auto';
+    }
+  </script>
+</body>
+
+</html>

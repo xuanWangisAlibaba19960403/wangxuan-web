@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class linkedList {
+      constructor() {
+        const data = Object.setPrototypeOf([], null)
+        this.linked = defineProperties(data);
+        return this.linked;
+      }
+    }
+
+    const myLinkedList = new linkedList();
+    console.log(myLinkedList)
+    myLinkedList[0] = 1
+    myLinkedList[1] = 2
+    console.log(myLinkedList[0].next.n)
+    // console.log(myLinkedList[0].next())
+    function defineProperties(target) {
+      return new Proxy(target, {
+        get(target, prop) {
+          console.log(target, prop)
+          if (prop !== '0') {
+            throw new Error('查找数据请从链表头部查找！')
+          }
+          if (!target[[prop]].next) {
+            target[prop].next = target[Number(prop) + 1]
+          }
+          return target[prop]
+        },
+        set(target, prop, val) {
+          if (!/^\d+$/.test(prop)) {
+            throw new Error('请设置正确的属性值！')
+          }
+          if (!target[prop]) {
+            target[prop] = {}
+          }
+          target[prop]['val'] = val;
+        }
+      })
+    }
+  </script>
+</body>
+
+</html>

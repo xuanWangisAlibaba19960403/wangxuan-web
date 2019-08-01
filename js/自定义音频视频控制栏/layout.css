@@ -1,0 +1,511 @@
+html, body {
+  max-width: 100%;
+  height: 100%;
+}
+
+body {
+  overflow-y: hidden
+}
+
+body,
+p {
+  margin: 0;
+}
+
+input,
+video,
+textarea {
+  box-sizing: border-box;
+}
+
+input {
+  border: none;
+  outline: none;
+}
+
+/* video {
+  object-fit: contain;
+} */
+
+video:-webkit-full-screen {
+  z-index: 9 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+#app {
+  background-color: #F5F6F5;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.video-container,
+.audio-container,
+.background-container {
+  height: 2.1rem;
+}
+
+.audio-container img,
+.background-container img {
+  height: 100%;
+  width: 100%;
+}
+
+.video-container,
+.audio-container,
+.background-container {
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  transition-duration: 100ms;
+  z-index: 10;
+}
+
+.video-container {
+  background-color: #bbb9b9;
+}
+
+.video-container--fullScreen {
+  position: absolute;
+  height: 100% !important;
+  width: 100%;
+}
+
+.video-player {
+  object-fit: contain;
+  background-color: #000;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 10;
+}
+
+/*控制条样式*/
+.video-control,
+.audio-control {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  line-height: 0.3rem;
+  z-index: 11;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.video-control {
+  background: rgba(0, 0, 0, .5);
+}
+
+.audio-control {
+  background-image: linear-gradient(-180deg, rgba(0, 0, 0, 0) 0%, rgba(20, 20, 20, 0.7) 100%);
+}
+
+.control-leftview {
+  display: flex;
+  height: 0.3rem;
+}
+
+.control-btn {
+  display: inline-block;
+  width: 0.3rem;
+  height: 0.3rem;
+  background: rgba(256, 256, 256, .5);
+  cursor: pointer;
+}
+
+.control-leftview .control-btn {
+  margin-right: 0.1rem;
+}
+
+.progress-box {
+  box-sizing: border-box;
+  height: 0.3rem;
+  margin-right: 0.2rem;
+  width: 100%;
+}
+
+.progress-box-body {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.current-time, .duration-time {
+  color: #fff;
+}
+
+
+.durationbar-box {
+  margin: 0 0.2rem;
+  width: 100%;
+}
+
+.durationbar {
+  background-color:rgba(0, 0, 0, 0.7);
+  border-radius: 0.5rem;
+  height: 0.06rem;
+  position: relative;
+  width: 100%;
+}
+
+.audio-durationbar {
+  background: #26BEF5;
+}
+
+.bufferbar, .currentbar {
+  background: rgba(0, 0, 0, .5);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 0;
+  z-index: 5;
+}
+
+.bufferbar {
+  transition: all 0.2s linear;
+}
+
+.currentbar {
+  background: #fff;
+  z-index: 10;
+  transition: all 0.2s linear;
+}
+
+.drawbar,
+.audio-drawbar {
+  position: absolute;
+  background: #fff;
+  width: 0.16rem;
+  height: 0.16rem;
+  left: -0.1rem;
+  top: -0.04rem;
+  z-index: 10;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s linear;
+}
+
+.audio-drawbar {
+  background-color: #FA5D5C;
+  box-sizing: border-box;
+  border: 0.03rem solid #fff;
+}
+
+.control-rightview {
+  display: flex;
+  height: 0.3rem;
+}
+
+.control-rightview .control-btn {
+  margin-left: 0.1rem;
+}
+
+.control-leftview .control-btn:last-child, .control-rightview .control-btn:first-child {
+  margin: 0;
+}
+
+.playbtn0,
+.audio-playbtn0 {
+  position: absolute;
+  top: 0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .3);
+  background: url(./img/play.png) no-repeat center;
+  background-size: 0.8rem;
+}
+
+.playbtn0.pausebtn {
+  display: none;
+  background: none;
+}
+
+.audio-playbtn0.audio-pausebtn {
+  background: url(./img/pause.png) no-repeat center;
+}
+
+.control-btn.loadbtn {
+  background: url(./img/load.png) no-repeat center;
+  background-size: 100%;
+}
+
+.control-btn.playbtn {
+  background: url(./img/play.png) no-repeat center;
+  background-size: 100%;
+}
+
+.control-btn.audio-playbtn {
+  background: url(./img/audio-play.png) no-repeat center;
+  background-size: 0.2rem;
+}
+
+.control-btn.playbtn.pausebtn {
+  background: url(./img/pause.png) no-repeat center;
+  background-size: 100%;
+}
+
+.control-btn.audio-playbtn.audio-pausebtn {
+  background: url(./img/audio-pause.png) no-repeat center;
+  background-size: 0.2rem;
+}
+
+.control-btn.mutedbtn {
+  background: url(./img/muted.png) no-repeat center;
+  background-size: 60%;
+}
+
+.control-btn.fullscreenbar {
+  background: url(./img/fullsrceen.png) no-repeat center;
+  background-size: 100%;
+}
+
+.message-container {
+  background-color: #F5F6F5;
+  box-sizing: border-box;
+  color: #202020;
+  font-size: 0.21rem;
+  height: calc(100% - 2.1rem);
+  overflow: auto;
+  padding: 0.2rem 0.1rem 0;
+}
+
+/* .message-container--focus {
+  height: calc(100% - 2.56rem);
+} */
+
+.message-item {
+  padding: 0.1rem 0.15rem;
+  background-color: #fff;
+}
+
+.message-item p {
+  color: #797979;
+  font-family: PingFangSC-Regular;
+  font-size: 0.13rem;
+  line-height: 0.18rem;
+  margin-bottom: 0.05rem;
+}
+
+.message-item p:first-child {
+  margin-top: 0.1rem;
+}
+
+.message-item p:last-child {
+  margin-bottom: 0;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem;
+}
+
+.comment {
+}
+
+.send_notice {
+  position: fixed;
+  right: 0.15rem;
+  bottom: 0.46rem;
+  width: 0.57rem;
+}
+
+.comment-wrap {
+  margin-top: 0.2rem;
+  padding: 0 0.15rem;
+}
+
+.notice_wrap {
+  background-color: #fff;
+  border: 1px solid #EDEDED;
+  border-radius: 0.03rem;
+  margin-bottom: 0.2rem;
+}
+
+.comment {
+  margin-top: 0.15rem;
+}
+
+.comment-list > view {
+  display: flex;
+  margin: 0.1rem;
+}
+
+.temp-comment {
+  margin: 0.1rem;
+  height: 0.3rem;
+}
+
+.buy-services {
+  margin-bottom: 0.15rem;
+}
+
+.normal-comment {
+  margin-bottom: 0.1rem;
+}
+
+.buy-services {
+  text-align: center;
+}
+
+.buy-services div {
+  background-color: rgb(248, 189, 165);
+  border-radius: 0.04rem;
+  display: inline-block;
+  font-size: 0.13rem;
+  padding: 0.02rem 0.1rem;
+  text-align: left;
+}
+
+.buy-services img {
+  width: 0.18rem;
+  height: 0.18rem;
+  vertical-align: top;
+  margin-right: 0.02rem;
+}
+
+.normal-comment {
+  display: flex;
+}
+
+.normal-comment img {
+  border-radius: 50%;
+  height: 0.3rem;
+  width: 0.3rem;
+}
+
+.normal-comment>div {
+  color: #535252;
+  font-size: 0.13rem;
+  line-height: 0.18rem;
+  margin: 0.07rem 0.1rem 0;
+  word-break: break-all;
+}
+
+.normal-comment span {
+  background: #FFFFFF;
+  border: 0 solid #EDEDED;
+  border-radius: 0.04rem;
+  color: #905D5C;
+  display: inline-block;
+  margin-top: 0.05rem;
+  padding: 0.08rem 0.1rem;
+  max-width: 2.4rem;
+}
+
+.comment-handle {
+  background-color: #e4e4e4;
+  height: 0.36rem;
+  padding: 0.05rem 0;
+}
+
+.toast {
+  background: rgb(255, 255, 255, .6);
+  border-radius: 0.2rem;
+  bottom: 0;
+  height: 0.6rem;
+  line-height: 0.6rem;
+  left: 0;
+  margin: auto;;
+  position: fixed;
+  right: 0;
+  top: 0;
+  text-align: center;
+  width: 2rem;
+  z-index: 11;
+}
+
+.text_bullet {
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  height: 2.17rem;
+  left: 0;
+  margin: 0 auto;
+  padding-top: 0.12rem;
+  position: fixed;
+  right: 0;
+  top: 0.53rem;
+  width: 2.85rem;
+  z-index: 12;
+}
+
+.input_section {
+  margin-bottom: 0.2rem;
+  text-align: center;
+}
+
+.input_section h5 {
+  color: #202020;
+  font-family: PingFangSC-Regular;
+  font-size: 0.15rem;
+  font-weight: normal;
+  line-height: 0.21rem;
+  margin: 0 0 0.2rem 0;
+}
+
+.input_section textarea {
+  background-color: #F4F4F4;
+  border: 1px solid #F0F0F0;
+  height: 1rem;
+  outline: none;
+  padding: 10px;
+  resize: none;
+  vertical-align: top;
+  width: 2.45rem;
+}
+
+.input_section textarea::placeholder {
+  color: #ADADAD;
+}
+
+.submit_section {
+  border-color: #EDEDED;
+  border-style: solid;
+  border-width: 1px 0 0 0;
+  height: 0.55rem;
+  text-align: center;
+}
+
+.submit_section a {
+  color: #797979;
+  display: inline-block;
+  font-family: PingFangSC-Regular;
+  font-size: 0.15rem;
+  line-height: 0.55rem;  
+  width: 50%;
+}
+
+.submit_section a:first-child {
+  position: relative;
+}
+
+.submit_section a:first-child::after {
+  border-color: #EDEDED;
+  border-style: solid;
+  border-width: 0 1px 0 0;
+  display: inline-block;
+  color: #797979;
+  content: '';
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.submit_section a:last-child {
+  color: #FA5D5C;
+}

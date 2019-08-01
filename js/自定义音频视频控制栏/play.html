@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no">
+  <meta name="format-detection" content="email=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <link rel="stylesheet" href="layout.css?v=18">
+  <title>播放</title>
+  <!-- <script src="vconsole.min.js"></script>
+  <script>
+    // 初始化
+    var vConsole = new VConsole();
+    console.log('Hello world');
+  </script> -->
+  <script src="rem.js"></script>
+  <script src="vue.min.js"></script>
+  <script src="jssdk-1.0.0.js"></script>
+  <script>
+    // 获取url中的参数
+    function getUrlParams(key) {
+      const uQuery = window.location.href.split('?');
+      const uGetArr = {};
+      if (uQuery.length > 1) {
+        const uParam = uQuery[1].split('&');
+        for (let i = 0; i < uParam.length; i++) {
+          const uTemp = uParam[i].split('=');
+          uGetArr[uTemp[0]] = uTemp[1];
+        }
+      }
+      return uGetArr[key] && uGetArr[key] !== 'undefined' ? uGetArr[key] : null;
+    }
+
+    //根据秒数格式化时间
+    function initTimeLength(time) {
+      if (time === Infinity) return ''
+      const timeLength = parseInt(time);
+      const second = parseInt(timeLength % 60);
+      const hour = parseInt(timeLength / 3600);
+      const minute = (timeLength % 3600 - second) / 60;
+      if (hour > 0) {
+        return (hour < 10 ? '0' + hour : hour) + ":" + (minute < 10 ? "0" + minute : minute) + ":" + (second < 10 ? "0" + second : second);
+      }
+      return (minute < 10 ? "0" + minute : minute) + ":" + (second < 10 ? "0" + second : second);
+    }
+
+    // fn是我们需要包装的事件回调, interval是时间间隔的阈值
+    function throttle(fn, interval) {
+      // last为上一次触发回调的时间
+      let last = 0
+      // 将throttle处理结果当作函数返回
+      return function () {
+        // 保留调用时的this上下文
+        let context = this
+        // 保留调用时传入的参数
+        let args = arguments
+        // 记录本次触发回调的时间
+        let now = +new Date()
+
+        // 判断上次触发的时间和本次触发的时间差是否小于时间间隔的阈值
+        if (now - last >= interval) {
+          // 如果时间间隔大于我们设定的时间间隔阈值，则执行回调
+          last = now;
+          fn.apply(context, args);
+        }
+      }
+    }
+    // 用throttle来包装scroll的回调
+    // const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
+    // document.addEventListener('scroll', better_scroll)
+  </script>
+  <script src="axios.min.js"></script>
+  <script src="https://faye.renrenjiang.cn:8000/faye/client.js"></script>
+  <script>
+    axios.defaults.baseURL = 'https://api.renrenjiang.cn';
+    axios.defaults.headers.common['Authorization'] = getUrlParams('tokenId') || '';
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+  </script>
+</head>
+
+<body>
+  <div id="app">
+    <template v-if="mediaType">
+      <!-- video -->
+      <div v-if="mediaType === 'video' && video.src" class="video-container" :class="{'video-container--fullScreen': isFullScreen}" :style="{ 'height': playerHeight }" ref="videoContainer">
+        <!-- video -->
+        <video ref="myVideo" class="video-player" :poster="activity.background" webkit-playsinline
+          playsinline x-webkit-airplay controls="controls" :src="video.src">
+          您的浏览器不支持 video 标签。
+        </video>
+        <!-- 进度条 -->
+        <div class="playbtn0" ref="playPausebtn0"></div>
+        <!--控制条盒子-->
+        <div class="video-control" ref="videoControl">
+          <div class="control-leftview">
+            <!--暂停/播放键-->
+            <div class="control-btn playbtn" ref="playPausebtn"></div>
+          </div>
+          <div class="progress-box">
+            <div class="progress-box-body">
+              <!--播放时长-->
+              <div class="current-time" ref="currentTime">00:00</div>
+              <div class="durationbar-box">
+                <!--总视频长度进度条-->
+                <div class="durationbar" ref="durationBar">
+                  <!--缓冲进度条-->
+                  <div class="bufferbar" ref="bufferBar"></div>
+                  <!--正在播放进度条-->
+                  <div class="currentbar" ref="currentBar"></div>
+                  <div class="drawbar" ref="drawBar"></div>
+                </div>
+              </div>
+              <!--总时长-->
+              <div class="duration-time" v-if="durationTime">{{durationTime}}&nbsp;&nbsp;</div>
+            </div>
+          </div>
+          <div class="control-rightview">
+            <!--音量键-->
+            <!-- <div class="control-btn mutedbtn" ref="mutedBtn"></div> -->
+            <!--全屏键-->
+            <div v-show="isPlaying" class="control-btn fullscreenbar" ref="fullScreenBar"></div>
+
+          </div>
+        </div>
+      </div>
+      <!-- video -->
+      <!-- audio -->
+      <div v-else-if="mediaType === 'audio' && audio.src" class="audio-container" ref="audioContainer">
+        <!-- video -->
+        <audio ref="myAudio" class="audio-player" :src="audio.src">
+          您的浏览器不支持 video 标签。
+        </audio>
+        <template v-if="activity.background">
+          <img :src="activity.background" alt="background" v-show="activity.background">
+        </template>
+        <!-- 进度条 -->
+        <div class="audio-playbtn0" ref="audioPlayPausebtn0"></div>
+        <!--控制条盒子-->
+        <div class="audio-control" ref="audioControl">
+          <div class="control-leftview">
+            <!--暂停/播放键-->
+            <div class="control-btn audio-playbtn" ref="audioPlayPausebtn"></div>
+          </div>
+          <div class="progress-box">
+            <div class="progress-box-body">
+              <!--播放时长-->
+              <div class="current-time" ref="audioCurrentTime">00:00</div>
+              <div class="durationbar-box">
+                <!--总视频长度进度条-->
+                <div class="durationbar" ref="audioDurationBar">
+                  <!--缓冲进度条-->
+                  <div class="bufferbar" ref="audioBufferBar"></div>
+                  <!--正在播放进度条-->
+                  <div class="currentbar" ref="audioCurrentBar"></div>
+                  <div class="audio-drawbar" ref="audioDrawBar"></div>
+                </div>
+              </div>
+              <!--总时长-->
+              <div class="duration-time" v-if="durationTime">{{durationTime}}&nbsp;&nbsp;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- audio -->
+      <!-- backgroumd -->
+      <div v-else class="background-container">
+        <template v-if="activity.background">
+          <img :src="activity.background" alt="background" v-show="activity.background">
+        </template>
+      </div>
+      <!-- backgroumd -->
+    </template>
+    <!-- 评论 -->
+    <div class="message-container" ref="commentWrap">
+      <div class="message-item">
+        听课指南
+        <p>1、为有良好的听课体验，请确保网络通畅</p>
+        <p>2、课程回放永久保留，无限复习</p>
+        <p>3、遇到卡顿和加载失败点击返回，重新进入即可</p>
+        <!-- <p>4、小程序暂不支持评论</p> -->
+        <p>4、欢迎大家踊跃评论，多多交流</p>
+      </div>
+      <div class="comment">
+        <div class="comment-list">
+          <template v-for="comment in comments">
+            <template v-if="comment.buyServices">
+              <div class="buy-services">
+                <div>
+                  <img src="./img/shopping-bag.png" />
+                  {{ comment.comment }}
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="normal-comment">
+                <template v-if="comment.avatar">
+                  <img :src="comment.avatar" />
+                </template>
+                <template v-else>
+                  <img src="./img/default-avatar.png" />
+                </template>
+                <div>
+                  <div>{{ comment.nickname }}：</div>
+                  <span>{{ comment.comment }}</span>
+                </div>
+              </div>
+            </template>
+          </template>
+          <div v-if="commentMore">
+            <div>加载中...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 评论 -->
+
+    <!-- 评论弹窗 -->
+    <template v-if="tokenId">
+      <img class="send_notice" src="./img/notice.png" alt="send_notice" @click="showMessage" v-show="!showMessageInput">
+      <!-- 弹窗 -->
+      <div class="toast" v-if="showToast">请输入内容</div>
+      <!-- 输入弹窗 -->
+      <div class="text_bullet" v-show="showMessageInput">
+        <div class="input_section">
+          <h5>消息</h5>
+          <textarea placeholder="在这里输入要发送的内容" v-model="message"></textarea>
+        </div>
+        <div class="submit_section"><a @click="hideMessage">取消</a><a @click="sendMsg">发送</a></div>
+      </div>
+      <!-- 评论弹窗 -->
+    </template>
+  </div>
+</body>
+
+<script>
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      userInfo: {},
+      activity: {},
+      // defaultSrc: 'http://1255652068.vod2.myqcloud.com/ccb610e7vodgzp1255652068/60da26715285890788160357109/VzZVlyala44A.mp4',
+      video: {
+        src: '',
+        horizontal: true
+      },
+      audio: {},
+      mediaType: '',
+      percent: 0,
+      isFullScreen: false,
+      isPlaying: false,
+      playerHeight: '2.1rem',
+
+      tokenId: 0,
+      activityId: 0,
+      userId: 0,
+
+      comments: [],
+      commentPage: 1,
+      commentMore: true,
+      message: '',
+      showMessageInput: false,
+      showToast: false,
+      durationTime: '',
+      fn: () => { },
+      loadingComplete: false,
+    },
+    methods: {
+      async getStreamUrl(activityId, userId) {
+        await axios.get(`/api/v3/activities/${activityId}/stream_url?user_id=${userId}`).then((res) => {
+          if (res.data.media_type === 'audio' || res.data.media_type === 'video') {
+            this.mediaType = res.data.media_type;
+            this[res.data.media_type].src = res.data.hls_url;
+            this[res.data.media_type].horizontal = res.data.horizontal;
+          }
+        })
+      },
+      async getComment(activityId, pageNum) {
+        let url = `/api/v3/activities/${activityId}/comments?page=${pageNum}&pageSize=10`
+        if (this.comments.length) {
+          url += `&last_id=${this.comments[this.comments.length - 1].id}`
+        }
+        await axios.get(url)
+          .then((res) => {
+            if (res.data.length < 10) {
+              this.commentMore = false
+            }
+            const comments = res.data.map((v) => {
+              const comment = v;
+              if (comment.user_id === this.userId) comment.self = true;
+              if (comment.act === 'BUYSERVICES' || comment.act === 'REWARD') comment.buyServices = true;
+              return comment;
+            });
+            const data = this.comments.concat(...comments)
+            this.comments = data
+          })
+      },
+      sendMsg(/* userId, nickname, avatar, activityId */) {
+        if (!this.message) {
+          this.showToast = true
+          setTimeout(() => {
+            this.showToast = false
+          }, 1000)
+          return
+        }
+        const d = {
+          type: 'COMMENT',
+          userId: this.userId,
+          nickname: this.userInfo.nickname,
+          avatar: this.userInfo.avatar,
+          comment: this.message,
+        };
+        axios.post(`/api/v3/activities/${this.activityId}/comments`, d).then((res) => {
+          this.hideMessage()
+          this.message = ''
+        });
+      },
+      getUser(userId) {
+        axios.get(`/api/v3/users/${userId}/show`)
+          .then((res) => {
+            this.userInfo = res.data
+          })
+      },
+      showMessage() {
+        this.showMessageInput = true;
+      },
+      hideMessage() {
+        this.showMessageInput = false;
+      },
+      async getActivity(activityId) {
+        await axios.get(`/api/v2/activities/${activityId}`).then((res) => {
+          this.activity = res.data.activity
+        })
+      },
+      videoEvent() {
+        const { playPausebtn /* 播放暂停 */, playPausebtn0, /* mutedBtn 音量键 */ fullScreenBar /* 全屏键 */,
+          durationBar /* 总进度条 */, // bufferBar /* 缓冲进度条 */, currentBar /* 播放时长进度条 */, drawBar /* 播放进度按钮 */,
+          // durationTime /* 播放总时长 */, currentTime /* 播放时长 */,
+          myVideo /* 视频 */, videoContainer } = this.$refs
+
+        // ontimeupdate 当前视频播放位置反生改变触发的事件;
+        myVideo.addEventListener('timeupdate', this.timeupdate);
+        myVideo.addEventListener('error', () => {
+          console.log('video error')
+          console.log(myVideo.error)
+        })
+        myVideo.addEventListener('canplay', () => {
+          console.log('video canplay')
+        });
+        myVideo.addEventListener('playing', () => {
+          console.log('video playing')
+          this.isPlaying = true
+        });
+        myVideo.addEventListener('ended', () => {
+          console.log('video ended')
+        })
+        myVideo.addEventListener('stalled', () => {
+          console.log('video stalled')
+        })
+        myVideo.addEventListener('suspend', () => {
+          console.log('video suspend')
+        })
+        myVideo.addEventListener('waiting', () => {
+          console.log('video waiting')
+        })
+        myVideo.addEventListener('pause', () => {
+          this.isPlaying = false
+          console.log('video pause')
+        })
+        myVideo.addEventListener('durationchange', () => {
+          this.durationTime = initTimeLength(myVideo.duration)
+          this.buffer()
+          console.log('video durationchange:  ' + myVideo.duration)
+        })
+        myVideo.addEventListener('emptied', () => {
+          console.log('video emptied')
+        })
+
+        // this.buffer();
+        playPausebtn.addEventListener('click', this.playPause);
+        playPausebtn0.addEventListener('click', this.playPause);
+
+        durationBar.addEventListener('click', this.tap)
+        durationBar.addEventListener('touchstart', this.touchStart)
+        durationBar.addEventListener('touchmove', this.touchMove)
+        durationBar.addEventListener('touchend', this.touchEnd)
+
+        videoContainer.addEventListener('click', this.toggleDisplayControl)
+        // 全屏按钮点击事件，这里兼容不是很全，有兴趣深入的朋友可以自己百度查查
+        fullScreenBar.addEventListener('click', this.fullScreen);
+        // 音量键的开启关闭
+        // mutedBtn.addEventListener('click', this.muted);
+      },
+      muted() { // 声音
+        const { myVideo } = this.$refs
+        //如果为静音则开启，如果为开启状态则关闭
+        myVideo.muted = !myVideo.muted;
+      },
+      playPause() {// 播放暂停
+        const { myVideo, playPausebtn, playPausebtn0 } = this.$refs
+        //paused 返回的是视频是否是暂停状态,返回的是一个布尔值
+        if (myVideo.paused) {
+          myVideo.play();
+          // 全屏
+          if (!this.video.horizontal) {
+            // 竖屏视频
+            this.playerHeight = window.innerHeight * 0.56 / 100 + 'rem';
+          }
+          //通过操作不同的class，来切换键的形态
+          playPausebtn.classList.add('pausebtn');
+          playPausebtn0.classList.add('pausebtn');
+        } else {
+          myVideo.pause();
+          playPausebtn.classList.remove('pausebtn');
+          playPausebtn0.classList.remove('pausebtn');
+        }
+      },
+      load() {//刷新
+        const { myVideo } = this.$refs
+        myVideo.load();
+      },
+      timeupdate() {
+        const { myVideo, currentTime, currentBar, drawBar, durationBar, videoControl } = this.$refs
+        // 视频时长
+        const durationProgress = myVideo.duration;
+        // currentTime 当前播放时长
+        const currentTimeProgress = myVideo.currentTime;
+        // 将当前播放时长填入左边时长元素中
+        currentTime.innerText = initTimeLength(myVideo.currentTime);
+        // 求当前播放时长的进度，从而显示出来进度条
+        const currentWidth = 100 * (currentTimeProgress / durationProgress);
+        const currentLeft = currentWidth - ((drawBar.offsetWidth / 2) / durationBar.offsetWidth * 100);
+        currentBar.style.width = currentWidth + '%';
+        drawBar.style.left = currentLeft + '%';
+      },
+      buffer() {
+        const { myVideo, bufferBar } = this.$refs
+        //视频时长
+        const maxduration = myVideo.duration;
+        //当前缓冲进度时长结束位置
+        const currentBuffer = myVideo.buffered
+        if (myVideo.buffered.length == 1) {
+          if (myVideo.buffered.start(0) == 0 && myVideo.buffered.end(0) == myVideo.buffered.duration) {
+          }
+        }
+        // 求取百分比
+        const percentage = 100 * currentBuffer / maxduration;
+        bufferBar.style.width = percentage + '%';
+        // 在范围内每500毫秒进行一次递归，也就是调用一下自己;
+        if (currentBuffer < maxduration) {
+          setTimeout(this.buffer, 500);
+        }
+      },
+      fullScreen() {
+        const { myVideo } = this.$refs
+        this.isFullScreen = !this.isFullScreen;
+        // 全屏
+        if (!this.video.horizontal) {
+          // 竖屏视频
+          this.playerHeight = window.innerHeight * 0.56 / 100 + 'rem';
+        } else {
+          // 竖屏视频
+          this.playerHeight = '2.1rem';
+        }
+      },
+      tap(e) {
+        const { durationBar, myVideo } = this.$refs
+        const clickedX = e.x;
+        const wrapperX = durationBar.getBoundingClientRect().left;
+        if (clickedX - wrapperX > 0) {
+          const p = (clickedX - wrapperX) / durationBar.offsetWidth;
+          myVideo.currentTime = p * myVideo.duration;
+        }
+      },
+      touchStart() {
+        const { myVideo, playPausebtn } = this.$refs
+        myVideo.pause();
+        playPausebtn.classList.remove('pausebtn');
+      },
+      touchMove(e) {
+        const { currentBar, drawBar, durationBar } = this.$refs
+        const x = e.touches[0].clientX;
+        const wrapperX = durationBar.getBoundingClientRect().left;
+        const difference = x - wrapperX;
+        // 处理边界问题
+        if (difference >= durationBar.clientWidth) {
+          return
+        }
+        // if (x - wrapperX > 0) {
+        this.percent = difference / durationBar.offsetWidth;
+        const currentWidth = this.percent * 100
+        currentBar.style.width = currentWidth + '%';
+        const currentLeft = currentWidth - ((drawBar.offsetWidth / 2) / durationBar.offsetWidth * 100);
+        drawBar.style.left = currentLeft + '%';
+        // }
+      },
+      touchEnd() {
+        const { myVideo, playPausebtn } = this.$refs
+        if (this.percent) myVideo.currentTime = this.percent * myVideo.duration;
+        myVideo.play();
+        playPausebtn.classList.add('pausebtn');
+        this.percent = 0;
+      },
+      toggleDisplayControl(e) {
+        const { videoControl } = this.$refs
+        if (e.target.className === 'video-player') {
+          if (videoControl.style.opacity !== '0') {
+            videoControl.style.opacity = '0'
+          } else {
+            videoControl.style.opacity = '1'
+          }
+        }
+      },
+      audioEvent() {
+        const { myAudio, audioPlayPausebtn, audioPlayPausebtn0, audioDurationBar, audioCurrentBar, audioDrawBar } = this.$refs
+        myAudio.addEventListener('timeupdate', this.audioTimeupdate);
+        myAudio.addEventListener('durationchange', () => {
+          this.durationTime = initTimeLength(myAudio.duration);
+          this.audioBuffer();
+        })
+        myAudio.addEventListener('ended', () => {
+          myAudio.load();
+          // 进度条处理
+          audioCurrentBar.style.width = 0;
+          audioDrawBar.style.left = 0;
+          // 处理图标问题
+          audioPlayPausebtn.classList.remove('audio-pausebtn');
+          audioPlayPausebtn0.classList.remove('audio-pausebtn');
+        })
+
+        audioPlayPausebtn.addEventListener('click', this.audioPlayPause);
+        audioPlayPausebtn0.addEventListener('click', this.audioPlayPause);
+
+        audioDurationBar.addEventListener('click', this.audioTap);
+        audioDurationBar.addEventListener('touchstart', this.audioTouchStart);
+        audioDurationBar.addEventListener('touchmove', this.audioTouchMove);
+        audioDurationBar.addEventListener('touchend', this.audioTouchEnd);
+      },
+      audioPlayPause() {
+        const { myAudio, audioPlayPausebtn, audioPlayPausebtn0 } = this.$refs;
+        if (myAudio.paused) {
+          myAudio.play();
+          //通过操作不同的class，来切换键的形态
+          audioPlayPausebtn.classList.add('audio-pausebtn');
+          audioPlayPausebtn0.classList.add('audio-pausebtn');
+        } else {
+          myAudio.pause();
+          audioPlayPausebtn.classList.remove('audio-pausebtn');
+          audioPlayPausebtn0.classList.remove('audio-pausebtn');
+        }
+      },
+      audioTimeupdate() {
+        const { myAudio, audioCurrentTime, audioCurrentBar, audioDrawBar, audioDurationBar, audioVideoControl } = this.$refs
+        // 视频时长
+        const durationProgress = myAudio.duration;
+        // currentTime 当前播放时长
+        const currentTimeProgress = myAudio.currentTime;
+        // 将当前播放时长填入左边时长元素中
+        audioCurrentTime.innerText = initTimeLength(myAudio.currentTime);
+        // 求当前播放时长的进度，从而显示出来进度条
+        const currentWidth = 100 * (currentTimeProgress / durationProgress);
+        if (currentWidth >= 100) {
+          return
+        } {
+          const currentLeft = currentWidth - ((audioDrawBar.offsetWidth / 2) / audioDurationBar.offsetWidth * 100);
+          audioCurrentBar.style.width = currentWidth + '%';
+          audioDrawBar.style.left = currentLeft + '%';
+        }
+      },
+      audioBuffer() {
+        const { myAudio, audioBufferBar } = this.$refs
+        //视频时长
+        const maxduration = myAudio.duration;
+        //当前缓冲进度时长结束位置
+        const currentBuffer = myAudio.buffered
+        if (myAudio.buffered.length == 1) {
+          if (myAudio.buffered.start(0) == 0 && myAudio.buffered.end(0) == myAudio.buffered.duration) {
+          }
+        }
+        // 求取百分比
+        const percentage = 100 * currentBuffer / maxduration;
+        audioBufferBar.style.width = percentage + '%';
+        // 在范围内每500毫秒进行一次递归，也就是调用一下自己;
+        if (currentBuffer < maxduration) {
+          setTimeout(this.buffer, 500);
+        }
+      },
+      audioTap(e) {
+        const { audioDurationBar, myAudio } = this.$refs
+        const clickedX = e.x;
+        const wrapperX = audioDurationBar.getBoundingClientRect().left;
+        const difference = clickedX - wrapperX;
+        if (difference > 0) {
+          const p = difference / audioDurationBar.offsetWidth;
+          myAudio.currentTime = p * myAudio.duration;
+        }
+      },
+      audioTouchStart() {
+        const { myAudio, audioPlayPausebtn } = this.$refs
+        myAudio.pause();
+        audioPlayPausebtn.classList.remove('audio-pausebtn');
+      },
+      audioTouchMove(e) {
+        const { audioCurrentBar, audioDrawBar, audioDurationBar } = this.$refs
+        const x = e.touches[0].clientX;
+        const wrapperX = audioDurationBar.getBoundingClientRect().left;
+        // 处理边界问题
+        if (x - wrapperX >= audioDurationBar.clientWidth) {
+          return
+        }
+        const difference = x - wrapperX;
+        // if (difference > 0) {
+        this.percent = difference / audioDurationBar.offsetWidth;
+        const currentWidth = this.percent * 100
+        audioCurrentBar.style.width = currentWidth + '%';
+        const currentLeft = currentWidth - ((audioDrawBar.offsetWidth / 2) / audioDurationBar.offsetWidth * 100);
+        audioDrawBar.style.left = currentLeft + '%';
+        // }
+      },
+      audioTouchEnd() {
+        const { myAudio, audioPlayPausebtn } = this.$refs
+        if (this.percent) myAudio.currentTime = this.percent * myAudio.duration;
+        myAudio.play();
+        audioPlayPausebtn.classList.add('audio-pausebtn');
+        this.percent = 0;
+      },
+    },
+    watch: {
+      playerHeight(val) {
+        // 这块更改评论区高度
+        if (!this.isFullScreen) {
+          if (val === '2.1rem') {
+            this.$refs.commentWrap.style.height =  'calc(100% - 2.1rem)';
+          } else {
+            let rem = document.body.parentNode.style.fontSize;
+            rem = rem.slice(0, rem.length - 2);
+            this.$refs.commentWrap.style.height =  (window.innerHeight / rem - val.slice(0, val.length - 3)) + 'rem';
+          }
+        }
+      },
+    },
+    async mounted() {
+      this.activityId = getUrlParams('activityId');
+      this.userId = getUrlParams('userId');
+      this.tokenId = getUrlParams('tokenId');
+
+      await Promise.all([this.getActivity(this.activityId), this.getStreamUrl(this.activityId, this.userId), this.getComment(this.activityId, this.commentPage)])
+      this.loadingComplete = true;
+      
+      if (this.userId > 0) {
+        this.getUser(this.userId)
+      }
+
+      this.$client = new Faye.Client('https://faye.renrenjiang.cn:8000/faye');
+      this.$client.subscribe(`/a/${this.activityId}`, (data) => {
+        if (data.type === 'COMMENT') {
+          const comment = {
+            user_id: data.user_id,
+            avatar: data.avatar,
+            nickname: data.nickname,
+            comment: data.comment,
+            self: true,
+            buyServices: !!(data.act === 'BUYSERVICES') || !!(data.act === 'REWARD'),
+          };
+          this.comments.unshift(comment);
+        } else if (data.type === 'LIVE' && data.act === 'start') {
+          setTimeout(() => {
+            this.getStreamUrl(this.activityId, this.userId)
+            this.percent = 0;
+            this.isFullScreen = false;
+            this.isPlaying = false;
+            this.playerHeight = '2.1rem';
+            this.playPause();
+            this.$refs.currentBar.style.width = 0;
+            this.$refs.drawBar.style.left = 0;
+          }, 15000)
+        } else if (data.type === 'LIVE' && data.act === 'stop') {
+          setTimeout(() => {
+            this.getStreamUrl(this.activityId, this.userId)
+            this.percent = 0;
+            this.isFullScreen = false;
+            this.isPlaying = false;
+            this.playerHeight = '2.1rem';
+            this.playPause();
+            this.$refs.currentBar.style.width = 0;
+            this.$refs.drawBar.style.left = 0;
+          }, 15000)
+        }
+      });
+
+      this.fn = throttle(() => {
+        if (this.commentMore) {
+          this.commentPage += 1
+          this.getComment(this.activityId, this.commentPage)
+        }
+      }, 300)
+
+      this.$nextTick(() => {
+        const { commentWrap } = this.$refs
+        if (this.mediaType) {
+          if (this.mediaType === 'video') {
+            this.videoEvent()
+          } else if (this.mediaType === 'audio') {
+            this.audioEvent() 
+          }
+          commentWrap.addEventListener('scroll', this.fn)
+        }
+      })
+    },
+    beforeDestroy() {
+      this.$nextTick(() => {
+        const { commentWrap, myVideo, playPausebtn, fullScreenBar, videoContainer } = this.$refs
+        commentWrap.removeEventListener('scroll', this.fn)
+        myVideo.removeEventListener('timeupdate', this.timeupdate)
+        playPausebtn.removeEventListener('click', this.playPause)
+        fullScreenBar.removeEventListener('click', this.fullScreen)
+        durationBar.removeEventListener('click', this.tap)
+        durationBar.removeEventListener('touchstart', this.touchStart)
+        durationBar.removeEventListener('touchmove', this.touchMove)
+        durationBar.removeEventListener('touchend', this.touchEnd)
+        // mutedBtn.removeEventListener('click', this.muted)
+        videoContainer.addEventListener('click', this.toggleDisplayControl)
+      })
+    },
+  })
+</script>
+
+</html>
