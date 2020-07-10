@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Achievement {
+            constructor() {
+                this.achievement = {};
+                this.length = 0;
+            }
+            addAchievement(subject, score) {
+                if (!this.achievement[subject]) {
+                    this.length += 1;
+                }
+                this.achievement[subject] = score;
+            }
+            average() {
+                let result = 0;
+                for (let score in this.achievement) {
+                    result += this.achievement[score];
+                }
+                console.log(result / this.length);
+            }
+        }
+
+        let xiaoMing = new Achievement();
+        xiaoMing.addAchievement('Math', 80);
+        xiaoMing.addAchievement('P.E.', 20);
+        console.log(xiaoMing);
+        xiaoMing.average();
+
+        // 冒泡排序
+    </script>
+</body>
+
+</html>

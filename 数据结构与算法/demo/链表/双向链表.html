@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Node {
+            constructor(ele) {
+                this.element = ele;
+                this.next = null;
+                this.prev = null;
+            }
+        }
+
+        class LinkedList {
+            constructor(ele) {
+                this.head = new Node('head');
+            }
+            find(node) {
+                let cur = this.head;
+                while (cur.element !== node) {
+                    cur = cur.next;
+                }
+                return cur;
+            }
+            findLast() {
+                let cur = this.head;
+                while (cur.next !== null) {
+                    cur = cur.next;
+                }
+                return cur;
+            }
+            insert(element, node) {
+                const newNode = new Node(element);
+                const cur = this.find(node);
+                newNode.next = cur.next;
+                newNode.prev = cur;
+                cur.next = newNode;
+            }
+            remove(node) {
+                let cur = this.find(node);
+                if (cur.next !== null) {
+                    cur.prev.next = cur.next;
+                    cur.next.prev = cur.prev;
+                    cur.next = null;
+                    cur.prev = null;
+                }
+            }
+            display() {
+                let cur = this.head;
+                while (cur.next !== null) {
+                    console.log(cur.next.element);
+                    cur = cur.next;
+                }
+            }
+            dispReverse() {
+                let cur = this.head;
+                cur = this.findLast();
+                while (cur.prev !== null) {
+                    console.log(cur.element);
+                    cur = cur.prev;
+                }
+            }
+        }
+
+        const cities = new LinkedList();
+        console.log(cities);
+        cities.insert('Conway', 'head');
+        cities.insert('Russellville', 'Conway');
+        cities.insert('Carlisle', 'Russellville');
+        cities.insert('Alma', 'Carlisle');
+        cities.display();
+        cities.remove('Carlisle');
+        cities.display();
+        cities.dispReverse();
+    </script>
+</body>
+
+</html>

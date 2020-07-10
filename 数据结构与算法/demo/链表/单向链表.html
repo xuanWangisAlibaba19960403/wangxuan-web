@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Node {
+            constructor(ele) {
+                this.element = ele;
+                this.next = null;
+            }
+        }
+
+        class LinkedList {
+            constructor(ele) {
+                this.head = new Node('head');
+            }
+            find(node) {
+                let cur = this.head;
+                while (cur.element !== node) {
+                    cur = cur.next;
+                }
+                return cur;
+            }
+            findPrevios(node) {
+                let cur = this.head;
+                while (cur.next !== null && cur.next.element !== node) {
+                    cur = cur.next;
+                }
+                return cur;
+            }
+            insert(element, node) {
+                const newNode = new Node(element);
+                const cur = this.find(node);
+                newNode.next = cur.next;
+                cur.next = newNode;
+            }
+            remove(node) {
+                let prev = this.findPrevios(node);
+                if (prev.next !== null) {
+                    prev.next = prev.next.next;
+                }
+            }
+            display() {
+                let cur = this.head;
+                while (cur.next !== null) {
+                    console.log(cur.next.element);
+                    cur = cur.next;
+                }
+            }
+        }
+
+        const cities = new LinkedList();
+        cities.insert('Conway', 'head');
+        cities.insert('Russellville', 'Conway');
+        cities.insert('Carlisle', 'Russellville');
+        cities.insert('Alma', 'Carlisle');
+        cities.display();
+        cities.remove('Carlisle');
+        cities.display();
+        console.log(cities);
+    </script>
+</body>
+
+</html>

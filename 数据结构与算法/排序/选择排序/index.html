@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const arr = [6, 1, 7, 8, 9, 3, 5, 4, 2];
+
+    // function BubbleSort(arr) { O(n2)
+    //   if (arr == null || arr.length < 2) { // 边界检测
+    //     return arr;
+    //   }
+    //   for (let i = 0; i < arr.length; i++) {
+    //     for (let j = 0; j < arr.length; j++) {
+    //       if (arr[j] > arr[j + 1]) {
+    //         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+    //       }
+    //     }
+    //   }
+    // }
+    // console.log(arr);
+    // BubbleSort(arr);
+    // console.log(arr);
+
+    // // 交换方法是minIndex 与 当前交换
+    // function SelectionSort(arr) { O(n2)
+    //   if (arr == null || arr.length < 2) { // 边界检测
+    //     return arr;
+    //   }
+    //   for (let i = 0; i < (arr.length - 1); i++) { // 交换到n-1最后一个数自然最大
+    //     let minIndex = i;
+    //     for (let j = i + 1; j < arr.length; j++) {
+    //       minIndex = arr[j] < arr[minIndex] ? j : minIndex;
+    //     }
+    //     [arr[minIndex], arr[i]] = [arr[i], arr[minIndex]];
+    //   }
+    //   return arr;
+    // }
+    // console.log(arr);
+    // SelectionSort(arr);
+    // console.log(arr);
+
+    // //插入排序
+    // function InsertionSort(arr) { O(n2)
+    //   if (arr == null || arr.length < 2) {
+    //     return arr;
+    //   }
+    //   for (let i = 1; i < arr.length; i++) {
+    //     for (let j = i - 1; j >= 0 && arr[j] > arr[j + 1]; j--) {
+    //       [arr[j + 1], arr[j]] = [arr[j], arr[j + 1]];
+    //     }
+    //   }
+    //   return arr;
+    // }
+    // //控制台输出
+    // console.log(arr);
+    // InsertionSort(arr);
+    // console.log(arr);
+
+    // // 堆排序
+    // function headSort(arr) {
+    //   console.log(arr);
+    // }
+
+    // headSort(arr);
+
+    // function mergePass(arr = [], temp = new Array(arr.length), N = arr.length, length = 1) { // 将每个元素看作是相邻的数组长度为1。
+    //   let t; // 迭代深度。
+    //   for (t = 0; Math.pow(2, t) < N; t++ , length *= 2) { // 每次跳过的长度翻倍。
+    //     const even = t % 2 === 0; // 复用 arr 和 temp 来回赋值。
+    //     for (let left = 0; left < N; left += 2 * length) { // 左边数组起始位置 left 从0开始。
+    //       const middle = left + length < N ? left + length : left; // 右边数组起始位置 middle 就是left + 一个数组长度length 但是不要超过 N 。
+    //       const right = left + (2 * length) < N ? left + (2 * length) : N; // 右边界 right 就是 left + 两个数组长度。
+    //       merge(even ? arr : temp, even ? temp : arr, left, middle, right); // 合并每两个相邻的数组。
+    //     }
+    //   }
+    //   merge(arr, temp, 0, Math.pow(2, t - 1), N); // 上面的迭代深度始终少一次在这里补足。
+    //   arr = temp; // 将稳定的数组赋值给 arr 释放掉 temp 。
+    //   return arr; // 返回 arr 。
+    // }
+
+    // function merge(arr, temp, left, middle, right) {
+    //   const leftEnd = middle - 1; // 通过右边数组的起始位置得到左边数组的结束位置。
+    //   while (left <= leftEnd && middle < right) { // 如果‘指针’没有越界。
+    //     if (arr[left] > arr[middle]) { // 如果左边数组第一个元素比右边数组第一个元素大。
+    //       temp[left + middle - leftEnd - 1] = arr[middle++]; // 将右边数组最小的放入有序数组 temp（初始值为空)。
+    //     } else {
+    //       temp[left + middle - leftEnd - 1] = arr[left++]; // 将左边数组最小的放入有序数组 temp（初始值为空)。
+    //     }
+    //   }
+    //   while (left > leftEnd && middle < right) { // 如果左边数组放完了，右边数组还有元素。
+    //     temp[left + middle - leftEnd - 1] = arr[middle++]; // 那么依次将右边数组剩余的元素放入 temp 。
+    //   }
+    //   while (left <= leftEnd && middle >= right) { // 如果右边数组放完了，左边数组还有元素
+    //     temp[left + middle - leftEnd - 1] = arr[left++]; // 那么依次将左边数组剩余的元素放入 temp 。
+    //   }
+    // }
+
+    // console.log(mergePass(arr));
+
+    // 快速排序
+    function quickSort(arr) {
+      const newArr = arr.concat() // 为了保证这个函数是纯函数拷贝一次数组
+      sort(newArr)
+      return newArr
+    }
+    function sort(arr, left = 0, right = arr.length - 1) {
+      if (left >= right) {//如果左边的索引大于等于右边的索引说明整理完毕
+        return
+      }
+      let i = left
+      let j = right
+      const baseVal = arr[j] // 取无序数组最后一个数为基准值
+      console.log(baseVal);
+      while (i < j) {//把所有比基准值小的数放在左边大的数放在右边
+        while (i < j && arr[i] <= baseVal) { //找到一个比基准值大的数交换
+          i++
+        }
+        arr[j] = arr[i] // 将较大的值放在右边如果没有比基准值大的数就是将自己赋值给自己（i 等于 j）
+        console.log(arr);
+        while (j > i && arr[j] >= baseVal) { //找到一个比基准值小的数交换
+          j--
+        }
+        arr[i] = arr[j] // 将较小的值放在左边如果没有找到比基准值小的数就是将自己赋值给自己（i 等于 j）
+        console.log(arr);
+      }
+      arr[j] = baseVal // 将基准值放至中央位置完成一次循环（这时候 j 等于 i ）
+      console.log(arr)
+      sort(arr, left, j - 1) // 将左边的无序数组重复上面的操作
+      sort(arr, j + 1, right) // 将右边的无序数组重复上面的操作
+    }
+    quickSort(arr);
+
+
+    function quickSort1(arr, ) {
+
+    }
+  </script>
+</body>
+
+</html>

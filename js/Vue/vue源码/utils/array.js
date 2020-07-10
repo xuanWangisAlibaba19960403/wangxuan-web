@@ -1,4 +1,4 @@
-import { def } from '../utils.js';
+import { def } from './utils.js';
 const arrayProto = Array.prototype;
 export const arrayMethods = Object.create(arrayProto);
 ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'].forEach(function (method) {

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Stack {
+            constructor() {
+                this.dataStore = [];
+                this.top = 0;
+            }
+
+            push(ele) {
+                this.dataStore[this.top++] = ele;
+            }
+            pop() {
+                return this.dataStore[--this.top];
+            }
+            peek() {
+                if (this.top === 0) {
+                    return null;
+                }
+                return this.dataStore[this.top - 1];
+            }
+            length() {
+                return this.top;
+            }
+            clear() {
+                this.top = 0;
+            }
+        }
+        // 测试
+        // var stack = new Stack();
+        // stack.push('David');
+        // stack.push('Raymond');
+        // stack.push('Bryan');
+        // console.log(stack.length());
+        // console.log(stack.peek());
+        // console.log(stack);
+        // console.log(stack.pop());
+        // console.log(stack);
+
+        // 数制间的转换
+        function mulBase(num, base) {
+            const s = new Stack();
+            do {
+                s.push(num % base);
+                num = Math.floor(num /= base);
+            } while (num > 0)
+            let converted = '';
+            while (s.length() > 0) {
+                converted += s.pop();
+            }
+            return converted;
+        }
+
+        console.log(mulBase(10, 2));
+    </script>
+</body>
+
+</html>

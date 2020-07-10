@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 二叉查找树(BST)
+    class Node {
+      constructor(data, left, right) {
+        this.data = data;
+        this.count = 1;
+        this.left = left;
+        this.right = right;
+      }
+
+      show() {
+        return this.data
+      }
+    }
+
+    class BST {
+      constructor() {
+        this.root = null;
+      }
+
+      insert(data) {
+        const node = new Node(data, null, null);
+        if (this.root === null) {
+          this.root = node;
+        } else {
+          let cur = this.root;
+          let parent = null;
+          while (true) {
+            parent = cur;
+            if (data < cur.data) {
+              cur = cur.left;
+              if (cur === null) {
+                parent.left = node;
+                break;
+              }
+            } else {
+              cur = cur.right;
+              if (cur === null) {
+                parent.right = node;
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      inOrder(node) {
+        if (node !== null) {
+          this.inOrder(node.left);
+          console.log(node.show() + ' ');
+          this.inOrder(node.right);
+        }
+      }
+
+      prevOrder(node) {
+        if (node !== null) {
+          console.log(node.show() + ' ');
+          this.prevOrder(node.left);
+          this.prevOrder(node.right);
+        }
+      }
+
+      postOrder(node) {
+        if (node !== null) {
+          this.postOrder(node.left);
+          this.postOrder(node.right);
+          console.log(node.show() + ' ');
+        }
+      }
+
+      getMin() {
+        let cur = this.root;
+        while (cur.left !== null) {
+          cur = cur.left;
+        }
+        return cur.data
+      }
+
+      getMax() {
+        let cur = this.root;
+        while (cur.right !== null) {
+          cur = cur.right;
+        }
+        return cur.data;
+      }
+
+      find(data) {
+        let cur = this.root;
+        while (cur !== null) {
+          if (cur.data === data) {
+            return cur;
+          } else if (data < cur.data) {
+            cur = cur.left;
+          } else if (data > cur.data) {
+            cur = cur.right;
+          }
+        }
+        return null;
+      }
+
+      update(data) {
+        const node = this.find(data);
+        node.count++;
+        return node;
+      }
+
+      remove(data) {
+        root = removeNode(this.root, data);
+      }
+
+      removeNode(node, data) {
+        if (node === null) {
+          return null;
+        }
+        if (data === node.data) {
+          // 没有子节点的节点
+          if (node.left === null && node.right === null) {
+            return null;
+          }
+          if (node.left === null) {
+            return node.right;
+          }
+
+          if (node.right === null) {
+            return node.left;
+          }
+
+          let tempNode = node.left.data > node.right.data ? node.left : node.right;
+          node.data = tempNode.data;
+          node.right = this.removeNode(node.right, tempNode.data);
+          return node;
+        } else if (data < node.data) {
+          node.left = removeNode(node.left, data);
+          return node;
+        } else {
+          node.right = removeNode(node.right, data);
+          return node;
+        }
+      }
+    }
+    function prArray(arr) {
+      console.log(arr[0].toString() + ' ');
+      for (let i = 1; i < arr.length; i++) {
+        console.log(arr[i].toString() + ' ');
+      }
+    }
+
+    function genArray(length) {
+      const arr = [];
+      for (let i = 0; i < length; i++) {
+        arr[i] = Math.floor(Math.random() * 101);
+      }
+      return arr;
+    }
+
+    // const nums = new BST();
+    // nums.insert(23);
+    // nums.insert(45);
+    // nums.insert(16);
+    // nums.insert(37);
+    // nums.insert(3);
+    // nums.insert(99);
+    // nums.insert(22);
+    // const min = nums.getMin();
+    // console.log(min);
+    // const max = nums.getMax();
+    // console.log(max);
+    // console.log(nums.find(16));
+    const grades = genArray(100);
+    prArray(grades);
+    const gradedistro = new BST();
+    for (let i = 0; i < grades.length; i++) {
+      const g = grades[i];
+      var grade = gradedistro.find(g);
+      if (grade === null) {
+        gradedistro.insert(g);
+      } else {
+        gradedistro.update(g);
+      }
+    }
+  </script>
+</body>
+
+</html>

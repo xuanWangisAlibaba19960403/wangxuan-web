@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    div {
+      /* position: relative; */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="div1" style="position: fixed">
+    <!-- 美女 -->
+    <img src="./img/bird.jpg" alt="bird">
+  </div>
+  <div id="div2">
+    <!-- 美景 -->
+    <img src="./img/hack.jpg" alt="hack">
+  </div>
+  <script>
+    const div1 = document.getElementById('div1');
+    console.log(getComputedStyle(div1).zIndex);
+    const div2 = document.getElementById('div2');
+    console.log(getComputedStyle(div2).zIndex);
+  </script>
+</body>
+
+</html>

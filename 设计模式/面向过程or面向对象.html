@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        class ShoppingCart {
+            constructor() {
+                this.itemsCount = 0;
+                this.totalPrice = 0;
+                this.items = [];
+            }
+
+            getItemsCount() {
+                return this.itemsCount;
+            }
+
+            setItemsCount(itemsCount) {
+                this.itemsCount = itemsCount;
+            }
+
+            getTotalPrice() {
+                return this.totalPrice;
+            }
+
+            setTotalPrice(totalPrice) {
+                this.totalPrice = totalPrice;
+            }
+
+            getItems() {
+                return new UnmodifiableList(this.items);
+            }
+
+            addItem(item) {
+                this.items.push(item);
+                this.itemsCount++;
+                this.totalPrice += item.price;
+            }
+
+            clear() {
+                this.items = [];
+                this.itemsCount = 0;
+                this.totalPrice = 0;
+            }
+            // ...省略其他方法...
+        }
+
+        class UnmodifiableList {
+            constructor(arr) {
+                this.items = [...arr];
+            }
+            addItem() {
+                throw new Error('展示数据不可添加数据');
+            }
+            clear() {
+                throw new Error('展示数据不可清空数据');
+            }
+        }
+
+        const cart = new ShoppingCart();
+        cart.addItem({ name: 'cap', price: 30 });
+        const items = cart.getItems();
+        let item = items.items[0];
+        item.price = 19; // 这里修改了item的价格属性
+        console.log(item);
+        console.log(cart.getItems());
+    </script>
+</body>
+
+</html>

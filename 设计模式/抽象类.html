@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Animal { // 抽象类
+            constructor(kind, name, male) {
+                this.kind = kind;
+                this.name = name;
+                this.male = male;
+            }
+            cry() { // 抽象方法
+            }
+        }
+
+        class Dog extends Animal {
+            constructor(name, male) {
+                super('dog', name, male);
+            }
+            cry() {
+                console.log('汪汪');
+            }
+        }
+
+        class Cat extends Animal {
+            constructor(name, male) {
+                super('cat', name, male);
+            }
+            cry() {
+                console.log('喵喵');
+            }
+        }
+        const FF = new Dog('feifei', 'male');
+        const MM = new Cat('miaomiao', 'female');
+        console.log(FF, MM);
+    </script>
+</body>
+
+</html>

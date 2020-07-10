@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Dictionary {
+            constructor() {
+                this.dataStore = [];
+            }
+
+            add(key, val) {
+                this.dataStore[key] = val;
+            }
+
+            find(key) {
+                return this.dataStore[key];
+            }
+
+            remove(key) {
+                delete this.dataStore[key];
+            }
+
+            showAll() {
+                for (let key of Object.keys(this.dataStore)) {
+                    console.log(key, this.dataStore[key]);
+                }
+            }
+            count() {
+                let n = 0;
+                for (let key of Object.keys(this.dataStore)) {
+                    n += 1;
+                }
+                return n;
+            }
+            clear() {
+                for (let key of Object.keys(this.dataStore)) {
+                    delete this.dataStore[key];
+                }
+            }
+            filter(str) {
+                for (let key of str.split(' ')) {
+                    if (!this.dataStore[key]) {
+                        this.dataStore[key] = 1;
+                    } else {
+                        this.dataStore[key] += 1;
+                    }
+                }
+            }
+        }
+        const pbook = new Dictionary();
+        pbook.filter('the book the');
+        console.log(pbook);
+    </script>
+</body>
+
+</html>

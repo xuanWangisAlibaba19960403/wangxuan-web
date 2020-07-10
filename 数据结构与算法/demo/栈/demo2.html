@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Stack {
+            constructor() {
+                this.dataStore = [];
+                this.top = 0;
+            }
+
+            push(ele) {
+                this.dataStore[this.top++] = ele;
+            }
+            pop() {
+                return this.dataStore[--this.top];
+            }
+            peek() {
+                if (this.top === 0) {
+                    return null;
+                }
+                return this.dataStore[this.top - 1];
+            }
+            length() {
+                return this.top;
+            }
+            clear() {
+                this.top = 0;
+            }
+        }
+        // 回文
+
+        function isPalindrome(word) {
+            const s = new Stack();
+            for (let k of word) {
+                s.push(k);
+            }
+            let rword = '';
+            while (s.length() > 0) {
+                rword += s.pop();
+            }
+            if (word === rword) {
+                return true;
+            }
+            return false;
+        }
+
+        console.log(isPalindrome('dad'));
+
+        function fact(n) {
+            var s = new Stack();
+            while (n > 1) {
+                s.push(n--);
+            }
+            var res = 1;
+            while (s.length() > 0) {
+                res *= s.pop();
+            }
+            return res;
+        }
+
+        console.log(fact(5));
+    </script>
+</body>
+
+</html>

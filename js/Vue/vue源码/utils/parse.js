@@ -38,7 +38,7 @@ function parseStartTag(html) {
 }
 
 function parseHTML(html, options) {
-  while(html) {
+  while (html) {
     // 截取模板字符串并触发钩子函数
     if (!lastTag || !isPlainTextElement(lastTag)) {
       // 父元素为正常元素时
@@ -72,6 +72,7 @@ function parseHTML(html, options) {
         const startTagMatch = parseStartTag();
         if (startTagMatch) {
           // 处理开始逻辑
+          continue;
         }
       }
       let text, rest, next;
@@ -146,4 +147,13 @@ const doctypeMatch = html.match(doctype);
 if (doctypeMatch) {
   html = html.subString(doctypeMatch[0].length);
   continue;
+}
+
+
+function toString(val) {
+  return val == null
+    ? ''
+    : typeof val === 'object'
+      ? JSON.stringify(val, null, 2)
+      : String(val);
 }

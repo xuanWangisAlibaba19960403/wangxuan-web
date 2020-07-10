@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Stack {
+            constructor() {
+                this.dataStore = [];
+                this.top = 0;
+            }
+
+            push(ele) {
+                this.dataStore[this.top++] = ele;
+            }
+            pop() {
+                return this.dataStore[--this.top];
+            }
+            peek() {
+                if (this.top === 0) {
+                    return null;
+                }
+                return this.dataStore[this.top - 1];
+            }
+            length() {
+                return this.top;
+            }
+            clear() {
+                this.top = 0;
+            }
+        }
+        // 
+        const expression = '2.3 + 23 / 12 + (3.14159 * 0.24)';
+        function matchBrackets(arithmeticExpression) {
+            console.log(arithmeticExpression);
+            const s = new Stack();
+            let i = 0, match = true;
+            while (i < arithmeticExpression.length && match) {
+                if (arithmeticExpression[i] === '(') {
+                    s.push(arithmeticExpression[i]);
+                } else if (arithmeticExpression[i] === ')') {
+                    if (s.peek()) {
+                        if (s.peek() !== '(') {
+                            match = false;
+                        } else {
+                            s.pop();
+                        }
+                    } else {
+                        match = false;
+                    }
+                }
+                i++;
+            }
+            if (s.length() > 0) {
+                match = false;
+            }
+            return match;
+        }
+        console.log(matchBrackets(expression));
+
+        // 2 算数
+
+    </script>
+</body>
+
+</html>

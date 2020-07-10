@@ -67,6 +67,6 @@ export function isObject(obj) {
 }
 
 
-function hasOwn(obj, prop) {
+export function hasOwn(obj, prop) {
   return obj.hasOwnProperty(prop);
 }
