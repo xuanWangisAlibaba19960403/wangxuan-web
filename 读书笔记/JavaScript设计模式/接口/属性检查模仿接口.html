@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            interface Composite {
+                function add(child);
+                function remove(child);
+                function getChild(child);
+            }
+
+            interface FormItem {
+                function save();
+            }
+        */
+
+        var CompositeForm = function (id, method, action) {
+            this.implementsInterfaces = ['Composite', 'FormItem'];
+        }
+
+        function addForm(formInstance) {
+            if (!implements(formInstance, 'Composite', 'FormItem')) {
+                throw new Error('Object does not implement a required interface');
+            }
+        }
+
+        function implements(object, ...args) {
+            for (var i = 0; i < args.length; i++) {
+                var interfaceName = args[i];
+                var interfaceFound = false;
+                for (var j = 0; j < object.implementsInterfaces.length; j++) {
+                    if (object.implementsInterfaces[j] === interfaceName) {
+                        interfaceFound = true;
+                        break;
+                    }
+                }
+                if (!interfaceFound) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        console.log(new CompositeForm());
+    </script>
+</body>
+
+</html>

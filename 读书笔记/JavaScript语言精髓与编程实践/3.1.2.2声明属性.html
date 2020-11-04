@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class MyObject {
+      constructor() {
+        this.name = 'MyObject';
+      }
+
+      get aName() {
+        return this.name;
+      }
+
+      set aName(val) {
+        this.name = val;
+      }
+    };
+
+    const obj = new MyObject();
+    console.log(obj.aName);
+    obj.aName = 'lili';
+    console.log(obj.aName);
+  </script>
+</body>
+
+</html>

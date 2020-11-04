@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var clone = function (object) {
+      function F() { };
+      F.prototype = object;
+      return new F;
+    }
+
+    /* Person Prototype Object */
+    var Person = {
+      name: 'Person',
+      getName() {
+        return this.name;
+      }
+    };
+
+    /* Author Prototype Object */
+    var Author = clone(Person);
+    Author.books = [];
+    Author.getBooks = function () {
+      return this.books;
+    };
+
+    var compound = {
+      str: 'val',
+      child: {
+        boo1: true,
+        num: 10,
+      }
+    }
+
+    var com = clone(compound);
+    com.child = {
+      boo1: true,
+      num: 5,
+    };
+
+    var CompoundObject = {};
+    CompoundObject.str = 'default value';
+    CompoundObject.createChildObject = function () {
+      return {
+        boo1: true,
+        num: 10
+      }
+    }
+    CompoundObject.childObject = CompoundObject.createChildObject();
+
+    var CompoundObjectClone = clone(CompoundObject);
+    CompoundObjectClone.childObject = CompoundObject.createChildObject();
+    CompoundObjectClone.childObject.num = 5;
+  </script>
+</body>
+
+</html>

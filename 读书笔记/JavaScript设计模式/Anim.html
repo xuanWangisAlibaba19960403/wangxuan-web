@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function Anim() {
+
+    }
+
+    // Anim.prototype = {
+    //   constructor: Anim,
+
+    //   start: function () {
+    //   },
+
+    //   stop: function () {
+    //   }
+    // }
+
+    Function.prototype.method = function (name, fn) {
+      this.prototype[name] = fn;
+      return this;
+    }
+
+    Anim
+      .method('start', function () {
+        console.log('start');
+      })
+      .method('stop', function () {
+        console.log('stop');
+      });
+
+    console.dir(Anim);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    class ShoppingCart {
+      constructor() {
+        this._itemsCount = 0;
+        this._totalPrice = 0;
+        this._items = [];
+      }
+
+      getItemsCount() {
+        return this._itemsCount;
+      }
+      setItemsCount(itemsCount) {
+        this._itemsCount = itemsCount;
+      }
+
+      getTotalPrice() {
+        return this._totalPrice;
+      }
+
+      setTotalPrice(totalPrice) {
+        this._totalPrice = totalPrice;
+      }
+
+      getItems() {
+        return this._items.slice();
+      }
+
+      addItem(item) {
+        this._items.add(item);
+        this._itemsCount++;
+        this._totalPrice += item.getPrice();
+      }
+    }
+  </script>
+</body>
+
+</html>

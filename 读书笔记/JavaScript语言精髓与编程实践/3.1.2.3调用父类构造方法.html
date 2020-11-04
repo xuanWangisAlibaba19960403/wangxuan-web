@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class MyObject {
+      constructor(x, y) {
+        this.name = 'MyObject';
+        this.x = x;
+        this.y = y;
+      }
+
+      get aName() {
+        return this.name;
+      }
+
+      set aName(val) {
+        this.name = val;
+      }
+    }
+
+    class MyObjectEx extends MyObject {
+      constructor(x, y) {
+        console.dir(new.target.__proto__);
+        console.log(typeof new.target);
+        console.log(new.target === MyObjectEx);
+        super(x, y);
+      }
+    }
+    const myObjectEx = new MyObjectEx(1, 2);
+    console.log(myObjectEx);
+  </script>
+</body>
+
+</html>

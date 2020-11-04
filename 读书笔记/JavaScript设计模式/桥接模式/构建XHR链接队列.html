@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var asyncRequest = (function () {
+      function handleReadyState(o, callback) {
+        var poll = window.setInterval(function () {
+          if (o && o.readyState === 4) {
+            window.clearInterval(poll);
+            if (callback) {
+              callback(o);
+            }
+          }
+        }, 50);
+      }
+
+      var getXHR = function () {
+        return new XMLHttpRequest();
+      }
+
+      return function (method, url, callback, postData) {
+        var http = getXHR();
+        http.open(method, url, true);
+        handleReadyState(http, callback);
+        http.send(postData || null);
+        return http;
+      }
+    })();
+
+    Function.prototype.method = function (name, fn) {
+      this.prototype[name] = fn;
+      return this;
+    }
+
+    window.DED = window.DED || {};
+    DED.util = DED.util || {};
+    DED.util.Observer = function () {
+      this.fns = [];
+    };
+
+    DED.util.Observer.prototype = {
+      constructor: DED.util.Observer,
+
+      subscribe(fn) {
+        this.fns.push(fn);
+      },
+
+      unsubscribe(fn) {
+        return this.fns.filter(method => method === fn)[0];
+      },
+
+      fire(o) {
+        this.fn.forEach((method) => {
+          method(o)
+        });
+      }
+    }
+
+    DED.Queue = function () {
+      // Qyeyed requests.
+      this.queue = [];
+
+      this.onComplete = new DED.util.Observer();
+      this.onFailure = new DED.util.Observer();
+      this.onFlush = new DED.util.Observer();
+
+      this.retryCount = 3;
+      this.currentRetry = 0;
+      this.paused = false;
+      this.timeout = 5000;
+      this.conn = {};
+      this.timer = {};
+    }
+
+    DED.Queue
+      .method('flush', function () {
+        if (this.queue.length === 0) {
+          return;
+        }
+        if (this.paused) {
+          this.paused = false;
+          return;
+        }
+        var self = this;
+        this.currentRetry++;
+        var abort = function () {
+          this.conn.abort();
+          if (self.currentRetry === self.retryCount) {
+            self.onFailure.fire();
+            self.currentRetry = 0;
+          } else {
+            self.flush();
+          }
+        };
+        this.timer = window.setTimeout(abort, this.timeout);
+      });
+  </script>
+</body>
+
+</html>

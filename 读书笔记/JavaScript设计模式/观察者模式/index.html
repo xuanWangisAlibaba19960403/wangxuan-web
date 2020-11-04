@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Publisher() {
+            this.subscribers = [];
+        }
+
+        Publisher.prototype = {
+            contstructor: Publisher,
+
+            deliver(data) {
+                this.subscribers.forEach((fn) => {
+                    fn(data);
+                });
+                return this;
+            }
+        }
+
+        Function.prototype.subscribe = function (publisher) {
+            var self = this;
+            var alreadyExists = publisher.subscribers.some((el) => el === self);
+            if (alreadyExists === false) {
+                publisher.subscribers.push(this);
+            }
+            return this;
+        }
+
+        Function.prototype.unsubscribe = function (publisher) {
+            var self = this;
+            publisher.subscribers = publisher.subscribers.some((el) => el !== self);
+            return this;
+        }
+
+        var publisherObject = new Publisher();
+        console.log(publisherObject);
+
+        var observerObject = function(data) {
+            // process data
+            console.log(data);
+            // unsubscribe from this publisher
+            arguments.callee.unsubscribe(publisherObject);
+        }
+
+        observerObject.subscribe(publisherObject);
+
+        publisherObject.deliver();
+    </script>
+</body>
+
+</html>

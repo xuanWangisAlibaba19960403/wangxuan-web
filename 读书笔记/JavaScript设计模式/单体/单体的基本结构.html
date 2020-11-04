@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* Basic Singleton. */
+
+    // var Singleton = {
+    //   name: 'single',
+    //   state: true
+    // }
+
+    var singleTon = (function () {
+      var instance = null;
+
+      function constructor() {
+        var state = false;
+
+        function getState() {
+          return state;
+        }
+
+        return {
+          getState
+        }
+      }
+
+      return {
+        getInstance: function () {
+          if (instance === null) {
+            instance = constructor();
+          }
+          return instance;
+        }
+      }
+    })();
+
+    console.log(singleTon.getInstance().getState());
+  </script>
+</body>
+
+</html>

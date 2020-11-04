@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./index.js"></script>
+    <script>
+        class Person {
+            constructor(name, work) {
+                var _person = new Human();
+                console.log(_person);
+                _person.name = new Named(name);
+
+                _person.work = new Work(work);
+
+                return _person;
+            }
+        }
+
+        const person = new Person('wang xuan', 'code');
+        console.log(person.firstName);
+        console.log(person.secondName);
+    </script>
+</body>
+
+</html>

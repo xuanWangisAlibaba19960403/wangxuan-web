@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="../extend.js"></script>
+  <script src="../Interface.js"></script>
+  <script>
+    /* AjaxHandler interface. */
+    var AjaxHandler = new Interface('AjaxHandler', ['request', 'createXhrObject']);
+
+    /* SimpleHandler class. */
+    var SimpleHandler = function () { };
+    SimpleHandler.prototype = {
+      constructor: SimpleHandler,
+
+      request(method, url, callback, postVars) {
+        console.log(this.createXhrObject());
+      },
+
+      createXhrObject() {
+        var methods = [
+          function () { return new XMLHttpRequest() },
+          function () { return new ActiveXObject() }
+        ];
+
+        for (let i = 0; i < methods.length; i++) {
+          try {
+            methods[i]();
+          } catch (error) {
+            continue;
+          }
+          this.createXhrObject = methods[i];
+          return methods[i];
+        }
+
+        throw new Error('could not create an XHR object');
+      },
+    }
+  </script>
+</body>
+
+</html>

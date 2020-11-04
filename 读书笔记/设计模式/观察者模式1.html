@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Publisher {
+      constructor() {
+        this.subscribers = {
+          any: [] // 事件类型: 订阅者(subscribers)
+        }
+      }
+
+      subscribe(fn, type = 'any') {
+        if (typeof this.subscribers[type] === 'undefined') {
+          this.subscribers[type] = [];
+        }
+        this.subscribers[type].push(fn);
+      }
+
+      unsubscribe(fn, type) {
+        this.visitSubscribers('unsubscribe', fn, type);
+      }
+
+      publish(publication, type) {
+        this.visitSubscribers('publish', publication, type);
+      }
+
+      visitSubscribers(action, arg, type = 'any') {
+        var subscribers = this.subscribers[type],
+          i = 0,
+          max = subscribers.length;
+        for (; i < max; i++) {
+          if (action === 'publish') {
+            subscribers[i](arg);
+          } else {
+            if (subscribers[i] === arg) {
+              subscribers.splice(i, 1);
+            }
+          }
+        }
+      }
+    }
+
+    // var publisher = {
+    //     subscribers: {
+    //         any: [] // 事件类型: 订阅者(subscribers)
+    //     },
+    //     subscribe(fn, type = 'any') {
+    //         if (typeof this.subscribers[type] === 'undefined') {
+    //             this.subscribers[type] = [];
+    //         }
+    //         this.subscribers[type].push(fn);
+    //     },
+    //     unsubscribe(fn, type) {
+    //         this.visitSubscribers('unsubscribe', fn, type);
+    //     },
+    //     publish(publication, type) {
+    //         this.visitSubscribers('publish', publication, type);
+    //     },
+    //     visitSubscribers(action, arg, type = 'any') {
+    //         var subscribers = this.subscribers[type],
+    //             i = 0,
+    //             max = subscribers.length;
+    //         for (; i < max; i++) {
+    //             if (action === 'publish') {
+    //                 subscribers[i](arg);
+    //             } else {
+    //                 if (subscribers[i] === arg) {
+    //                     subscribers.splice(i, 1);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    class Paper extends Publisher {
+      constructor() {
+        super()
+      }
+
+      daily() {
+        this.publish('big news today');
+      }
+
+      monthly() {
+        this.publish('interesting analysis', 'monthly');
+      }
+
+      readTweets(tweet) {
+        alert(`Call big meeting! Someone ${tweet}`);
+      }
+    }
+    // var paper = {
+    //   daily() {
+    //     this.publish('big news today');
+    //   },
+    //   monthly() {
+    //     this.publish('interesting analysis', 'monthly');
+    //   }
+    // }
+
+    // makePublisher(paper);
+    var paper = new Paper();
+    console.log(paper);
+    class Joe extends Publisher {
+      constructor() {
+        super()
+      }
+
+      drinkCoffee(paper) {
+        console.log(`Just read ${paper}`);
+      }
+
+      sundayPreNap(monthly) {
+        console.log(`About to fall asleep reading this ${monthly}`);
+      }
+
+      tweet(msg) {
+        this.publish(msg);
+      }
+    }
+
+    var joe = new Joe();
+
+    // var joe = {
+    //   drinkCoffee(paper) {
+    //     console.log(`Just read ${paper}`);
+    //   },
+    //   sundayPreNap(monthly) {
+    //     console.log(`About to fall asleep reading this ${monthly}`);
+    //   }
+    // }
+
+    paper.subscribe(joe.drinkCoffee);
+    paper.subscribe(joe.sundayPreNap, 'monthly');;
+
+    paper.daily();
+    paper.daily();
+    paper.daily();
+    paper.monthly();
+
+    // makePublisher(joe);
+    // joe.tweet = function (msg) {
+    //   this.publish(msg);
+    // }
+
+    // paper.readTweets = function (tweet) {
+    //   alert(`Call big meeting! Someone ${tweet}`);
+    // }
+    joe.subscribe(paper.readTweets);
+
+    joe.tweet('hated the paper today');
+  </script>
+</body>
+
+</html>

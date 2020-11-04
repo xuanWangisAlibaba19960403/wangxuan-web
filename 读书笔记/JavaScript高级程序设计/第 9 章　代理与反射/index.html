@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const target = {
+            id: 'target',
+            sayId() {
+                console.log(this.id);
+            }
+        }
+
+        const handler = {
+            get(target, property, receiver) {
+                console.log(target, property, receiver);
+            },
+            set(obj, prop, value) {
+                console.log(obj, prop, value);
+                target[prop] = value;
+            },
+        };
+
+        const proxy = new Proxy(target, handler);
+        console.dir(proxy);
+        console.log(target.id);
+        console.log(proxy.id);
+        proxy.id = 'bar';
+        console.log(target.id);
+    </script>
+</body>
+
+</html>

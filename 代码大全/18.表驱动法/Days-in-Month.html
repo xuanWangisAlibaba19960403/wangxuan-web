@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+        * @param
+        */
+        function daysPerMonth(month, isLeapYear = false) {
+            const MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            if (isLeapYear) {
+                MONTH_DAYS[1] = 29;
+            }
+            return MONTH_DAY[month];
+        }
+
+        console.log(MONTH_DAYS[d.getMonth()]);
+    </script>
+</body>
+
+</html>

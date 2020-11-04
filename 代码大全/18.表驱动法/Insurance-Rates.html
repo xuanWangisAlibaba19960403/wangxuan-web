@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function InsuranceRates(smokingStatus, gender, maritalStatus, age) {
+      const genderRate = [1, 1];
+      const ageRate = {
+        18: 200,
+        19: 300
+      }
+      return genderRate[gender] * ageRate[age];
+    }
+    const SmokingStatus_Smoking = 0;
+    const SmokingStatus_NonSmoking = 1;
+
+    const Gender_Male = 0;
+    const Gender_Female = 1;
+
+    const MaritalStatus_Single = 0;
+    const MaritalStatus_Married = 1;
+
+    const MAX_AGE = 125;
+  </script>
+</body>
+
+</html>

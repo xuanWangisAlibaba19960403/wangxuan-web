@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const extend = (function () {
+      const F = function () { };
+      return function (subClass, superClass) {
+        F.prototype = superClass.prototype;
+        subClass.prototype = new F();
+        subClass.prototype.constructor = subClass;
+
+        subClass.superClass = superClass.prototype;
+        if (superClass.prototype.constructor === Object.prototype.constructor) {
+          superClass.prototype.constructor = superClass;
+        }
+      }
+    })();
+
+    /* EditInPlaceField class. */
+    function EditInPlaceField(id, parent, value) {
+      this.id = id;
+      this.value = value || 'default value';
+      this.parentElement = parent;
+
+      this.createElement(this.id);
+      this.addEventListener();
+    }
+
+    EditInPlaceField.prototype = {
+      constructor: EditInPlaceField,
+
+      createElement(id) {
+        this.containerElement = document.createElement('div');
+        this.parentElement.appendChild(this.containerElement);
+
+        const fragment = document.createDocumentFragment();
+
+        this.staticElement = document.createElement('span');
+        this.staticElement.innerHTML = this.value;
+        fragment.appendChild(this.staticElement);
+
+        this.fieldElement = document.createElement('input');
+        this.fieldElement.type = 'text';
+        this.fieldElement.value = this.value;
+        fragment.appendChild(this.fieldElement);
+
+        this.saveButton = document.createElement('input');
+        this.saveButton.type = 'button';
+        this.saveButton.value = 'Save';
+        fragment.appendChild(this.saveButton);
+
+        this.cancelButton = document.createElement('input');
+        this.cancelButton.type = 'button';
+        this.cancelButton.value = 'Cancel';
+        fragment.appendChild(this.cancelButton);
+
+        this.containerElement.appendChild(fragment);
+
+        this.converToText();
+      },
+
+      addEventListener() {
+        this.staticElement.addEventListener('click', () => {
+          this.convertToEditable();
+        });
+        this.saveButton.addEventListener('click', () => {
+          this.save();
+        });
+        this.cancelButton.addEventListener('click', () => {
+          this.cancel();
+        });
+      },
+
+      convertToEditable() {
+        this.staticElement.style.display = 'none';
+        this.fieldElement.style.display = 'inline';
+        this.saveButton.style.display = 'inline';
+        this.cancelButton.style.display = 'inline';
+
+        this.setValue(this.value);
+      },
+
+      save() {
+        this.value = this.getValue();
+        setTimeout(() => {
+          const v = Math.random();
+          if (v > 0.5) {
+            this.converToText();
+          } else {
+            throw new Error('Error saving value');
+          }
+        }, 500)
+      },
+
+      cancel() {
+        this.converToText();
+      },
+
+      converToText() {
+        this.fieldElement.style.display = 'none';
+        this.saveButton.style.display = 'none';
+        this.cancelButton.style.display = 'none';
+        this.staticElement.style.display = 'inline';
+
+        this.setValue(this.value);
+      },
+
+      setValue(value) {
+        this.fieldElement.value = value;
+        this.staticElement.innerHTML = value;
+      },
+
+      getValue() {
+        return this.fieldElement.value;
+      }
+    }
+
+
+    /* EditInPlaceArea class. */
+
+    function EditInPlaceArea(id, parent, value) {
+      EditInPlaceArea.superclass.constructor.call(this, id, parent, value);
+    }
+
+    extend(EditInPlaceArea, EditInPlaceField);
+
+    // EditInPlaceArea.prototype.createElements = function (id) {
+    //   this.containerElement = document.createElement('div');
+
+    //   const fragment = document.createDocumentFragment();
+
+    //   this.staticElement = document.createElement('p');
+    //   this.staticElement.innerHTML = this.value;
+    //   fragment.appendChild(this.staticElement);
+
+    //   this.fieldElement = document.createElement('textarea');
+    //   this.fieldElement.value = this.value;
+    //   fragment.appendChild(this.fieldElement);
+
+    //   this.saveButton = document.createElement('input');
+    //   this.saveButton.type = 'button';
+    //   this.saveButton.value = 'Save';
+    //   fragment.appendChild(this.saveButton);
+
+    //   this.cancelButton = document.createElement('input');
+    //   this.cancelButton.type = 'button';
+    //   this.cancelButton.value = 'Cancel';
+    //   fragment.appendChild(this.cancelButton);
+
+    //   this.containerElement.appendChild(fragment);
+
+    //   this.parentElement.appendChild(this.containerElement);
+    //   this.converToText();
+    // }
+
+    // EditInPlaceArea.prototype.convertToEditable = function () {
+    //   this.staticElement.style.display = 'none';
+    //   this.fieldElement.style.display = 'block';
+    //   this.saveButton.style.display = 'inline';
+    //   this.cancelButton.style.display = 'inline';
+
+    //   this.setValue(this.value);
+    // }
+
+    // EditInPlaceArea.prototype.convertToText = function () {
+    //   this.fieldElement.style.display = 'none';
+    //   this.saveButton.style.display = 'none';
+    //   this.cancelButton.style.display = 'none';
+    //   this.staticElement.style.display = 'block';
+
+    //   this.setValue(this.value);
+    // }
+
+    const edit = new EditInPlaceArea('1', document.body, 'Title Here');
+    console.log(edit);
+  </script>
+</body>
+
+</html>

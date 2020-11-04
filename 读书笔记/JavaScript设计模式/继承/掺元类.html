@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* Mixin Class */
+        var Mixin = function () { };
+        Mixin.prototype = {
+            constructor: Mixin,
+            serialize: function () {
+                var output = [];
+                for (var key in this) {
+                    output.push(`${key}: ${this[key]}`);
+                }
+                return output.join(', ');
+            }
+        }
+
+        var augment = function (receivingClass, givingClass, methods) {
+            if (methods) {
+                for (var i = 0; i < methods.length; i++) {
+                    receivingClass.prototype[methods[i]] = givingClass.prototype[methods[i]];
+                }
+                console.log(receivingClass.prototype);
+            } else {
+                for (var methodName in givingClass.prototype) {
+                    if (!receivingClass.prototype[methodName]) {
+                        receivingClass.prototype[methodName] = givingClass.prototype[methodName];
+                    }
+                }
+            }
+        }
+
+        var extend = (function () {
+            var F = function () { };
+            return function (subClass, superClass) {
+                F.prototype = superClass.prototype;
+                subClass.prototype = new F();
+                subClass.prototype.constructor = subClass;
+
+                subClass.superClass = superClass.prototype;
+                if (superClass.prototype.constructor === Object.prototype.constructor) {
+                    superClass.prototype.constructor = superClass;
+                }
+            }
+        })();
+
+        function Person(name) {
+            this.name = name;
+        }
+
+        Person.prototype.getName = function () {
+            return this.name;
+        }
+
+        function Author(name, books) {
+            // new 的时候 隐式的 var this = {};
+            // 弱化了两个类之间的耦合
+            Author.superClass.constructor.call(this, name);
+            this.books = books;
+        }
+
+        extend(Author, Person)
+
+        Author.prototype.getBooks = function () {
+            return this.books;
+        }
+
+        Author.prototype.getName = function () {
+            var name = Author.superClass.getName.call(this);
+            return `${name}, Author of ${this.getBooks().join(', ')}`;
+        }
+
+        augment(Author, Mixin, ['serialize']);
+        console.dir(Author);
+        var author = new Author('Ross Harmes', ['JavaScript Design Patterns']);
+    </script>
+</body>
+
+</html>

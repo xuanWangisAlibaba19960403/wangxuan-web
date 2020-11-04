@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var Book = function (newIsbn, newTitle, newAuthor) {
+
+      // 私有属性
+      var isbn, title, author;
+
+      // 私有静态方法
+      function checkIsbn(isbn) {
+        if (!isbn || typeof isbn !== 'string') {
+          return false;
+        }
+
+        isbn = isbn.replace(/-/, '');
+        console.log(isbn.length);
+        if (isbn.length != 10 && isbn.length != 13) {
+          return false;
+        }
+
+        var sum = 0;
+        if (isbn.length === 10) {
+          if (!isbn.match(/^\d{9}/)) {
+            return false;
+          }
+
+          for (var i = 0; i < 9; i++) {
+            sum += isbn[i] * (10 - i);
+          }
+
+          var checkSum = sum % 11;
+          if (checkSum === 10) checkSum = 'X';
+          if (isbn[9] !== checkSum) {
+            return false;
+          }
+        } else {
+          if (!isbn.match(/^\d{12}/)) {
+            return false;
+          }
+
+          for (var i = 0; i < 12; i++) {
+            sum += isbn[i] * ((i % 2 === 0) ? 1 : 3);
+          }
+          var checkSum = sum % 10;
+          if (isbn[12] !== checkSum) {
+            return false;
+          }
+        }
+
+        return true;
+      };
+
+      this.getIsbn = function () {
+        return isbn;
+      };
+
+      this.setIsbn = function (newIsbn) {
+        if (!checkIsbn(newIsbn)) throw new Error('Book: Invalid ISBN.');
+        isbn = newIsbn;
+      }
+
+      this.getTitle = function () {
+        return title;
+      }
+
+      this.setTitle = function (newTitle) {
+        title = newTitle || 'No title specified';
+      }
+
+      this.getAuthor = function () {
+        return author;
+      }
+
+      this.setAuthor = function (newAuthor) {
+        author = newAuthor || 'No author specified';
+      }
+
+      this.setIsbn(newIsbn);
+      this.setTitle(newTitle);
+      this.setAuthor(newAuthor);
+    }
+
+
+    Book.prototype = {
+      constructor: Book,
+
+      display() {
+
+      }
+    }
+
+    var book = new Book('0-395-07122-45', 'the Hobbit', 'J. R. R. Tolkien')
+    console.log(book);
+  </script>
+</body>
+
+</html>

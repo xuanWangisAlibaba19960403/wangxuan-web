@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn">发送请求</button>
+    <script>
+        function request(request = { ['request Headers']: {} }) {
+            console.log('发送请求开始');
+            console.log(request['request Headers']);
+            console.log('添加HTTP头');
+            console.log('添加HTTP正文');
+            console.log('添加TCP头');
+            console.log('添加IP头');
+            console.log('添加MAC头');
+        }
+
+        function resopnse(resopnse = { ['request Headers']: {} }) {
+            console.log('接收请求开始');
+            console.log(resopnse['request Headers']);
+            console.log('接收MAC头 给第二层');
+            console.log('接收IP头 给第三层');
+            console.log('接收TCP头 给第四层');
+            console.log('接收HTTP头 给浏览器');
+            console.log('接收HTTP正文 给浏览器');
+        }
+
+        function url() {
+            new Promise((resolve, reject) => {
+                request();
+                const randomNum = Math.random();
+                if (randomNum <= 0.5) {
+                    resolve();
+                } else {
+                    reject();
+                }
+            }).then(() => {
+                resopnse();
+            }).catch(() => {
+                console.log('发生错误');
+            });
+        }
+
+        const btn = document.getElementById('btn');
+        btn.addEventListener('click', url);
+    </script>
+</body>
+
+</html>

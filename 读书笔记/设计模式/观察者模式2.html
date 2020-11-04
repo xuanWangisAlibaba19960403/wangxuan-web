@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Publisher {
+      constructor() {
+        this.subscribers = {
+          any: [] // 事件类型: 订阅者(subscribers)
+        }
+      }
+
+      on(type = 'any', fn, context) {
+        fn = typeof fn === 'function' ? fn : context[fn];
+        if (typeof this.subscribers[type] === 'undefined') {
+          this.subscribers[type] = [];
+        }
+        this.subscribers[type].push({ fn, context: context || this });
+      }
+
+      remove(type, fn, context) {
+        this.visitSubscribers('unsubscribe', type, fn, context);
+      }
+
+      fire(type, publication) {
+        this.visitSubscribers('publish', type, publication);
+      }
+
+      visitSubscribers(action, type, arg, context) {
+        var pubType = type || 'any',
+          subscribers = this.subscribers[pubType],
+          i = 0,
+          max = subscribers ? subscribers.length : 0;
+        for (; i < max; i++) {
+          if (action === 'publish') {
+            subscribers[i].fn.call(subscribers[i].context, arg);
+          } else {
+            if (subscribers[i].fn === arg && subscribers[i].context === context) {
+              subscribers.splice(i, 1);
+            }
+          }
+        }
+      }
+    }
+
+    class Player {
+      constructor(name, key) {
+        this.points = 0;
+        this.name = name;
+        this.key = key;
+        this.fire('newPlayer', this);
+      }
+
+      play() {
+        this.points += 1;
+        this.fire('play', this);
+      }
+    }
+
+    class Game {
+      constructor() {
+        this.keys = {};
+      }
+
+      addPlayer(player) {
+        var key = player.key.toString().charCodeAt(0);
+        this.keys[key] = player;
+      }
+
+      handleKeypress(e) {
+        if (this.keys[e.which]) {
+          this.keys[e.which].play();
+        }
+      }
+
+      handlePlay(player) {
+        var key,
+          keys = Object.keys(this.keys),
+          score = {};
+
+        for (key of keys) {
+          score[key.name] = key.points;
+        }
+        this.fire('scorechange', score);
+      }
+    }
+  </script>
+</body>
+
+</html>

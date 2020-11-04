@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="./Graph.js"></script>
+  <script>
+    const graph = new Graph();
+
+    const myVertices = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
+    // const myVertices = ['红', '黄', '蓝', 'S', 'M', 'L', 'XL', 'XXL', '棉', '麻', '丝', '皮'];
+    for (let i = 0; i < myVertices.length; i++) {
+      graph.addVertex(myVertices[i]);
+    }
+
+    graph.addEdge('a', 'b');
+    graph.addEdge('a', 'c');
+    graph.addEdge('a', 'd');
+    graph.addEdge('c', 'd');
+    graph.addEdge('c', 'g');
+    graph.addEdge('d', 'g');
+    graph.addEdge('d', 'h');
+    graph.addEdge('b', 'e');
+    graph.addEdge('b', 'f');
+    graph.addEdge('e', 'i');
+
+    console.log(graph);
+    console.log(graph.toString());
+  </script>
+</body>
+
+</html>

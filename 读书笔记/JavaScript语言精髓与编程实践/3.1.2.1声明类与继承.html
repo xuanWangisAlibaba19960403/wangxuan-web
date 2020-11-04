@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class MyObject {
+      constructor() {
+        console.log('MyObject');
+      }
+    };
+    console.log(MyObject);
+    class MyObjectEx extends MyObject /* 此处MyObject为表达式 */ {
+    }
+
+        //! class MyObjectEx extends function MyObject() {
+        //! } {
+
+        //! }
+
+        //! MyObjectEx.prototype = new MyObject();
+        //! MyObjectEx.prototype.constructor = MyObjectEx;
+
+        // 16-27行代码等价
+  </script>
+</body>
+
+</html>

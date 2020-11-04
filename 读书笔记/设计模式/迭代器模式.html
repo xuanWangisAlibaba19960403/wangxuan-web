@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const agg = (function () {
+
+            let index = 0,
+                data = [1, 2, 3, 4, 5],
+                length = data.length;
+
+            return {
+
+                next() {
+                    let element;
+                    if (this.hasNext()) {
+                        element = data[index];
+                        index += 1;
+                        return element;
+                    }
+                    return null
+                },
+
+                hasNext() {
+                    return index < length;
+                },
+
+                rewind() {
+                    index = 0;
+                },
+
+                current() {
+                    return data[index];
+                }
+            }
+        })();
+        let element;
+        while (agg.hasNext()) {
+            console.log(agg.next());
+        }
+    </script>
+</body>
+
+</html>

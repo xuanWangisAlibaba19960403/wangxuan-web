@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function Person(name, age) {
+      this._name = name;
+      this._age = age
+    }
+
+    Person.prototype = {
+      constructor: Person,
+
+      getName() {
+        return this._name;
+      },
+
+      getAge() {
+        return this._age;
+      },
+    }
+
+    var alice = new Person('Alice', 93);
+    var bill = new Person('Bill', 30);
+
+    Person.prototype.getGreeting = function () {
+      return `Hi${this.getName()}!`
+      // this.name 也可以 但是缺违反了只能从暴露的接口中获取数据的理念
+    }
+
+    alice.displayGreeting = function () {
+      alert(this.getGreeting());
+    }
+  </script>
+</body>
+
+</html>

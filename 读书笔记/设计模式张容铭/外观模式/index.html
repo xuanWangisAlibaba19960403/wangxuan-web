@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" id="myInput">
+    <script src="./index.js"></script>
+    <script>
+        function hidePageAlert() {
+            console.log('hidePageAlert');
+        }
+
+        const myInput = document.getElementById('myInput');
+        addEvent(document, 'click', function (e) {
+            if (e.target !== myInput) {
+                hidePageAlert();
+            }
+        });
+    </script>
+</body>
+
+</html>
