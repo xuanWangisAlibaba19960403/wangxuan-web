@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Beverage {
+            constructor() {
+
+            }
+
+            boilWater() {
+                console.log('把水煮沸')
+            }
+
+            brew() {
+                Beverage.error();
+            }
+
+            pourInCup() {
+                Beverage.error();
+            }
+
+            addCondiments() {
+                Beverage.error();
+            }
+
+            init() {
+                this.boilWater();
+                this.brew();
+                this.pourInCup();
+                this.addCondiments();
+            }
+
+            static error() {
+                throw new Error('务必重写父类方法');
+            }
+        }
+    </script>
+
+    <script>
+        class Coffee extends Beverage {
+            constructor() {
+                super();
+            }
+
+            // brew() {
+            //     console.log('沸水冲泡咖啡');
+            // }
+
+            pourInCup() {
+                console.log('把咖啡倒进杯子');
+            }
+
+            addCondiments() {
+                console.log('加糖和牛奶');
+            }
+        }
+
+        new Coffee().init();
+        /*
+            本章一直讨论的是模板方法模式，那么在上面的例子中，到底谁才是所谓的模板方法呢？
+            答案是Beverage.prototype.init。
+            Beverage.prototype.init被称为模板方法的原因是，
+                该方法中封装了子类的算法框架，它作为一个算法的模板，指导子类以何种顺序去执行哪些方法。
+            在Beverage.prototype.init方法中，算法内的每一个步骤都清楚地展示在我们眼前
+        */
+    </script>
+</body>
+
+</html>

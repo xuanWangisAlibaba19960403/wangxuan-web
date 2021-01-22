@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #box {
+      background-color: blue;
+      position: absolute;
+      z-index: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box">我是div</div>
+  <script>
+    /*
+      现在来分析实现这个程序的思路。在运动开始之前，需要提前记录一些有用的信息，至少包括以下信息：
+      ❏ 动画开始时，小球所在的原始位置；
+      ❏ 小球移动的目标位置；
+      ❏ 动画开始时的准确时间点；
+      ❏ 小球运动持续的时间
+      随后，我们会用setInterval创建一个定时器，定时器每隔19ms循环一次。
+      在定时器的每一帧里，我们会把动画已消耗的时间、小球原始位置、小球目标位置和动画持续的总时间等信息传入缓动算法。
+      该算法会通过这几个参数，计算出小球当前应该所在的位置。
+      最后再更新该div对应的CSS属性，小球就能够顺利地运动起来了。
+    */
+    var tween = {
+      linear(t, b, c, d) {
+        return c * t / d + b;
+      },
+      easeIn(t, b, c, d) {
+        return c * (t /= d) * t + b;
+      },
+      strongEaseIn(t, b, c, d) {
+        return c * (t /= d) * t * t * t * t + b;
+      },
+      strongEaseOut(t, b, c, d) {
+        return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
+      },
+      sineaseIn(t, b, c, d) {
+        return c * (t /= d) * t * t + b;
+      },
+      sineaseOut(t, b, c, d) {
+        return c * ((t = t / d - 1) * t * t + 1) + b;
+      }
+    }
+
+    class Animate {
+      constructor(container) {
+        this.container = container;
+        this.startTime = 0;
+        this.startPos = 0;
+        this.endPos = 0;
+        this.propertyName = null;
+
+        this.easing = null;
+        this.duration = null;
+      }
+
+      start(propertyName, endPos, duration, easing) {
+        this.startTime = Date.now();
+        this.startPos = this.container.getBoundingClientRect()[propertyName];
+        this.propertyName = propertyName;
+
+        this.endPos = endPos;
+        this.duration = duration;
+        this.easing = tween[easing];
+
+        var self = this;
+        var timeId = setInterval(function () {
+          if (self.step() === false) {
+            clearInterval(timeId);
+          }
+        }, 19);
+      }
+
+      step() {
+        console.log(this);
+        var t = Date.now();
+
+        if (t >= this.startTime + this.duration) {
+          this.update(this.endPos);
+          return false;
+        }
+        var pos = this.easing(t - this.startTime, this.startPos, this.endPos - this.startPos, this.duration);
+        console.log(pos);
+        this.update(pos);
+      }
+
+      update(pos) {
+        this.container.style[this.propertyName] = pos + 'px';
+      }
+    }
+
+    var box = document.getElementById('box');
+    var animate = new Animate(box);
+
+    animate.start('left', 500, 1000, 'strongEaseOut');
+  </script>
+</body>
+
+</html>

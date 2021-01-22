@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            有时候一个函数有可能接收多个参数，而参数的数量越多，函数就越难理解和使用。
+            使用该函数的人首先得搞明白全部参数的含义，
+            在使用的时候，还要小心翼翼，以免少传了某个参数或者把两个参数搞反了位置。
+            如果我们想在第3个参数和第4个参数之中增加一个新的参数，就会涉及许多代码的修改，代码如下：
+        */
+        var setUserInfo = function (id, name, address, sex, mobile, qq) {
+            console.log()
+            console.log()
+            console.log()
+            console.log()
+        }
+        /*
+            这时我们可以把参数都放入一个对象内，然后把该对象传入setUserInfo函数，
+            setUserInfo函数需要的数据可以自行从该对象里获取。
+            现在不用再关心参数的数量和顺序，只要保证参数对应的key值不变就可以了：
+        */
+
+        var setUserInfo = function (user) {
+            console.log(user.id)
+            console.log(user.name)
+            console.log(user.address)
+            console.log(user.sex)
+        }
+    </script>
+</body>
+
+</html>

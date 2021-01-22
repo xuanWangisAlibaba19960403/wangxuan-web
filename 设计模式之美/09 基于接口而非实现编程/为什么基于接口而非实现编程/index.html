@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            从本质上来看，“接口”就是一组“协议”或者“约定”，是功能提供者提供给使用者的一个“功能列表”。
+
+            越抽象、越顶层、越脱离具体某一实现的设计，越能提高代码的灵活性，越能应对未来的需求变化。
+            好的代码设计，不仅能应对当下的需求，而且在将来需求发生变化的时候，仍然能够在不破坏原有代码设计的情况下灵活应对。
+            而抽象就是提高代码扩展性、灵活性、可维护性最有效的手段之一。
+        */
+
+
+        class AliyunImageStore {
+            //...省略属性、构造函数等...
+
+            createBucketIfNotExisting(bucketName) {
+                // ...创建bucket代码逻辑...
+                // ...失败会抛出异常..
+            }
+
+            generateAccessToken() {
+                // ...根据accesskey/secrectkey等生成access token
+            }
+
+            uploadToAliyun(image, bucketName, accessToken) {
+                //...上传图片到阿里云...
+                //...返回图片存储在阿里云上的地址(url）...
+            }
+
+            downloadFromAliyun(url, accessToken) {
+                //...从阿里云下载图片...
+            }
+        }
+
+        // AliyunImageStore类的使用举例
+        class ImageProcessingJob {
+            constructor() {
+                this.BUCKET_NAME = "ai_images_bucket";
+            }
+            //...省略其他无关代码...
+
+            process() {
+                var image = new image(); //处理图片，并封装为Image对象
+                var imageStore = new AliyunImageStore(/*省略参数*/);
+                imageStore.createBucketIfNotExisting(BUCKET_NAME);
+                var accessToken = imageStore.generateAccessToken();
+                imagestore.uploadToAliyun(image, BUCKET_NAME, accessToken);
+            }
+
+        }
+
+        /*
+        创建 bucket（你可以简单理解为存储目录）、
+            生成 access token 访问凭证、
+            携带 access token 上传图片到指定的 bucket 中。
+            代码实现非常简单，类中的几个方法定义得都很干净，用起来也很清晰，乍看起来没有太大问题，完全能满足我们将图片存储在阿里云的业务需求
+        */
+
+        /*
+        不过，软件开发中唯一不变的就是变化。
+        过了一段时间后，我们自建了私有云，不再将图片存储到阿里云了，而是将图片存储到自建私有云上。
+        为了满足这样一个需求的变化，我们该如何修改代码呢？
+        我们需要重新设计实现一个存储图片到私有云的 PrivateImageStore 类，
+        并用它替换掉项目中所有的 AliyunImageStore 类对象。
+        这样的修改听起来并不复杂，只是简单替换而已，对整个代码的改动并不大。
+        不过，我们经常说，“细节是魔鬼”。
+        这句话在软件开发中特别适用。
+        实际上，刚刚的设计实现方式，就隐藏了很多容易出问题的“魔鬼细节”，我们一块来看看都有哪些。
+        新的 PrivateImageStore 类需要设计实现哪些方法，才能在尽量最小化代码修改的情况下，替换掉 AliyunImageStore 类呢？
+        这就要求我们必须将 AliyunImageStore 类中所定义的所有 public 方法，在 PrivateImageStore 类中都逐一定义并重新实现一遍。
+        而这样做就会存在一些问题，我总结了下面两点。
+        首先，AliyunImageStore 类中有些函数命名暴露了实现细节，比如，uploadToAliyun() 和 downloadFromAliyun()。
+        如果开发这个功能的同事没有接口意识、抽象思维，那这种暴露实现细节的命名方式就不足为奇了，毕竟最初我们只考虑将图片存储在阿里云上。
+        而我们把这种包含“aliyun”字眼的方法，照抄到 PrivateImageStore 类中，显然是不合适的。
+        如果我们在新类中重新命名 uploadToAliyun()、downloadFromAliyun() 这些方法，
+        那就意味着，我们要修改项目中所有使用到这两个方法的代码，代码修改量可能就会很大。
+        其次，将图片存储到阿里云的流程，跟存储到私有云的流程，可能并不是完全一致的。
+        比如，阿里云的图片上传和下载的过程中，需要生产 access token，而私有云不需要 access token。
+        一方面，AliyunImageStore 中定义的 generateAccessToken() 方法不能照抄到 PrivateImageStore 中；
+        另一方面，我们在使用 AliyunImageStore 上传、下载图片的时候，代码中用到了 generateAccessToken() 方法，
+        如果要改为私有云的上传下载流程，这些代码都需要做调整。
+        那这两个问题该如何解决呢？
+        解决这个问题的根本方法就是，在编写代码的时候，
+        要遵从“基于接口而非实现编程”的原则，
+        具体来讲，我们需要做到下面这 3 点。
+
+        函数的命名不能暴露任何实现细节。
+            比如，前面提到的 uploadToAliyun() 就不符合要求，应该改为去掉 aliyun 这样的字眼，改为更加抽象的命名方式，
+            比如：upload()。
+        封装具体的实现细节。
+            比如，跟阿里云相关的特殊上传（或下载）流程不应该暴露给调用者。
+            我们对上传（或下载）流程进行封装，对外提供一个包裹所有上传（或下载）细节的方法，给调用者使用。
+        为实现类定义抽象的接口。
+            具体的实现类都依赖统一的接口定义，遵从一致的上传功能协议。使用者依赖接口，而不是具体的实现类来编程。
+            我们按照这个思路，把代码重构一下。重构后的代码如下所示：
+        */
+
+
+        class ImageStore {
+            upload() {
+                throw new Error('请重写父类方法');
+            }
+            download() {
+                throw new Error('请重写父类方法');
+            }
+        }
+
+        class AliyunImageStore extends ImageStore {
+            //...省略属性、构造函数等...
+
+            upload(image, bucketName) {
+                createBucketIfNotExisting(bucketName);
+                var accessToken = generateAccessToken();
+                //...上传图片到阿里云...
+                //...返回图片在阿里云上的地址(url)...
+            }
+
+            download(url) {
+                var accessToken = generateAccessToken();
+                //...从阿里云下载图片...
+            }
+
+            createBucketIfNotExisting(bucketName) {
+                // ...创建bucket...
+                // ...失败会抛出异常..
+            }
+
+            generateAccessToken() {
+                // ...根据accesskey/secrectkey等生成access token
+            }
+        }
+
+        // 上传下载流程改变：私有云不需要支持access token
+        class PrivateImageStore extends ImageStore {
+            upload(image, bucketName) {
+                createBucketIfNotExisting(bucketName);
+                //...上传图片到私有云...
+                //...返回图片的url...
+            }
+
+            download(url) {
+                //...从私有云下载图片...
+            }
+
+            createBucketIfNotExisting(bucketName) {
+                // ...创建bucket...
+                // ...失败会抛出异常..
+            }
+        }
+
+        // ImageStore的使用举例
+        class ImageProcessingJob {
+            constructor() {
+                this.BUCKET_NAME = 'ai_images_bucket';
+            }
+            //...省略其他无关代码...
+
+            process() {
+                var image = new Image(); // 处理图片，并封装为Image对象
+                var imageStore = new PrivateImageStore();
+                imagestore.upload(image, BUCKET_NAME);
+            }
+        }
+    </script>
+</body>
+
+</html>

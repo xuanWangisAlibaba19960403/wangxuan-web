@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 1
+    var googleMap = {
+      show() {
+        console.log('开始渲染谷歌地图');
+      }
+    }
+
+    var renderMap = function () {
+      googleMap.show();
+    }
+
+    renderMap();
+    // 2
+    var baiduMap = {
+      show() {
+        console.log('开始渲染百度地图');
+      }
+    }
+
+    renderMap = function (type) {
+      if (type === 'google') {
+        googleMap.show();
+      } else if (type === 'baidu') {
+        baiduMap.show();
+      }
+    }
+
+    renderMap('google');
+    renderMap('baidu');
+
+    /* 可以看到，
+      虽然renderMap函数目前保持了一定的弹性，但这种弹性是很脆弱的，
+      一旦需要替换成搜搜地图，那无疑必须得改动renderMap函数，继续往里面堆砌条件分支语句
+    */
+
+    // 3
+    /*
+    * @param {object} map
+    */
+    renderMap = function (map) {
+      if (map &&
+        map.show instanceof Function) {
+          map.show();
+      }
+    }
+
+    var sosoMap = {
+      show() {
+        console.log('开始渲染搜搜地图');
+      }
+    }
+
+    renderMap(sosoMap);
+  </script>
+</body>
+
+</html>

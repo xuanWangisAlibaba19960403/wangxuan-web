@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="open">点击打开</button>
+    <button id="close">关闭弹窗</button>
+    <script>
+        function getSingle(fn) {
+            let result = null;
+            return function (...args) {
+                return result = result || (result = fn.apply(this, args));
+            }
+        }
+
+        function createModal() {
+            const modal = document.createElement('div');
+            modal.innerHTML = '您还未登录哦~';
+            modal.id = 'modal';
+            modal.style.display = 'none';
+            document.body.appendChild(modal);
+            return modal;
+        }
+
+        const Modal = getSingle(createModal);
+
+        // document.getElementById('open')
+        //     .addEventListener('click', function () {
+        //         const modal = new Modal();
+        //         modal.style.display = 'block';
+        //     });
+
+        // document.getElementById('close')
+        //     .addEventListener('click', function () {
+        //         const modal = new Modal();
+        //         modal.style.display = 'none';
+        //     });
+
+        function openModal() {
+            const modal = new Modal();
+            modal.style.display = 'block';
+        }
+
+        // 按钮文案修改逻辑
+        function changeButtonText() {
+            const btn = document.getElementById('open');
+            btn.innerText = '快去登录';
+        }
+
+        // 按钮置灰逻辑
+        function disableButton() {
+            const btn = document.getElementById('open');
+            btn.setAttribute("disabled", true);
+        }
+
+        // 新版本功能逻辑整合
+        function changeButtonStatus() {
+            changeButtonText();
+            disableButton();
+        }
+        /* 为了不被已有的业务逻辑干扰，当务之急就是将旧逻辑与新逻辑分离，把旧逻辑抽出去：*/
+        document.getElementById('open')
+            .addEventListener('click', function () {
+                openModal();
+                changeButtonStatus();
+            });
+
+        document.getElementById('close')
+            .addEventListener('click', function () {
+                const modal = new Modal();
+                modal.style.display = 'none';
+            });
+
+        class OpenButton {
+            onClick() {
+                const modal = new Modal();
+                modal.style.display = 'block';
+            }
+        }
+        class Decorator {
+            constructor(btn) {
+                this.openButton = btn;
+            }
+
+            onClick() {
+                this.openButton.onClick();
+                // 包装
+                this.changeButtonStatus();
+            }
+
+            changeButtonStatus() {
+                this.changeButtonText();
+                this.disableButton();
+            }
+
+            disableButton() {
+                const btn = document.getElementById('open');
+                btn.setAttribute('disabled', true);
+            }
+
+            changeButtonText() {
+                const btn = document.getElementById('open');
+                btn.innerText = '快去登录';
+            }
+        }
+
+        const openButton = new OpenButton();
+        const decorator = new Decorator(openButton);
+
+        document.getElementById('open')
+            .addEventListener('click', function () {
+                // openButton.onClick
+                decorator.onClick();
+            });
+    </script>
+</body>
+
+</html>

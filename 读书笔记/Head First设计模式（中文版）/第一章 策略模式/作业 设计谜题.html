@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Character {
+            constructor() {
+                if (new.target === Character) {
+                    throw new Error('Character');
+                }
+            }
+
+            weapon;
+
+            setWeapon(weapon) {
+                this.weapon = weapon
+            }
+        }
+
+        class Queen extends Character {
+            fight() {
+                console.log('Queen');
+            }
+        }
+
+        class King extends Character {
+            fight() {
+                console.log('King');
+            }
+        }
+
+        class Troll extends Character {
+            fight() {
+                console.log('Troll');
+            }
+        }
+
+        class Knight extends Character {
+            fight() {
+                console.log('Knight');
+            }
+        }
+
+        class WeaponBehavior {
+            constructor() {
+                if (new.target === Character) {
+                    throw new Error('WeaponBehavior');
+                }
+            }
+            useWeapon() {}
+        }
+
+        class KnifeBehavior extends WeaponBehavior {
+            useWeapon() {
+                console.log('刺杀');
+            }
+        }
+
+        class BowAndArrowBehavior extends WeaponBehavior {
+            useWeapon() {
+                console.log('射箭');
+            }
+        }
+
+        class AxeBehavior extends WeaponBehavior {
+            useWeapon() {
+                console.log('砍劈');
+            }
+        }
+
+        class SwordBehavior extends WeaponBehavior {
+            useWeapon() {
+                console.log('挥舞');
+            }
+        }
+
+        const king = new King();
+        king.setWeapon(new AxeBehavior());
+        king.weapon.useWeapon();
+        king.setWeapon(new SwordBehavior());
+        king.weapon.useWeapon();
+    </script>
+</body>
+
+</html>

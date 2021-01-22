@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            现在我们改变故事的背景设定，
+                假设当A在心情好的时候收到花，小明表白成功的几率有60%，
+                而当A在心情差的时候收到花，小明表白的成功率无限趋近于0。
+            小明跟A刚刚认识两天，还无法辨别A什么时候心情好。
+            如果不合时宜地把花送给A，花被直接扔掉的可能性很大，这束花可是小明吃了7天泡面换来的。
+            但是A的朋友B却很了解A，所以小明只管把花交给B, 
+            B会监听A的心情变化，然后选择A心情好的时候把花转交给A，代码如下：
+        */
+        class Flower {
+
+        }
+
+        const xiaoming = {
+            sendFlower(target) {
+                const flower = new Flower();
+                target.receiveFlower(flower);
+            }
+        }
+        const A = {
+            receiveFlower(flower) {
+                console.log('收到花');
+            },
+            listenGoodMood(fn) {
+                setTimeout(() => {
+                    console.log('goodMood');
+                    fn();
+                }, 2000)
+            }
+        }
+
+        const proxy = {
+            receiveFlower(flower) {
+                A.listenGoodMood(function () {
+                    A.receiveFlower(flower);
+                })
+            }
+        }
+
+
+        xiaoming.sendFlower(proxy);
+    </script>
+</body>
+
+</html>

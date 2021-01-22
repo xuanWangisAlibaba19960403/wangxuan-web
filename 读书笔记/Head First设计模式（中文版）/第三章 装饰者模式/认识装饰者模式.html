@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Beverage {
+            constructor() {
+                if (new.target === Beverage) {
+                    throw new Error('Beverage');
+                }
+            }
+
+            getDescription() {
+                return this.description;
+            }
+
+            cost() {
+
+            }
+
+            hasMilk() {
+
+            }
+
+            setMilk() {
+
+            }
+
+            hasSoy() {
+
+            }
+
+            setSoy() {
+
+            }
+
+            hasMocha() {
+
+            }
+
+            setMocha() {
+
+            }
+
+            hasWhip() {
+
+            }
+
+            setWhip() {
+
+            }
+        }
+
+        class HouseBlend extends Beverage {
+            cost() {
+                console.log('HouseBlend');
+            }
+        }
+
+
+        class DarkRoast extends Beverage {
+            cost() {
+                console.log('DarkRoast');
+            }
+        }
+
+
+        class Decaf extends Beverage {
+            cost() {
+                console.log('Decaf');
+            }
+        }
+
+
+        class Espresso extends Beverage {
+            cost() {
+                console.log('Espresso');
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Folder {
+      constructor(name) {
+        this.name = name;
+        this.parent = null;
+        this.files = [];
+      }
+
+      add(file) {
+        file.parent = this;
+        this.files.push(file);
+      }
+
+      scan() {
+        console.log(`开始扫描文件加：${this.name}`);
+        for (let i = 0; i < this.files.length; i++) {
+          this.files[i].scan();
+        }
+      }
+
+      remove() {
+        if (!this.parent) {
+          return;
+        }
+        var { files } = this.parent;
+        for (let i = files.length - 1; i >= 0; i--) {
+          var file = files[i];
+          if (file === this) {
+            files.splice(i, 1);
+          }
+        }
+      }
+    }
+
+    class File {
+      constructor(name) {
+        this.name = name;
+        this.parent = null;
+      }
+
+      add() {
+        throw new Error('不能添加在文件下面');
+      }
+
+      scan() {
+        console.log(`开始扫描文件: ${this.name}`);
+      }
+
+      remove() {
+        if (!this.parent) {
+          return;
+        }
+        var { files } = this.parent;
+        for (let i = files.length - 1; i >= 0; i--) {
+          var file = files[i];
+          if (file === this) {
+            files.splice(i, 1);
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    var folder = new Folder('学习资料');
+    var folder1 = new Folder('JavaScript');
+    var file1 = new Folder('深入浅出Node.js');
+
+    folder1.add(new File('JavaScript设计模式与开发实践'));
+    folder.add(folder1);
+    folder.add(file1);
+
+    folder1.remove();
+    folder.scan();
+  </script>
+</body>
+
+</html>

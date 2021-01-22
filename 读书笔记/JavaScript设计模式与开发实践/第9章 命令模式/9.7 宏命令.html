@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const closeDoorCommand = {
+            execute() {
+                console.log('关门');
+            }
+        }
+
+        const openPcCommand = {
+            execute() {
+                console.log('开电脑');
+            }
+        }
+
+        const openQQCommand = {
+            execute() {
+                console.log('登录QQ');
+            }
+        }
+
+        const MacroCommand = function () {
+            return {
+                commandList: [],
+                add(command) {
+                    this.commandList.push(command);
+                },
+                execute() {
+                    for (let command of this.commandList) {
+                        command.execute();
+                    }
+                }
+            }
+        }
+
+
+        var macroCommand = MacroCommand();
+        macroCommand.add(closeDoorCommand);
+        macroCommand.add(openPcCommand);
+        macroCommand.add(openQQCommand);
+
+        macroCommand.execute();
+    </script>
+</body>
+
+</html>

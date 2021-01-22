@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const myImage = (function () {
+            const imgNode = document.createElement('img');
+            document.body.appendChild(imgNode);
+
+            return {
+                setSrc(src) {
+                    console.log(src);
+                    imgNode.src = src;
+                }
+            };
+        })();
+
+        const proxyImage = (function () {
+            const img = new Image();
+            img.onload = function () {
+                myImage.setSrc(this.src);
+            }
+            return {
+                setSrc(src) {
+                    myImage.setSrc('./loading.gif');
+                    img.src = src;
+                }
+            }
+        })();
+
+        proxyImage.setSrc('https://img.pic88.com/preview/2020/09/02/1599054528819866.jpg?imageMogr2/quality/100!/thumbnail/640|watermark/3/image/aHR0cHM6Ly9qcy5waWM4OC5jb20vd3d3L2NvbW1vbi9pbWcvcGljODgtd2F0ZXIucG5n/gravity/Center/dissolve/100/dx/0/dy/10/image/aHR0cHM6Ly9qcy5waWM4OC5jb20vd3d3L2NvbW1vbi9pbWcvd2gyMzBiZy5wbmc=/dx/0/dy/25/text/SUTvvJoxMjAyMDA5MDIyMTQ4NDkxOTUxNjk=/fill/I0ZGRkZGRg==/fontsize/320/dx/30/dy/30');
+    </script>
+</body>
+
+</html>

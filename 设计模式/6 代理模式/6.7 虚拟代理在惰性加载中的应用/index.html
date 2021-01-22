@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var cache = [];
+
+        var miniConsole = {
+            log(...args) {
+                cache.push(function () {
+                    return miniConsole.log.apply(miniConsole, args);
+                })
+            }
+        }
+
+        miniConsole.log(1);
+        miniConsole.log(1);
+        miniConsole.log(1);
+        miniConsole.log(1);
+
+        console.log(cache);
+        var handler = function (ev) {
+            if (ev.keyCode === 123) {
+                var script = document.createElement('script');
+                script.onload = function () {
+                    for (let i = 0; i < cache.length; i++) {
+                        cache[i]();
+                    }
+                }
+                document.getElementsByTagName('head')[0].appendChild(script);
+            }
+        }
+
+        document.addEventListener('keydown', handler);
+    </script>
+</body>
+
+</html>

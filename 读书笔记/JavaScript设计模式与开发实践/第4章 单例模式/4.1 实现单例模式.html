@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Singleton {
+      constructor(name) {
+        this.name = name;
+        this.intance = null;
+      }
+
+      getName() {
+        return this.name;
+      }
+
+      static getIntance(name) {
+        if (this.intance) {
+          return this.intance;
+        }
+        return (this.intance = new Singleton(name));
+      }
+    }
+
+    let a = Singleton.getIntance('sven1');
+    let b = Singleton.getIntance('sven2');
+    console.log(Singleton.intance);
+  </script>
+</body>
+
+</html>

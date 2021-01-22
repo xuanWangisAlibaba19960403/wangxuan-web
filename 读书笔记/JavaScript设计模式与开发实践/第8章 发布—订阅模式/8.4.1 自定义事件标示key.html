@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 现在看看如何一步步实现发布—订阅模式。
+        ❏ 首先要指定好谁充当发布者（比如售楼处）；
+        ❏ 然后给发布者添加一个缓存列表，用于存放回调函数以便通知订阅者（售楼处的花名册）；
+        ❏ 最后发布消息的时候，发布者会遍历这个缓存列表，依次触发里面存放的订阅者回调函数（遍历花名册，挨个发短信）。另外，我们还可以往回调函数里填入一些参数，订阅者可以接收这些参数。这是很有必要的，比如售楼处可以在发给订阅者的短信里加上房子的单价、面积、容积率等信息，订阅者接收到这些信息之后可以进行各自的处理：
+        */
+
+        const sales = {};
+
+        sales.clientList = []; // 存放订阅者的回调函数
+
+        sales.listen = function (key, fn) {
+            console.log(key);
+            if (!this.clientList[key]) {
+                this.clientList[key] = [];
+            }
+            this.clientList[key].push(fn);
+        }
+
+        sales.trigger = function (key, ...args) {
+            for (const fn of this.clientList[key]) {
+                fn.apply(this, args);
+            }
+        }
+
+
+        sales.listen('squareMeter88', function (price, squareMeter) { // 小明
+            console.log('价格', price);
+            console.log('平方米', squareMeter);
+        })
+
+        sales.listen('squareMeter110', function (price, squareMeter) { // 小红
+            console.log('价格', price);
+            console.log('平方米', squareMeter);
+        })
+
+        sales.trigger('squareMeter88', 200000, 88);
+        sales.trigger('squareMeter110', 300000, 110);
+        /*
+            至此，我们已经实现了一个最简单的发布—订阅模式，但这里还存在一些问题。
+            我们看到订阅者接收到了发布者发布的每个消息，虽然小明只想买88平方米的房子，
+            但是发布者把110平方米的信息也推送给了小明，这对小明来说是不必要的困扰。
+        */
+    </script>
+</body>
+
+</html>

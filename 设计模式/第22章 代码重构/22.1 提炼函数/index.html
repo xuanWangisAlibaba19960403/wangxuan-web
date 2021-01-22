@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*
+        在JavaScript开发中，
+        我们大部分时间都在与函数打交道，所以我们希望这些函数有着良好的命名，函数体内包含的逻辑清晰明了。
+        如果一个函数过长，不得不加上若干注释才能让这个函数显得易读一些，
+        那这些函数就很有必要进行重构。
+
+        如果在函数中有一段代码可以被独立出来，那我们最好把这些代码放进另外一个独立的函数中。
+        这是一种很常见的优化工作，这样做的好处主要有以下几点。
+        ❏ 避免出现超大函数。
+        ❏ 独立出来的函数有助于代码复用。
+        ❏ 独立出来的函数更容易被覆写。
+        ❏ 独立出来的函数如果拥有一个良好的命名，它本身就起到了注释的作用。
+
+        比如在一个负责取得用户信息的函数里面，我们还需要打印跟用户信息有关的log，
+        那么打印log的语句就可以被封装在一个独立的函数里：
+    */
+    var getUserInfo = function () {
+      new Promise((resolve, reject) => {
+        resolve({
+          nickName: 'lily',
+          age: 18,
+          male: 'female'
+        });
+      })
+        .then((data) => {
+          printDetails(data)
+        })
+    }
+
+    var printDetails = function (data) {
+      console.log(data.nickName);
+      console.log(data.age);
+      console.log(data.male);
+    }
+
+    getUserInfo();
+  </script>
+</body>
+
+</html>

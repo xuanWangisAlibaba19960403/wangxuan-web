@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Flower {
+      constructor() {
+
+      }
+    }
+  </script>
+  <!-- <script>
+
+    var xiaoming = {
+      sendFlower(target) {
+        var flower = new Flower();
+        target.receiveFlower(flower);
+      }
+    }
+
+
+    var A = {
+      receiveFlower(flower) {
+        console.log('收到花' + flower);
+      }
+    }
+
+    xiaoming.sendFlower(A);
+  </script> -->
+  <!-- <script>
+    // 接下来，我们引入代理B，即小明通过B来给A送花
+    var xiaoming = {
+      sendFlower(target) {
+        var flower = new Flower();
+        target.receiveFlower(flower);
+      }
+    }
+
+    var B = {
+      receiveFlower(flower) {
+        A.receiveFlower(flower);
+      }
+    }
+    var A = {
+      receiveFlower(flower) {
+        console.log('收到花' + flower);
+      }
+    }
+
+    xiaoming.sendFlower(B);
+  </script> -->
+  <script>
+    // 接下来，我们引入代理B，即小明通过B来给A送花
+    var xiaoming = {
+      sendFlower(target) {
+        var flower = new Flower();
+        target.receiveFlower(flower);
+      }
+    }
+
+    var B = {
+      receiveFlower(flower) {
+        A.listenGoodMoon(function () {
+          A.receiveFlower(flower);
+        });
+      }
+    }
+
+    var A = {
+      receiveFlower(flower) {
+        console.log('收到花' + flower);
+      },
+      listenGoodMoon(fn) {
+        setTimeout(() => {
+          fn();
+        }, 3000);
+      }
+    }
+
+    xiaoming.sendFlower(B);
+  </script>
+</body>
+
+</html>

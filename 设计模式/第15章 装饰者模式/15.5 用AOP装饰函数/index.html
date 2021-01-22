@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="button">按钮</button>
+    <script>
+        // Function.prototype.before = function (beforeFn) {
+        //     var _self = this;
+        //     return function (...args) {
+        //         beforeFn.apply(this, args);
+
+        //         return _self.apply(this, args);
+        //     }
+        // }
+
+        // Function.prototype.after = function (afterFn) {
+        //     var _self = this;(
+        //     return function (...args) {
+        //         var ret = _self.apply(this, args)
+        //         afterFn.apply(this, args);
+        //         return ret;
+        //     }
+        // }
+
+        var before = function (fn, beforefn) {
+            return function (...args) {
+                beforefn.apply(this, args);
+                return fn.apply(this, args);
+            }
+        };
+
+
+        // document.getElementById = document.getElementById.before(() => {
+        //     console.log('1');
+        // })
+        var f = before((id) => { console.log(document.getElementById(id)) }, () => { console.log(1) });
+        // f('button');
+        f = before(f, () => { console.log(2) });
+        f('button')
+        // var button = document.getElementById('button');
+        // console.log(button);
+    </script>
+</body>
+
+</html>

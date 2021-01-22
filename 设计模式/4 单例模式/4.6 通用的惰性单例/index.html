@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="loginBtn">登录</button>
+  <script>
+    // var createLoginLayer = (function () {
+    //   var div = null;
+    //   return function () {
+    //     if (!div) {
+    //       div = document.createElement('div');
+    //       div.innerText = '我是登录浮窗';
+    //       div.style.display = 'none';
+    //       document.body.appendChild(div);
+    //     }
+    //     return div;
+    //   }
+    // })();
+
+    var getSingle = function (fn) {
+      var instance = null;
+      return function (...args) {
+        return instance || (instance = fn.apply(this, args));
+      }
+    }
+
+    // var createLoginLayer = function () {
+    //   var div = document.createElement('div');
+    //   div.innerText = '我是登录浮窗';
+    //   div.style.display = 'none';
+    //   document.body.appendChild(div);
+    //   return div;
+    // }
+
+    // var createSingleLoginLayer = getSingle(createLoginLayer);
+
+    var loginBtn = document.getElementById('loginBtn');
+    // loginBtn.addEventListener('click', function () {
+    //   var loginLayer = createSingleLoginLayer();
+    //   loginLayer.style.display = 'block';
+    // });
+
+    // var createSingleIframe = getSingle(function() {
+    //   var iframe = document.createElement('iframe');
+    //   document.body.appendChild(iframe);
+    //   return iframe;
+    // });
+
+    // loginBtn.addEventListener('click', function() {
+    //   var loginLayer = createSingleIframe();
+    //   loginLayer.src = 'https://www.baidu.com';
+    // })
+
+    var bindEvent = getSingle(function () {
+      loginBtn.addEventListener('click', function () {
+        console.log('click');
+      })
+      return true;
+    });
+
+    var render = function () {
+      console.log('渲染列表');
+      bindEvent();
+    }
+
+    render();
+    render();
+    render();
+  </script>
+</body>
+
+</html>

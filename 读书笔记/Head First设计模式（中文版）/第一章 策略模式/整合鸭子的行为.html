@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Duck {
+
+            constructor() {
+                if (new.target === Duck) {
+                    throw new Error('不允许调用父类')
+                }
+            }
+
+            flyBehavior;
+
+            quackBehavior;
+
+            performFly() {
+                this.flyBehavior.fly();
+            };
+
+            performQuack() {
+                this.quackBehavior.quack();
+            };
+        }
+
+        class FlyBehavior {
+            fly() {
+                throw new Error('不允许调用抽象类');
+            }
+        }
+        class FlyWithWings extends FlyBehavior {
+            fly() {
+                console.log('i can fly');
+            }
+        }
+
+        class FlyNoWay extends FlyBehavior {
+            fly() {
+                console.log(`i can't fly`);
+            }
+        }
+
+        class QuackBehavior {
+            quack() {
+                throw new Error('不允许调用抽象类');
+            }
+        }
+
+        class Quack extends QuackBehavior {
+            quack() {
+                console.log(`quack`);
+            }
+        }
+
+        class MuteQuack extends QuackBehavior {
+            quack() {
+                console.log(`muteQuack`);
+            }
+        }
+
+        class Squeak extends QuackBehavior {
+            quack() {
+                console.log(`squeak`);
+            }
+        }
+
+        class MiniDuckSimulator extends Duck {
+            constructor() {
+                super();
+                this.quackBehavior = new Quack();
+                this.flyBehavior = new FlyWithWings();
+                this.performQuack();
+                this.performFly();
+            }
+        }
+
+        const duck = new MiniDuckSimulator();
+        console.log(duck);
+    </script>
+</body>
+
+</html>

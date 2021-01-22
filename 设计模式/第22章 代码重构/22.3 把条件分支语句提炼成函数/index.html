@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            在程序设计中，复杂的条件分支语句是导致程序难以阅读和理解的重要原因，而且容易导致一个庞大的函数。
+            假设现在有一个需求是编写一个计算商品价格的getPrice函数，商品的计算只有一个规则：
+            如果当前正处于夏季，那么全部商品将以8折出售。代码如下
+        */
+        var getPrice = function (price) {
+            var date = new Date();
+            const month = date.getMonth();
+            if (month >= 6 && month <= 10) {
+                return price * 0.8
+            }
+            return price;
+        }
+        /*
+            这句代码要表达的意思很简单，就是判断当前是否正处于夏天（7～10月）。
+            尽管这句代码很短小，但代码表达的意图和代码自身还存在一些距离，
+            阅读代码的人必须要多花一些精力才能明白它传达的意图。
+            其实可以把这句代码提炼成一个单独的函数，既能更准确地表达代码的意思，
+            函数名本身又能起到注释的作用。代码如下：
+        */
+        var isSummer = function () {
+            var date = new Date();
+            const month = date.getMonth();
+            return month >= 6 && month <= 10;
+        }
+        var getPrice = function (price) {
+            if (isSummer()) {
+                return price * 0.8
+            }
+            return price;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*
+        但在状态模式中刚好相反，
+            状态模式的关键是把事物的每种状态都封装成单独的类，
+            跟此种状态有关的行为都被封装在这个类的内部，
+            所以button被按下的的时候，
+            只需要在上下文中，把这个请求委托给当前的状态对象即可，该状态对象会负责渲染它自身的行为，如图16-1所示。
+    */
+    class Light {
+      constructor() {
+        this.offLightState = new OffLigthState(this);
+        this.weakLightState = new WeakLightState(this);
+        this.strongLightState = new StrongLightState(this);
+        this.button = null;
+      }
+
+      init() {
+        var button = document.createElement('button');
+        var self = this;
+        this.button = document.body.appendChild(button);
+        button.innerText = '开关';
+        this.currState = this.offLightState;
+        this.button.onclick = function () {
+          self.currState.buttonWasPressed();
+        }
+      }
+
+      setState(newState) {
+        this.currState = newState;
+      }
+    }
+
+    class OffLigthState {
+      constructor(light) {
+        this.light = light;
+      }
+
+      buttonWasPressed() {
+        console.log('弱光');
+        this.light.setState(this.light.weakLightState);
+        // 切换到状态到weakLightState
+      }
+    }
+
+    class WeakLightState {
+      constructor(light) {
+        this.light = light;
+      }
+
+      buttonWasPressed() {
+        console.log('强光');
+        this.light.setState(this.light.strongLightState);
+        // 切换到状态到strongLightState
+      }
+    }
+
+    class StrongLightState {
+      constructor(light) {
+        this.light = light;
+      }
+
+      buttonWasPressed() {
+        console.log('关灯');
+        this.light.setState(this.light.offLightState);
+        // 切换到状态到offLightState
+      }
+    }
+
+    const light = new Light()
+    light.init();
+  </script>
+</body>
+
+</html>

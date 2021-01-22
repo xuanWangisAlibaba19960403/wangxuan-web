@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let miniConsole = (function () {
+            const cache = [];
+            const handler = function ({
+                keyCode
+            }) {
+                if (keyCode === 123) {
+                    const script = document.createElement('script');
+                    script.onload = function () {
+                        for (const fn of cache) {
+                            fn();
+                        }
+                    }
+                    script.src = './miniConsole.js';
+                    document.getElementsByTagName('head')[0].appendChild(script);
+                }
+            };
+            document.addEventListener('keydown', handler);
+
+            return {
+                log(...args) {
+                    cache.push(function () {
+                        return miniConsole.log.apply(miniConsole, args);
+                    })
+                }
+            }
+        })();
+
+        miniConsole.log(11);
+    </script>
+</body>
+
+</html>

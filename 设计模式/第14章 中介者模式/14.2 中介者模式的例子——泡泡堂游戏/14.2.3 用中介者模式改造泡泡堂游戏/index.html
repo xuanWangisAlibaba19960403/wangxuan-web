@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Player {
+            constructor(name, teamColor) {
+                this.state = 'alive'; // 玩家状态
+                this.name = name;
+                this.teamColor = teamColor;
+            }
+
+            win() {
+                console.log(`${this.name} won`);
+            }
+
+            lose() {
+                console.log(`${this.name} lost`);
+            }
+
+            die() {
+                this.state = 'dead';
+                playerDirector.reciveMessage('playerDead', this);
+            }
+            // 移除玩家
+            remove() {
+                playerDirector.reciveMessage('removePlayer', this);
+            }
+            // 换队伍
+            changeTeam(color) {
+                playerDirector.reciveMessage('changeTeam', this, color);
+            }
+        }
+
+        var playerFactory = function (name, teamColor) {
+            var newPlayer = new Player(name, teamColor);
+            playerDirector.reciveMessage('addPlayer', newPlayer);
+            return newPlayer;
+        }
+
+        /*
+            最后，我们需要实现这个中介者playerDirector对象，一般有以下两种方式。
+            ❏ 利用发布—订阅模式。
+                将playerDirector实现为订阅者，各player作为发布者，一旦player的状态发生改变，便推送消息给playerDirector, playerDirector处理消息后将反馈发送给其他player。
+            ❏ 在playerDirector中开放一些接收消息的接口，
+                各player可以直接调用该接口来给playerDirector发送消息，player只需传递一个参数给playerDirector，这个参数的目的是使playerDirector可以识别发送者。
+                同样，playerDirector接收到消息之后会将处理结果反馈给其他player。
+            这两种方式的实现没什么本质上的区别。
+        */
+
+        var playerDirector = (function () {
+            var players = {}; // 所有玩家
+            var operations = { // 中介者可以执行的操作
+                addPlayer(player) {
+                    var { teamColor } = player;
+                    players[teamColor] = players[teamColor] || []; // 如果还没有改颜色的玩家成立队伍
+                    players[teamColor].push(player);
+                },
+
+                removePlayer(player) {
+                    var { teamColor } = player;
+                    var teamPlayer = player[teamColor] || [];
+                    for (let i = 0; i < teamPlayer.length; i++) {
+                        if (teamPlayer[i] === player) {
+                            teamPlayer.splice(i, 1);
+                        }
+                    }
+                },
+
+                changeTeam(player, newTeamColor) {
+                    operations.removePlayer(player);
+                    player.teamColor = newTeamColor;
+                    operations.addPlayer(player);
+                },
+
+                playerDead(player) {
+                    var { teamColor } = player;
+                    var teamPlayer = players[teamColor];
+
+                    var allDead = true;
+
+                    for (const player of teamPlayer) {
+                        if (player.state !== 'dead') {
+                            allDead = false;
+                            break;
+                        }
+                    }
+
+                    if (allDead === true) {
+                        for (const player of teamPlayer) {
+                            player.lose();
+                        }
+
+                        for (var color in players) {
+                            if (color !== teamColor) {
+                                var teamPlayers = players[color];
+
+                                for (const player of teamPlayers) {
+                                    player.win();
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            return {
+                reciveMessage(type, ...args) {
+                    operations[type].apply(this, args);
+                }
+            }
+        })();
+
+        var player1 = playerFactory('皮蛋', 'red');
+        var player2 = playerFactory('小乖', 'red');
+        var player3 = playerFactory('宝宝', 'red');
+        var player4 = playerFactory('小强', 'red');
+
+        var player5 = playerFactory('黑妞', 'blue');
+        var player6 = playerFactory('从头', 'blue');
+        var player7 = playerFactory('海盗', 'blue');
+        var player8 = playerFactory('胖墩', 'blue');
+
+        player1.die();
+        player2.die();
+        player3.die();
+        player4.die();
+    </script>
+</body>
+
+</html>

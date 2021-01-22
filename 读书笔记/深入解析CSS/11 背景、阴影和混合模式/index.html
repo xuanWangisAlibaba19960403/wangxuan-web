@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .fade {
+            background-image: linear-gradient(to right, white, blue);
+            height: 200px;
+            width: 400px;
+        }
+
+        .fade1 {
+            background-image: repeating-linear-gradient(-45deg, #57b, #57b 10px, #148 10px, #148 20px);
+            border-radius: .3em;
+            height: 1em;
+            width: 400px;
+        }
+
+        .fade2 {
+            position: relative;
+            height: 150px;
+            width: 200px;
+        }
+
+        .fade2:hover .fade2-hover {
+            opacity: 1;
+        }
+
+        .fade2-hover {
+            animation: barberpole 0.5s linear infinite;
+            display: block;
+            height: 150px;
+            width: 200px;
+            transition: opacity 0.3s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            background-size: 30px 30px;
+            background-image: linear-gradient(45deg,
+                    rgba(0, 0, 0, 0.1) 25%,
+                    transparent 25%,
+                    transparent 50%,
+                    rgba(0, 0, 0, 0.1) 50%,
+                    rgba(0, 0, 0, 0.1) 75%,
+                    transparent 75%,
+                    transparent);
+        }
+
+        @keyframes barberpole {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 60px 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 渐变 -->
+    <div class="fade"></div>
+
+    <!-- 重复渐变 -->
+    <div class="fade1"></div>
+
+    <div class="fade2">
+        <div class="fade2-hover"></div>
+    </div>
+
+    <script>
+
+    </script>
+</body>
+
+</html>

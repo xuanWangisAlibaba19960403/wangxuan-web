@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #ball {
+      background-color: #000;
+      border-radius: 50%;
+      height: 50px;
+      position: absolute;
+      width: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="ball"></div>
+  输入小球移动位置后的距离：<input type="text" id="pos">
+  <button id="moveBtn">开始移动</button>
+  <button id="cancelBtn">开始移动</button>
+  <script>
+    var tween = {
+      linear(t, b, c, d) {
+        return c * t / d + b;
+      },
+      easeIn(t, b, c, d) {
+        return c * (t /= d) * t + b;
+      },
+      strongEaseIn(t, b, c, d) {
+        return c * (t /= d) * t * t * t * t + b;
+      },
+      strongEaseOut(t, b, c, d) {
+        return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
+      },
+      sineaseIn(t, b, c, d) {
+        return c * (t /= d) * t * t + b;
+      },
+      sineaseOut(t, b, c, d) {
+        return c * ((t = t / d - 1) * t * t + 1) + b;
+      }
+    }
+
+    class Animate {
+      constructor(container) {
+        this.container = container;
+        this.startTime = 0;
+        this.startPos = 0;
+        this.endPos = 0;
+        this.propertyName = null;
+
+        this.easing = null;
+        this.duration = null;
+      }
+
+      start(propertyName, endPos, duration, easing) {
+        this.startTime = Date.now();
+        this.startPos = this.container.getBoundingClientRect()[propertyName];
+        this.propertyName = propertyName;
+
+        this.endPos = endPos;
+        this.duration = duration;
+        this.easing = tween[easing];
+
+        var self = this;
+        var timeId = setInterval(function () {
+          if (self.step() === false) {
+            clearInterval(timeId);
+          }
+        }, 19);
+      }
+
+      step() {
+        console.log(this);
+        var t = Date.now();
+
+        if (t >= this.startTime + this.duration) {
+          this.update(this.endPos);
+          return false;
+        }
+        var pos = this.easing(t - this.startTime, this.startPos, this.endPos - this.startPos, this.duration);
+        console.log(pos);
+        this.update(pos);
+      }
+
+      update(pos) {
+        this.container.style[this.propertyName] = pos + 'px';
+      }
+    }
+  </script>
+  <script>
+    var MoveCommand = function (receiver, pos) {
+      this.receiver = receiver;
+      this.pos = pos;
+      this.oldPos = null;
+    }
+
+    MoveCommand.prototype.executre = function () {
+      this.receiver.start('left', this.pos, 1000, 'strongEaseOut')
+      this.oldPos = this.receiver.container.getBoundingClientRect()[this.receiver.propertyName];
+    }
+
+    MoveCommand.prototype.undo = function () {
+      this.receiver.start('left', this.oldPos, 1000, 'strongEaseOut')
+    }
+  </script>
+  <script>
+    const ball = document.getElementById('ball');
+    const pos = document.getElementById('pos');
+    const moveBtn = document.getElementById('moveBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+
+    let moveCommand = null;
+
+    moveBtn.onclick = function () {
+      var animate = new Animate(ball);
+      moveCommand = new MoveCommand(animate, pos.value);
+      moveCommand.executre();
+    }
+
+    cancelBtn.onclick = function() {
+      moveCommand.undo();
+    }
+  </script>
+</body>
+
+</html>

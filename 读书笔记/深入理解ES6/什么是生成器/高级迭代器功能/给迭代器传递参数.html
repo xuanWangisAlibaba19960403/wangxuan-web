@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function *createIterator() {
+            let first = yield 1;
+            let second = yield first + 2;
+            yield second + 3;
+        }
+
+        let iterator = createIterator();
+
+        console.log(iterator.next());
+        console.log(iterator.next(4));
+        console.log(iterator.next(5));
+        console.log(iterator.next());
+    </script>
+</body>
+</html>

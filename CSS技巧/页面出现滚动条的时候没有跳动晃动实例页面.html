@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html {
+            overflow-y: scroll;
+        }
+
+        :root {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        :root body {
+            position: absolute;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            width: 100vw;
+        }
+
+        .box {
+            align-items: center;
+            display: grid;
+            height: 500px;
+            justify-content: center;
+        }
+
+        #btn {
+            left: 0;
+            top: 0;
+            position: fixed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">box</div>
+    <button id="btn">添加</button>
+    <script>
+        const btn = document.getElementById('btn');
+        btn.addEventListener('click', () => {
+            const ele = document.createElement('div');
+            ele.classList.add('box');
+            document.body.appendChild(ele);
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="count">点我</button>
+  <div id="show"></div>
+  <script>
+    class Event {
+      constructor() {
+        this.clientList = {};
+      }
+
+      listen(key, fn) {
+        if (!this.clientList[key]) {
+          this.clientList[key] = [];
+        }
+        this.clientList[key].push(fn);
+      }
+
+      trigger(...args) {
+        const key = args.shift();
+        const fns = this.clientList[key];
+        if (!fns || fns.length === 0) {
+          return false;
+        }
+
+        for (let i = 0; i < fns.length; i++) {
+          fns[i].apply(this, args);
+        }
+      }
+
+      remove(key, fn) {
+        const fns = this.clientList[key];
+        if (!fns) {
+          return false;
+        }
+
+        if (!fn) {
+          fns && (fns.length = 0);
+        } else {
+          for (let i = fns.length - 1; i >= 0; i--) {
+            var _fn = fns[i];
+            if (_fn === fn) {
+              fns.splice(i, 1);
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    /*
+      比如现在有两个模块，
+      a模块里面有一个按钮，每次点击按钮之后，b模块里的div中会显示按钮的总点击次数，
+      我们用全局发布—订阅模式完成下面的代码，使得a模块和b模块可以在保持封装性的前提下进行通信。
+    */
+    const event = new Event();
+    
+    var a = (function () {
+      var count = 0;
+      var btn = document.getElementById('count');
+      btn.addEventListener('click', function () {
+        event.trigger('add', count++);
+      })
+    })();
+
+    var b = (function () {
+      var count = 0;
+      var show = document.getElementById('show');
+      event.listen('add', function (count) {
+        show.innerText = count;
+      });
+    })();
+
+    /*
+      但在这里我们要留意另一个问题，模块之间如果用了太多的全局发布—订阅模式来通信，那么模块与模块之间的联系就被隐藏到了背后。
+      我们最终会搞不清楚消息来自哪个模块，或者消息会流向哪些模块，这又会给我们的维护带来一些麻烦，也许某个模块的作用就是暴露一些接口给其他模块调用。
+    */
+  </script>
+</body>
+
+</html>

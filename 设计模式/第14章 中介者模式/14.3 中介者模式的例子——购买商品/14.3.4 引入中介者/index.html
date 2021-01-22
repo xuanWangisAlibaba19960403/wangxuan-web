@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    选择颜色：<select id="colorSelect">
+        <option value="">请选择</option>
+        <option value="red">红色</option>
+        <option value="blue">蓝色</option>
+    </select>
+    选择内存：<select id="memorySelect">
+        <option value="">请选择</option>
+        <option value="32G">32G</option>
+        <option value="16G">16G</option>
+    </select>
+    输入购买数量：<input id="numberInput" type="number" />
+    <div>你选择了颜色：<span id="colorInfo"></span></div>
+    <div>你选择了内存：<span id="memoryInfo"></span></div>
+    <div>你输入了数量：<span id="numberInfo"></span></div>
+    <button id="nextBtn" disabled="true">请选择手机颜色和购买数量</button>
+    <script>
+        /*
+          假设现在要求去掉colorInfo和numberInfo这两个展示区域，
+          我们就要分别改动colorSelect.onchange和numberInput.oninput里面的代码，
+          因为在先前的代码中，这些对象确实是耦合在一起的。
+        */
+        var goods = {
+            'red|32G': 3,
+            'red|16G': 0,
+            'blue|32G': 1,
+            'blue|16G': 6
+        }
+
+        var mediator = (function () {
+            var colorSelect = document.getElementById('colorSelect');
+            var memorySelect = document.getElementById('memorySelect');
+            var numberInput = document.getElementById('numberInput');
+            var colorInfo = document.getElementById('colorInfo');
+            var memoryInfo = document.getElementById('memoryInfo');
+            var numberInfo = document.getElementById('numberInfo');
+            var nextBtn = document.getElementById('nextBtn');
+
+            return {
+                changed(obj) {
+                    var color = colorSelect.value,
+                        memory = memorySelect.value,
+                        number = numberInput.value,
+                        stock = goods[`${color}|${memory}`];
+
+                    if (obj === colorSelect) {
+                        colorInfo.innerText = color;
+                    } else if (obj === memorySelect) {
+                        memoryInfo.innerText = memory;
+                    } else if (obj === numberInput) {
+                        numberInfo.innerText = number;
+                    }
+
+                    if (!color) {
+                        nextBtn.disabled = true;
+                        nextBtn.innerText = '请选择手机颜色';
+                        return;
+                    }
+
+                    if (!memory) {
+                        nextBtn.disabled = true;
+                        nextBtn.innerText = '请选择内存大小';
+                        return;
+                    }
+
+                    if (!/^[1-9]\d*$/.test(number)) {
+                        nextBtn.disabled = true;
+                        nextBtn.innerText = '请输入正确的数量';
+                        return;
+                    }
+
+                    if (number > stock) {
+                        nextBtn.disabled = true;
+                        nextBtn.innerText = '库存不足';
+                        return;
+                    }
+
+                    nextBtn.disabled = false;
+                    nextBtn.innerText = '放入购物车';
+                }
+            }
+        })();
+
+        colorSelect.onchange = function () {
+            mediator.changed(this);
+        }
+
+        memorySelect.onchange = function () {
+            mediator.changed(this);
+        }
+
+        numberInput.oninput = function () {
+            mediator.changed(this);
+        }
+    </script>
+</body>
+
+</html>

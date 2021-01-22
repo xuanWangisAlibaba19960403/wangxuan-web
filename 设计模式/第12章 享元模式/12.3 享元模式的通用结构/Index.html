@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            12.1节的示例初步展示了享元模式的威力，但这还不是一个完整的享元模式，
+            在这个例子中还存在以下两个问题。
+            ❏ 我们通过构造函数显式new出了男女两个model对象，在其他系统中，也许并不是一开始就需要所有的共享对象。
+            ❏ 给model对象手动设置了underwear外部状态，
+                在更复杂的系统中，这不是一个最好的方式，因为外部状态可能会相当复杂，它们与共享对象的联系会变得困难。
+            我们通过一个对象工厂来解决第一个问题，只有当某种共享对象被真正需要时，它才从工厂中被创建出来。
+            对于第二个问题，可以用一个管理器来记录对象相关的外部状态，使这些外部状态通过某个钩子和共享对象联系起来。
+        */
+    </script>
+</body>
+
+</html>

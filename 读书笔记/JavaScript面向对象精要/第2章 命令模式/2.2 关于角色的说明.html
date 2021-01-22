@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      display: grid;
+      gap: 20px 0;
+      justify-items: center;
+      width: 200px;
+    }
+
+    .keypress {
+      align-items: center;
+      border: 1px solid #000;
+      border-radius: 50%;
+      display: grid;
+      height: 25px;
+      justify-items: center;
+      width: 25px;
+    }
+
+    .keypress--center {
+      grid-column: 1 / 3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="keypress keypress--center">Y</div>
+    <div class="keypress">X</div>
+    <div class="keypress">B</div>
+    <div class="keypress keypress--center">A</div>
+  </div>
+  <script>
+    class Game {
+      constructor() {
+        this.actor = null;
+        this.command = null;
+      }
+
+      init() {
+        const actor = new GameActor('皮蛋');
+        console.log(actor);
+        this.actor = actor;
+        this.command = new InputHandler(actor);
+        document.addEventListener('keydown', ({ key }) => {
+          const command = this.command.getCommand(key)
+          if (command) {
+            command.execute();
+          }
+        });
+      }
+    }
+
+    class GameActor {
+      constructor(name) {
+        this.name = name;
+      }
+
+      jump() {
+        console.log('jump')
+      }
+
+      fireGun() {
+        console.log('jump')
+      }
+
+      swapWeapon() {
+
+      }
+
+      lurchIneffectively() {
+
+      }
+    }
+
+    class Command {
+      execute() {
+        throw new Error('子类请重写此方法')
+      }
+    }
+    /* 
+       我们刚才定义的命令类在上个例子中是有效的，但它们却有局限性。
+       问题在于它们做了这样的假定：
+        存在jump()、fireGun()等这样的顶级函数，
+        这些函数能够隐式地获知玩家游戏实体并对其进行木偶般的操控。
+    */
+    class JumpCommand extends Command {
+      constructor(actor) {
+        super();
+        this.actor = actor;
+      }
+      execute() {
+        this.actor.jump();
+      }
+    }
+
+    class FireCommand extends Command {
+      constructor(actor) {
+        super();
+        this.actor = actor;
+      }
+      execute() {
+        this.actor.fireGun();
+      }
+    }
+
+    class SwapWeaponCommand extends Command {
+      constructor(actor) {
+        super();
+        this.actor = actor;
+      }
+      execute() {
+        this.actor.swapWeapon();
+      }
+    }
+
+    class LurchIneffectivelyCommand extends Command {
+      constructor(actor) {
+        super();
+        this.actor = actor;
+      }
+      execute() {
+        this.actor.lurchIneffectively();
+      }
+    }
+
+    class InputHandler {
+      constructor(actor) {
+        console.log(actor);
+        this.x = new JumpCommand(actor);
+        this.y = new FireCommand(actor);
+        this.a = new SwapWeaponCommand(actor);
+        this.b = new LurchIneffectivelyCommand(actor);
+      }
+      getCommand(key) {
+        if (this[key]) {
+          return this[key];
+        }
+        return null;
+      }
+    }
+
+    const game = new Game();
+    game.init();
+  </script>
+</body>
+
+</html>

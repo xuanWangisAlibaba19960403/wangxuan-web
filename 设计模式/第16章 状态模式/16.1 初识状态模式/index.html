@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Light {
+            constructor() {
+                this.state = 'off';
+                this.button = null;
+            }
+
+            init() {
+                var button = document.createElement('button');
+                var self = this;
+                button.innerText = '开关';
+                this.button = document.body.appendChild(button);
+                this.button.onclick = function () {
+                    self.buttonWasPressed();
+                }
+            }
+
+            buttonWasPressed() {
+                if (this.state === 'off') {
+                    console.log('开');
+                    this.state = 'on';
+                } else {
+                    console.log('关');
+                    this.state = 'off';
+                }
+            }
+        }
+        /*
+        现在这个反例先告一段落，我们来考虑一下上述程序的缺点。
+            ❏很明显buttonWasPressed方法
+                是违反开放-封闭原则的，每次新增或者修改light的状态，都需要改动buttonWasPressed方法中的代码，
+                这使得buttonWasPressed成为了一个非常不稳定的方法。
+            ❏所有跟状态有关的行为，都被封装在buttonWasPressed方法里，如果以后这个电灯又增加了强强光、超强光和终极强光，那我们将无法预计这个方法将膨胀到什么地步。
+                当然为了简化示例，此处在状态发生改变的时候，只是简单地打印一条log和改变button的innerHTML。
+                在实际开发中，要处理的事情可能比这多得多，也就是说，buttonWasPressed方法要比现在庞大得多。
+            ❏状态的切换非常不明显，仅仅表现为对state变量赋值，比如this.state ='weakLight'。
+                在实际开发中，这样的操作很容易被程序员不小心漏掉。我们也没有办法一目了然地明白电灯一共有多少种状态，除非耐心地读完buttonWasPressed方法里的所有代码。
+                当状态的种类多起来的时候，某一次切换的过程就好像被埋藏在一个巨大方法的某个阴暗角落里。
+            ❏状态之间的切换关系，不过是往buttonWasPressed方法里堆砌if、else语句，增加或者修改一个状态可能需要改变若干个操作，这使buttonWasPressed更加难以阅读和维护。
+        */
+    </script>
+</body>
+
+</html>

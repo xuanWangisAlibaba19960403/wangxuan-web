@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="loginBtn">登录</button>
+  <script>
+    var createLoginLayer = (function () {
+      var div = null;
+      return function () {
+        if (!div) {
+          div = document.createElement('div');
+          div.innerText = '我是登录浮窗';
+          div.style.display = 'none';
+          document.body.appendChild(div);
+        }
+        return div;
+      }
+    })();
+
+    var loginBtn = document.getElementById('loginBtn');
+    loginBtn.addEventListener('click', function () {
+      var loginLayer = createLoginLayer();
+      loginLayer.style.display = 'block';
+    });
+  </script>
+</body>
+
+</html>

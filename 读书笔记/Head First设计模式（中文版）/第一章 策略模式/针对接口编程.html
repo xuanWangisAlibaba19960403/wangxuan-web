@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    针对接口编程 真正的意思是针对超类型编程
+    <script>
+        // 针对实现编程
+        class Dog {
+            constructor(params) {
+                
+            }
+
+            bark() {
+                console.log('汪汪叫');
+            }
+        }
+
+        // 针对超类型编程
+
+        class Animal {
+            constructor() {
+
+            }
+
+            makeSound() {
+                throw new Error();
+            }
+        }
+
+
+
+
+    </script>
+</body>
+</html>

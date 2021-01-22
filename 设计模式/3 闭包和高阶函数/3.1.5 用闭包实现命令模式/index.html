@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="execute">点击我执行命令</button>
+  <button id="undo">点击我执行命令</button>
+  <script>
+    const execute = document.getElementById('execute');
+    const undo = document.getElementById('undo');
+
+    class Tv {
+      open() {
+        console.log('打开电视机');
+      }
+
+      close() {
+        console.log('关闭电视机');
+      }
+    }
+
+    class Command {
+      constructor(receiver) {
+        this.receiver = receiver;
+      }
+
+      execute() {
+        this.receiver.open();
+      }
+
+      undo() {
+        this.receiver.close();
+      }
+    }
+
+    var setCommand = function (command) {
+      execute.addEventListener('click', function () {
+        command.execute();
+      });
+
+      undo.addEventListener('click', function () {
+        command.undo();
+      });
+    }
+
+    setCommand(new Command(new Tv()));
+
+    /*
+      命令模式的意图是把请求封装为对象，从而分离请求的发起者和请求的接收者（执行者）之间的耦合关系。
+      在命令被执行之前，可以预先往命令对象中植入命令的接收者。
+    */
+
+
+    // class HttpRequest {
+    //   constructor() {
+
+    //   }
+
+    //   request(params) {
+    //     console.log('参数', params);
+    //     console.log('发送');
+    //   }
+
+    //   cancel() {
+    //     console.log('取消');
+    //   }
+    // }
+
+    // function submitRequest(request) {
+    //   const params = {
+    //     t: Date.now()
+    //   }
+    //   request.request(params);
+    // }
+
+    // submitRequest(new HttpRequest());
+  </script>
+</body>
+
+</html>

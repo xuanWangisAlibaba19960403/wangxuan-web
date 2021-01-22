@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Plane {
+
+            fire() {
+                console.log('发射普通子弹')
+            }
+        }
+
+        // 装饰类
+
+        class MissleDecorator {
+            constructor(plane) {
+                this.plane = plane;
+            }
+
+            fire() {
+                console.log(this.plane);
+                this.plane.fire();
+                console.log('发射导弹');
+            }
+        }
+
+        class AtomDecorator {
+            constructor(plane) {
+                this.plane = plane;
+            }
+
+            fire() {
+                console.log(this.plane);
+                this.plane.fire();
+                console.log('发射原子弹');
+            }
+        }
+
+        let plane = new Plane();
+        plane = new MissleDecorator(plane);
+        plane = new AtomDecorator(plane);
+
+        plane.fire();
+    </script>
+</body>
+
+</html>

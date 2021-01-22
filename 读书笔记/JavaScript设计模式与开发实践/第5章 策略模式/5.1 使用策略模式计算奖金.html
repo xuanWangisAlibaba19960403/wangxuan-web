@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 策略模式的定义是：定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换。*/
+        function calculateBonus(level, salary) {
+            const peformance = {
+                S: 4,
+                A: 3,
+                B: 2
+            }
+            return peformance[level] * salary;
+        }
+
+        /*
+            可以发现，这段代码十分简单，但是存在着显而易见的缺点。
+            ❏ calculateBonus函数缺乏弹性，如果增加了一种新的绩效等级C，或者想把绩效S的奖金系数改为5，那我们必须深入calculateBonus函数的内部实现，这是违反开放-封闭原则的。
+            ❏ 算法的复用性差，如果在程序的其他地方需要重用这些计算奖金的算法呢？我们的选择只有复制和粘贴。因此，我们需要重构这段代码。
+        */
+
+        const calculateBonus = (function () {
+            const peformance = {
+                S: 4,
+                A: 3,
+                B: 2
+            }
+            return function (level, salary) {
+                return peformance[level] * salary;
+            }
+        })();
+    </script>
+</body>
+
+</html>

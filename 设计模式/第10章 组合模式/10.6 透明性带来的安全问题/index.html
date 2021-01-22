@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var MacroCommand = function () {
+      return {
+        commandsList: [],
+        add(command) {
+          this.commandsList.push(command);
+        },
+        execute() {
+          for (let i = 0; i < this.commandsList.length; i++) {
+            console.log(this.commandsList[i]);
+            this.commandsList[i].execute();
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    /*
+      组合模式的透明性使得发起请求的客户不用去顾忌树中组合对象和叶对象的区别，但它们在本质上有是区别的。
+      组合对象可以拥有子节点，叶对象下面就没有子节点，所以我们也许会发生一些误操作，比如试图往叶对象中添加子节点。
+      解决方案通常是给叶对象也增加add方法，并且在调用这个方法时，抛出一个异常来及时提醒客户，代码如下：
+    */
+  </script>
+  <script>
+    var openTvCommand = {
+      execute() {
+        console.log('打开电视');
+      },
+      add() {
+        throw new Error('叶对象不能添加子节点');
+      }
+    }
+
+    var macroCommand = MacroCommand();
+    macroCommand.add(openTvCommand);
+    openTvCommand.add(macroCommand);
+  </script>
+</body>
+
+</html>

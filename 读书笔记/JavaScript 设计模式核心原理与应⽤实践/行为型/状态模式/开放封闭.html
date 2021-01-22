@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const stateToProcessor = {
+            american() {
+                console.log('我只吐黑咖啡');
+            },
+            latte() {
+                this.american();
+                console.log('加点奶');
+            },
+            vanillaLatte() {
+                this.latte();
+                console.log('再加香草糖浆');
+            },
+            mocha() {
+                this.latte();
+                console.log('再加巧克力');
+            }
+        }
+        // 当我们这么做时， 其实已经实现了一个 js 版本的状态模式。
+
+        // 但这里有一点大家需要引起注意：这种方法仅仅是看上去完美无缺，其中却暗含一个非常重要的隐患——stateToProcessor 里的工序函数，感知不到咖啡机的内部状况。
+        
+        // 职责分离
+        class CoffeeMaker {
+            constructor() {
+                /**
+                    这里略去咖啡机中与咖啡状态切换无关的一些初始化逻辑
+                **/
+                // 初始化状态，没有切换任何咖啡模式
+                this.state = 'init';
+            }
+            changeState(state) {
+                // 记录当前状态
+                this.state = state;
+                if (!stateToProcessor[state]) {
+                    return;
+                }
+                stateToProcessor[state]();
+            }
+        }
+
+        const mk = new CoffeeMaker();
+        mk.changeState('latte');
+
+        // 开放封闭
+    </script>
+</body>
+
+</html>

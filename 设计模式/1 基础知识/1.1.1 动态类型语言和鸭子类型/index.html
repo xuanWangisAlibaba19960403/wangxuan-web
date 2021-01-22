@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 鸭辩类型: 国王要听的只是鸭子的叫声，这个声音的主人到底是鸡还是鸭并不重要。
+        鸭子类型指导我们只关注对象的行为，而不关注对象本身，
+        也就是关注HAS-A，而不是IS-A。 -->
+    <script>
+        class Duck {
+            constructor() {
+
+            }
+
+            sing() {
+                console.log('嘎嘎嘎');
+            }
+        }
+
+        class Chicken {
+            constructor() {
+
+            }
+
+            sing() {
+                console.log('嘎嘎嘎');
+            }
+        }
+
+        const chior = [];
+        /*
+        * 加入合唱团
+        * @param {object} animal
+        */
+        const joinChior = function (animal) {
+            if (animal &&
+                typeof animal === 'object' &&
+                typeof animal.sing === 'function') {
+                chior.push(animal);
+                console.log('加入合唱团成功');
+            }
+        }
+
+        const duck = new Duck();
+        const chicken = new Chicken();
+
+        joinChior(duck);
+        joinChior(chicken);
+
+        /* 我们看到，对于加入合唱团的动物，大臣们根本无需检查它们的类型，而是只需要保证它们拥有duckSinging方法。
+        如果下次期望加入合唱团的是一只小狗，而这只小狗刚好也会鸭子叫，我相信这只小狗也能顺利加入。
+        在动态类型语言的面向对象设计中，鸭子类型的概念至关重要。利用鸭子类型的思想，我们不必借助超类型的帮助，
+        就能轻松地在动态类型语言中实现一个原则：“面向接口编程，而不是面向实现编程”。
+        例如，一个对象若有push和pop方法，并且这些方法提供了正确的实现，它就可以被当作栈来使用。
+        一个对象如果有length属性，也可以依照下标来存取属性（最好还要拥有slice和splice等方法），
+        这个对象就可以被当作数组来使用。
+        在静态类型语言中，要实现“面向接口编程”并不是一件容易的事情，往往要通过抽象类或者接口等将对象进行向上转型。
+        当对象的真正类型被隐藏在它的超类型身后，这些对象才能在类型检查系统的“监视”之下互相被替换使用。
+        只有当对象能够被互相替换使用，才能体现出对象多态性的价值。
+        “面向接口编程”是设计模式中最重要的思想，
+        但在JavaScript语言中，“面向接口编程”的过程跟主流的静态类型语言不一样，
+        因此，在JavaScript中实现设计模式的过程与在一些我们熟悉的语言中实现的过程会大相径庭。 */
+    </script>
+</body>
+
+</html>

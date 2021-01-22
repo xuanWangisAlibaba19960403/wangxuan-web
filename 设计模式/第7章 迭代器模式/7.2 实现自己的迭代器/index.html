@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const each = function (fn) {
+            for (let i = 0; i < this.length; i++) {
+                fn.call(this[i], i, this[i]);
+            }
+        }
+
+        Array.prototype.each = each;
+
+        const arr = [1, 2, 3];
+
+        arr.each((...args) => console.log(...args));
+    </script>
+</body>
+
+</html>

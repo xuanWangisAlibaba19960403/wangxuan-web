@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var paging = function (currPage) {
+            if (currPage <= 0) {
+                currPage = 0;
+                jump(currPage);
+            } else if (currPage >= totalPage) {
+                currPage = totalPage;
+                jump(currPage);
+            } else {
+                jump(currPage);
+            }
+        }
+        /*
+            可以看到，
+            负责跳转的代码jump( currPage )在每个条件分支内都出现了，
+            所以完全可以把这句代码独立出来：
+        */
+        var paging = function (currPage) {
+            if (currPage <= 0) {
+                currPage = 0;
+            } else if (currPage >= totalPage) {
+                currPage = totalPage;
+            }
+            jump(currPage);
+        }
+    </script>
+</body>
+
+</html>

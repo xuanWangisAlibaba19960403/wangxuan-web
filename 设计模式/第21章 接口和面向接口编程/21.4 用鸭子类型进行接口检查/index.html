@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*
+        鸭子类型是动态类型语言面向对象设计中的一个重要概念。
+        利用鸭子类型的思想，不必借助超类型的帮助，
+            就能在动态类型语言中轻松地实现本章提到的设计原则：
+        面向接口编程，而不是面向实现编程
+    */
+
+    const isArray = function (obj) {
+      return obj &&
+        typeof obj === 'object' &&
+        typeof obj.length === 'number' &&
+        typeof obj.splice === 'function';
+    }
+  </script>
+</body>
+
+</html>

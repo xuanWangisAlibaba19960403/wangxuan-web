@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*
+      预售价 - pre
+      大促价 - onSale
+      返场价 - back
+      尝鲜价 - fresh
+    */
+    // 询价方法，接受价格标签和原价为入参
+    function askPrice(tag, originPrice) {
+      // 处理预热价
+      if (tag === 'pre') {
+        if (originPrice >= 100) {
+          return originPrice - 20
+        }
+        return originPrice * 0.9
+      }
+
+      // 处理大促价
+      if (tag === 'onSale') {
+        if (originPrice >= 100) {
+          return originPrice - 30
+        }
+        return originPrice * 0.8
+      }
+
+      // 处理返场价
+      if (tag === 'back') {
+        if (originPrice >= 200) {
+          return originPrice - 50
+        }
+        return originPrice
+      }
+
+      // 处理尝鲜价
+      if (tag === 'fresh') {
+        return originPrice * 0.5
+      }
+    }
+
+    /*
+      随便跑一下， 上述代码运行起来确实没啥毛病。 但也只是“ 运行起来” 没毛病而已。 作为人人喊打的
+      if - else 侠， 李雷必须为他的行为付出代价。 我们一起来看看这么写代码会带来什么后果：
+
+      首先， 它违背了“ 单一功能” 原则。 一个
+      function 里面， 它竟然处理了四坨逻辑—— 这个函数的逻辑太胖了！ 这样会带来什么样的糟糕后果， 笔者在前面的小节中已经 BB 过很多次了： 比如说万一其中一行代码出了 Bug， 那么整个询价逻辑都会崩坏； 与此同时出了 Bug 你很难定位到底是哪个代码块坏了事； 再比如说单个能力很难被抽离复用等等等等。 相信跟着我一路学下来的各位， 也已经在重重实战中对胖逻辑的恶劣影响有了切身的体会。 总之， 见到胖逻辑， 我们的第一反应， 就是一个字—— 拆！
+      不仅如此， 它还违背了“ 开放封闭” 原则。 假如有一天韩梅梅再次找到李雷， 要他加一个满 100 - 50 的“ 新人价” 怎么办？ 他只能继续
+      if - else：
+    */
+    function askPrice(tag, originPrice) {
+      // 处理预热价
+      if (tag === 'pre') {
+        if (originPrice >= 100) {
+          return originPrice - 20
+        }
+        return originPrice * 0.9
+      }
+      // 处理大促价
+      if (tag === 'onSale') {
+        if (originPrice >= 100) {
+          return originPrice - 30
+        }
+        return originPrice * 0.8
+      }
+
+      // 处理返场价
+      if (tag === 'back') {
+        if (originPrice >= 200) {
+          return originPrice - 50
+        }
+        return originPrice
+      }
+
+      // 处理尝鲜价
+      if (tag === 'fresh') {
+        return originPrice * 0.5
+      }
+
+      // 处理新人价
+      if (tag === 'newUser') {
+        if (originPrice >= 100) {
+          return originPrice - 50
+        }
+        return originPrice
+      }
+    }
+    
+  </script>
+</body>
+
+</html>

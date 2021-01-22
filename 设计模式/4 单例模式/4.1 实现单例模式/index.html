@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class Singleton {
+            constructor(name) {
+                this.name = name;
+                this.instance = null;
+            }
+
+            getName() {
+                return this.name;
+            }
+
+            getInstance() {
+                if (this.instance) {
+                    return this.instance;
+                }
+                this.instance = new Singleton();
+            }
+        }
+
+        const intance = new Singleton();
+        intance.getInstance();
+        intance.getInstance();
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    设计原则：针对接口编程，而不是针对实现编程
+    <script>
+        class FlyBehavior {
+            fly() {
+                throw new Error('抽象类不可调用');
+            }
+        }
+
+        class FlyWithWings extends FlyBehavior {
+            fly() {
+                console.log('I can fly')
+            }
+        }
+
+        class FlyNoWay extends FlyBehavior {
+            fly() {
+                console.log("I can't fly")
+            }
+        }
+        
+        console.dir(new FlyWithWings());
+        console.dir(new FlyNoWay());
+    </script>
+</body>
+</html>

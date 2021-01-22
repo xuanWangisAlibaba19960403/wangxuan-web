@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 计算乘积 */
+        const mult = function (...args) {
+            let a = 1;
+            for (let i = 0; i < args.length; i++) {
+                a *= args[i];
+            }
+            return a;
+        }
+        /* 计算求和 */
+        const plus = function (...args) {
+            let a = 0;
+            for (let i = 0; i < args.length; i++) {
+                a += args[i];
+            }
+            return a;
+        }
+
+        const createProxyFactory = function (fn) {
+            const cache = {};
+            return function (...args) {
+                const key = args.join(',');
+                if (Object.prototype.hasOwnProperty.call(cache, key)) {
+                    return cache[key];
+                }
+                return cache[key] = fn.apply(this, args);
+            }
+        }
+    </script>
+</body>
+
+</html>

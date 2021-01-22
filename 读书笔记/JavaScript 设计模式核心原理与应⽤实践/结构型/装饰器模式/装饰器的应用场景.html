@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="open">点击打开</button>
+    <button id="close">关闭弹窗</button>
+    <script>
+        function getSingle(fn) {
+            let result = null;
+            return function (...args) {
+                return result = result || (result = fn.apply(this, args));
+            }
+        }
+
+        function createModal() {
+            const modal = document.createElement('div');
+            modal.innerHTML = '您还未登录哦~';
+            modal.id = 'modal';
+            modal.style.display = 'none';
+            document.body.appendChild(modal);
+            return modal;
+        }
+
+        const Modal = getSingle(createModal);
+
+        document.getElementById('open')
+            .addEventListener('click', function () {
+                const modal = new Modal();
+                modal.style.display = 'block';
+            })
+
+        document.getElementById('close')
+            .addEventListener('click', function () {
+                const modal = new Modal();
+                modal.style.display = 'none';
+            })
+    </script>
+</body>
+
+</html>

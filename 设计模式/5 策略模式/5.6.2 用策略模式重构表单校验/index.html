@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <form id="registerForm" method="post">
+    请输入用户名: <input type="text" name="userName" />
+    请输入密码: <input type="text" name="password" />
+    请输入电话号码: <input type="text" name="phoneName" />
+    <button>提交</button>
+  </form>
+  <script>
+
+
+    var strategies = {
+      isNonEmpty(val, errorMsg) {
+        if (val === '') {
+          return errorMsg;
+        }
+      },
+      minLength(val, length, errorMsg) {
+        if (val.length < length) {
+          return errorMsg;
+        }
+      },
+      isMobile(val, errorMsg) {
+        if (!/1[3-9][0-9]{9}/.test(val)) {
+          return errorMsg;
+        }
+      }
+    }
+
+    const validataFunc = function () {
+      var validator = new Validator();
+
+      validator.add(registerForm.userName, [{ strategy: 'isNonEmpty', errorMsg: '用户名不能为空' }, { strategy: 'minLength:10', errorMsg: '用户名不能小于10位数' }]);
+      validator.add(registerForm.password, [{ strategy: 'minLength', errorMsg: '密码不能小于6位数' }]);
+      validator.add(registerForm.phoneName, [{ strategy: 'isMobile', errorMsg: '请输入电话号码' }]);
+
+      var errorMsg = validator.start();
+      return errorMsg;
+    }
+
+    class Validator {
+      constructor() {
+        this.cache = [];
+      }
+
+      add(dom, rules, errorMsg) {
+        const self = this;
+        for (let i = 0; i < rules.length; i++) {
+          const { strategy, errorMsg } = rules[i];
+          const strategyAry = strategy.split(':');
+          self.cache.push(function () {
+            const strategy = strategyAry.shift();
+            strategyAry.unshift(dom.value);
+            strategyAry.push(errorMsg);
+            return strategies[strategy].apply(dom, strategyAry);
+          })
+        }
+      }
+
+      start() {
+        for (let i = 0; i < this.cache.length; i++) {
+          const validataFunc = this.cache[i];
+          var msg = validataFunc();
+          if (msg) {
+            return msg;
+          }
+        }
+      }
+    }
+
+    var registerForm = document.getElementById('registerForm');
+    registerForm.onsubmit = function () {
+      const errorMsg = validataFunc();
+      if (errorMsg) {
+        console.log('errorMsg', errorMsg);
+        return false;
+      }
+    }
+  </script>
+</body>
+
+</html>

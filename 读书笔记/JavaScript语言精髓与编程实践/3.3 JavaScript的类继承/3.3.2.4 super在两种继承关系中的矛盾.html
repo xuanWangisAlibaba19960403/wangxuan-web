@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // class MyObject {
+    //   get defaultCount() {
+    //     return 10;
+    //   }
+    // }
+
+    // class MyObjecetEx extends MyObject {
+    //   get defaultCount() {
+    //     // 原型链 super.prototype.defaultCount
+    //     return super.defaultCount + 3;
+    //   }
+    // }
+    // console.dir(MyObject);
+    // console.log(new MyObjecetEx().defaultCount);
+    // console.log(MyObject.prototype.defaultCount);
+
+    class MyObject {
+      static defaultCount() {
+        return 10;
+      }
+    }
+
+    console.dir(MyObject);
+  </script>
+</body>
+
+</html>

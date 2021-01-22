@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Duck {
+            constructor() {
+
+            }
+
+            quack() {
+                console.log('嘎嘎嘎');
+            }
+
+            swim() {
+
+            }
+
+            display() {
+
+            }
+
+            fly() {
+
+            }
+        }
+
+        class GreenDuck extends Duck {
+            display() {
+                console.log('绿头鸭子');
+            }
+        }
+
+        class RedDuck extends Duck {
+            display() {
+                console.log('红头鸭子');
+            }
+        }
+
+        class RubberDuck extends Duck {
+            quack() {
+                console.log('吱吱吱');
+            }
+            display() {
+                console.log('橡皮鸭子');
+            }
+        }
+    </script>
+</body>
+
+</html>

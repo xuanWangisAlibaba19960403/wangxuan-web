@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            “面向接口编程，而不是面向实现编程”。
+            例如，一个对象若有push和pop方法，并且这些方法提供了正确的实现，它就可以被当作栈来使用。
+            一个对象如果有length属性，也可以依照下标来存取属性（最好还要拥有slice和splice等方法），
+            这个对象就可以被当作数组来使用
+        */
+        var arr = {
+            length: 0,
+            push(...vals) {
+                for (let i = 0; i < vals.length; i++) {
+                    const len = this.length++;
+                    this[len] = vals[i];
+                }
+                return this.length;
+            },
+            pop() {
+                if (this.length > 0) {
+                    const index = --this.length;
+                    const val = this[index];
+                    delete this[index];
+                    return val;
+                }
+                return undefined;
+            }
+        }
+
+        console.log(arr.push(1, 2));
+        console.log(arr.pop());
+        console.log(arr.pop());
+        console.log(arr.pop());
+        console.log(arr);
+    </script>
+</body>
+
+</html>

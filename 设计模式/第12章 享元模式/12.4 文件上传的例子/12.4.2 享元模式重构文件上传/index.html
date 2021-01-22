@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*
+        首先，我们需要确认插件类型uploadType是内部状态，那为什么单单uploadType是内部状态呢？
+        前面讲过，划分内部状态和外部状态的关键主要有以下几点。
+        ❏ 内部状态储存于对象内部。
+        ❏ 内部状态可以被一些对象共享。
+        ❏ 内部状态独立于具体的场景，通常不会改变。
+        ❏ 外部状态取决于具体的场景，并根据场景而变化，外部状态不能被共享。
+    */
+  </script>
+  <script>
+    var id = 0;
+    function startUpload(uploadType, files) {
+      for (let i = 0; i < files.length; i++) {
+        var file = files[i];
+        var uploadObj = new Upload(uploadType, file.fileName, file.fileSize);
+        uploadObj.init(id++);
+      }
+    }
+
+    class Upload {
+      constructor(uploadType, fileName, fileSize) {
+        this.uploadType = uploadType;
+        this.fileName = fileName;
+        this.fileSize = fileSize;
+        this.container = null;
+      }
+
+      init(id) {
+        var self = this;
+        this.id = id;
+        this.container = document.createElement('div');
+        this.container.innerHTML = `<span>文件名称${this.fileName}，文件大小${this.fileSize}</span>\
+                    <button class="delFile">删除</button>`
+        this.container.querySelector('.delFile').onclick = function () {
+          self.delFile();
+        }
+        document.body.appendChild(this.container);
+      }
+
+      delFile() {
+        if (this.fileSize < 3000) {
+          return this.container.parentNode.removeChild(this.container);
+        }
+        if (window.confirm(`确定要删除该文件吗？${this.fileName}`)) {
+          return this.container.parentNode.removeChild(this.container);
+        }
+      }
+    }
+
+    startUpload('plugin', [
+      {
+        fileName: '1.txt',
+        fileSize: 1000
+      },
+      {
+        fileName: '1.txt',
+        fileSize: 1000
+      },
+      {
+        fileName: '1.txt',
+        fileSize: 1000
+      }
+    ])
+
+    startUpload('flash', [
+      {
+        fileName: '1.txt',
+        fileSize: 4000
+      },
+      {
+        fileName: '1.txt',
+        fileSize: 1000
+      },
+      {
+        fileName: '1.txt',
+        fileSize: 1000
+      }
+    ])
+  </script>
+</body>
+
+</html>

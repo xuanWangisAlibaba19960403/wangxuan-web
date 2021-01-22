@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*
+      在JavaScript中，几乎一切都是对象，其中函数又被称为一等对象。
+      在平时的开发工作中，也许大部分时间都在和函数打交道。
+      在JavaScript中可以很方便地给某个对象扩展属性和方法，但却很难在不改动某个函数源代码的情况下，给该函数添加一些额外的功能。
+      在代码的运行期间，我们很难切入某个函数的执行环境。
+      要想为函数添加一些功能，最简单粗暴的方式就是直接改写该函数，但这是最差的办法，直接违反了开放-封闭原则：
+    */
+
+    var a = function () {
+      console.log(1);
+    }
+
+    var a = function () {
+      console.log(1);
+      console.log(2);
+    }
+
+    /*
+      很多时候我们不想去碰原函数，也许原函数是由其他同事编写的，里面的实现非常杂乱。
+      甚至在一个古老的项目中，这个函数的源代码被隐藏在一个我们不愿碰触的阴暗角落里。
+      现在需要一个办法，在不改变函数源代码的情况下，能给函数增加功能，这正是开放-封闭原则给我们指出的光明道路。
+      其实在15.3节的代码中，我们已经找到了一种答案，通过保存原引用的方式就可以改写某个函数：
+    */
+
+    var a = function() {
+      console.log(1);
+    }
+
+    var _a = a;
+
+    a = function() {
+      _a();
+      console.log(2);
+    }
+
+    a();
+  </script>
+</body>
+
+</html>

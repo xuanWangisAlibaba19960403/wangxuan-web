@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <form id="registerForm" method="post">
+    请输入用户名: <input type="text" name="userName" />
+    请输入密码: <input type="text" name="password" />
+    请输入电话号码: <input type="text" name="phoneName" />
+    <button>提交</button>
+  </form>
+  <script>
+    /*
+      假设我们正在编写一个注册的页面，在点击注册按钮之前，有如下几条校验逻辑。
+      ❏ 用户名不能为空。
+      ❏ 密码长度不能少于6位。
+      ❏ 手机号码必须符合格式。
+    */
+    var registerForm = document.getElementById('registerForm');
+    registerForm.onsubmit = function () {
+      if (registerForm.userName.value === '') {
+        console.log('用户名不能为空');
+        return false;
+      }
+      if (registerForm.password.value.length < 6) {
+        console.log('密码不能小于6位数');
+        return false;
+      }
+      if (!/^1[3-9][0-9]{9}/.test(registerForm.phoneName.value)) {
+        console.log('请输入电话号码');
+        return false;
+      }
+    }
+
+    /*
+      ❏ registerForm.onsubmit函数比较庞大，
+        包含了很多if-else语句，这些语句需要覆盖所有的校验规则。
+      ❏ registerForm.onsubmit函数缺乏弹性，
+        如果增加了一种新的校验规则，或者想把密码的长度校验从6改成8，我们都必须深入registerForm.onsubmit函数的内部实现，这是违反开放—封闭原则的。
+      ❏ 算法的复用性差，
+        如果在程序中增加了另外一个表单，这个表单也需要进行一些类似的校验，那我们很可能将这些校验逻辑复制得漫天遍野。
+    */
+  </script>
+</body>
+
+</html>

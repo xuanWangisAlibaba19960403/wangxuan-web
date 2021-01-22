@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=s, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const external = {};
+
+        var plugin = (function () {
+            var plugin = document.createElement('input');
+            plugin.style.display = 'none';
+
+            plugin.type = 'file';
+
+            plugin.sign = function () {
+                console.log('扫描文件');
+            }
+
+            plugin.pause = function () {
+                console.log('暂停文件');
+            }
+
+            plugin.uploading = function () {
+                console.log('开始文件上传');
+            }
+
+            plugin.del = function () {
+                console.log('删除文件上传');
+            }
+
+            plugin.done = function () {
+                console.log('文件上传完成');
+            }
+
+            document.body.appendChild(plugin);
+
+            return plugin;
+        })();
+
+        // 改造upload构造函数
+        class Upload {
+            constructor(fileName) {
+                this.plugin = plugin;
+                this.fileName = fileName;
+                this.button1 = null;
+                this.button2 = null;
+                this.signState = new SignState(this); // 设置初始状态
+                this.uploadingState = new UploadingState(this);
+                this.pauseState = new PauseState(this);
+                this.doneState = new DoneState(this);
+                this.errorState = new ErrorState(this);
+                this.currState = this.signState;
+            }
+
+            init() {
+                var self = this;
+                this.container = document.createElement('div');
+
+                this.container.innerHTML = `<span>${this.fileName}</span>\
+                    <button data-action="button1">扫描中</button>\
+                    <button data-action="button2">删除</button>`;
+
+                document.body.appendChild(this.container);
+
+                this.button1 = this.container.querySelector('[data-action="button1"]');
+                this.button2 = this.container.querySelector('[data-action="button2"]');
+
+                this.bindEvent();
+            }
+
+            bindEvent() {
+                var self = this;
+                this.button1.onclick = function () {
+                    self.currState.clickHandler1();
+                }
+                this.button2.onclick = function () {
+                    self.currState.clickHandler2();
+                }
+            }
+
+            sign() {
+                this.plugin.sign();
+                this.currState = this.signState;
+            }
+
+            uploading() {
+                this.button1.innerText = '正在上传，点击暂停';
+                this.plugin.uploading();
+                this.currState = this.uploadingState;
+            }
+
+            pause() {
+                this.button1.innerText = '已暂停，点击继续上传';
+                this.plugin.pause();
+                this.currState = this.pauseState;
+            }
+
+            done() {
+                this.button1.innerText = '上传完成';
+                this.plugin.done();
+                this.currState = this.doneState;
+            }
+
+            error() {
+                this.button1.innerText = '上传失败';
+                this.currState = this.errorState;
+            }
+
+            del() {
+                this.plugin.del();
+                this.container.parentNode.removeChild(this.container);
+            }
+        }
+
+        var StateFactory = (function () {
+            class State {
+                constructor() { }
+
+                clickHandler1() {
+                    throw new Error('子类必须重写父类的clickHandler1方法');
+                }
+
+                clickHandler2() {
+                    throw new Error('子类必须重写父类的clickHandler2方法');
+                }
+            }
+
+            return function (params) {
+                var F = function (uploadObj) {
+                    this.uploadObj = uploadObj;
+                }
+
+                F.prototype = new State();
+
+                for (var i in params) {
+                    F.prototype[i] = params[i];
+                }
+
+                return F;
+            }
+        })();
+
+        var SignState = StateFactory({
+            clickHandler1() {
+                console.log('扫描中，点击无效。。。');
+            },
+            clickHandler2() {
+                console.log('文件正在上传中，不能删除。。。');
+            },
+        });
+
+        var UploadingState = StateFactory({
+            clickHandler1() {
+                this.uploadObj.pause();
+            },
+            clickHandler2() {
+                console.log('文件正在上传中，不能删除。。。');
+            },
+        });
+
+        var PauseState = StateFactory({
+            clickHandler1() {
+                this.uploadObj.uploading();
+            },
+            clickHandler2() {
+                this.uploadObj.del();
+            },
+        });
+
+        var DoneState = StateFactory({
+            clickHandler1() {
+                console.log('文件已完成上传，点击无效');
+            },
+            clickHandler2() {
+                this.uploadObj.del();
+            },
+        });
+
+        var ErrorState = StateFactory({
+            clickHandler1() {
+                console.log('文件上传失败，点击无效');
+            },
+            clickHandler2() {
+                this.uploadObj.del();
+            },
+        });
+
+        const upload = new Upload('JavaScript设计模式于开发实践');
+        upload.init();
+
+        external.upload = function (state) {
+            console.log(state);
+            upload[state]();
+        }
+
+        external.upload('sign');
+
+        setTimeout(() => {
+            external.upload('uploading');
+        }, 1000);
+
+        setTimeout(() => {
+            external.upload('done');
+        }, 5000);
+    </script>
+</body>
+
+</html>

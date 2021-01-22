@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @keyframes scroll {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                /* 原理与swiper loop相同 减去一条长度 */
+                transform: translate(0, calc(-100% + 40px));
+            }
+        }
+
+        .container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 220px;
+            height: 40px;
+            background: #0066ff;
+            border-radius: 2em;
+            overflow: hidden;
+        }
+
+        .ul {
+            animation-name: scroll;
+            animation-duration: 5s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            list-style: none;
+            text-align: center;
+            /* animation: scroll 5s linear infinite; 动画属性简写 */
+        }
+
+        .li {
+            line-height: 40px;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 此处为了保存广播滚动效果的连贯性，防止滚动到最后一帧时没有内容，需要多添加一条重复数据进行填充 -->
+        <div id="ul" class="ul">
+            <!--   插入用于填充的数据数据 -->
+            <!-- <div class="li">小刘同学加入了凹凸实验室</div> -->
+        </div>
+    </div>
+    <script>
+        const ul = document.getElementById('ul');
+        const documentFragment = new DocumentFragment();
+        for (let i = 1; i <= 100; i++) {
+            const li = document.createElement('li');
+            li.classList.add('li');
+            li.textContent = '小刘同学加入了凹凸实验室';
+            documentFragment.appendChild(li);
+        }
+        ul.appendChild(documentFragment);
+        // 40px/s
+        const { clientHeight } = ul;
+        ul.style.animationDuration = `${Math.ceil(clientHeight / 40)}s`;
+    </script>
+</body>
+
+</html>

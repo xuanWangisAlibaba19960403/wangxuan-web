@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            如果调用一个函数时需要传入多个参数，
+            那这个函数是让人望而生畏的，
+            我们必须搞清楚这些参数代表的含义，必须小心翼翼地把它们按照顺序传入该函数。
+            而如果一个函数不需要传入任何参数就可以使用，这种函数是深受人们喜爱的。
+            在实际开发中，向函数传递参数不可避免，但我们应该尽量减少函数接收的参数数量。
+            下面举个非常简单的示例。有一个画图函数draw，它现在只能绘制正方形，接收了3个参数，
+            分别是图形的width、heigth以及square：
+        */
+        var draw = function (width, height, square) {
+
+        }
+        /*
+            但实际上正方形的面积是可以通过width和height计算出来的，于是我们可以把参数square从draw函数中去掉：
+        */
+
+        var draw = function (widht, height) {
+            var square = widht * height;
+        }
+        /* 此时，我们可以使用策略模式，让draw函数成为一个支持绘制多种图形的函数。 */
+    </script>
+</body>
+
+</html>

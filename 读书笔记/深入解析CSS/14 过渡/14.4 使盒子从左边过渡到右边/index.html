@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            position: relative;
+            height: 30px;
+        }
+
+        .box {
+            position: absolute;
+            left: 0;
+            height: 30px;
+            width: 30px;
+            background-color: hsl(130, 50%, 50%);
+            transition: all 1s steps(3);
+        }
+
+        .container:hover .box {
+            transform: translateX(400px) translateY(400px);
+            /* left: 400px; */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box"></div>
+    </div>
+    <script>
+
+    </script>
+</body>
+
+</html>

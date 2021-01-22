@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="count">点我</button>
+    <div id="show"></div>
+    <script>
+        const Event = (function (params) {
+            const clientList = {};
+            function listen(key, fn) {
+                if (!clientList[key]) {
+                    clientList[key] = [];
+                }
+                clientList[key].push(fn);
+            }
+
+            function trigger(key, ...args) {
+                const fns = clientList[key];
+                if (!fns) {
+                    return false;
+                }
+                for (const fn of fns) {
+                    fn.apply(this, args);
+                }
+            }
+
+            function remove(key, fn) {
+                const fns = clientList[key];
+                if (!fns) {
+                    return false;
+                }
+                if (!fn) {
+                    fns && (fns.length === 0)
+                } else {
+                    for (let i = fns.length - 1; i >= 0; i--) {
+                        const _fn = fns[i];
+                        if (_fn === fn) {
+                            fns.splice(i, 1);
+                        }
+                    }
+                }
+            }
+
+            return {
+                listen,
+                trigger,
+                remove
+            }
+        })();
+    </script>
+    <script>
+        (function () {
+            var count = 0;
+            var button = document.getElementById('count');
+            button.onclick = function () {
+                Event.trigger('add', count++)
+            }
+        })();
+
+        (function () {
+            var div = document.getElementById('show');
+            Event.listen('add', function (count) {
+                console.log(count);
+                div.innerHTML = count;
+            })
+        })();
+    </script>
+    但在这里我们要留意另一个问题，模块之间如果用了太多的全局发布—订阅模式来通信，那么模块与模块之间的联系就被隐藏到了背后。我们最终会搞不清楚消息来自哪个模块，或者消息会流向哪些模块，这又会给我们的维护带来一些麻烦，也许某个模块的作用就是暴露一些接口给其他模块调用。
+</body>
+
+</html>

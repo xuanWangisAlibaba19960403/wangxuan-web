@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Event {
+      constructor() {
+        this.clientList = [];
+      }
+
+      listen(key, fn) {
+        if (!this.clientList[key]) {
+          this.clientList[key] = [];
+        }
+        this.clientList[key].push(fn);
+      }
+
+      trigger(...args) {
+        const key = args.shift();
+        const fns = this.clientList[key];
+        if (!fns || fns.length === 0) {
+          return false;
+        }
+
+        for (let i = 0; i < fns.length; i++) {
+          fns[i].apply(this, args);
+        }
+      }
+
+      remove(key, fn) {
+        const fns = this.clientList[key];
+        if (!fns) {
+          return false;
+        }
+
+        if (!fn) {
+          fns && (fns.length = 0);
+        } else {
+          for (let i = fns.length - 1; i >= 0; i--) {
+            var _fn = fns[i];
+            if (_fn === fn) {
+              fns.splice(i, 1);
+            }
+          }
+        }
+      }
+    }
+
+    const installEvent = function (obj) {
+      Object.keys(event).forEach((key) => {
+        obj[key] = event[key];
+      })
+    }
+
+    const salersOffices = new Event();
+
+    const fn = function (price) {
+      console.log('价格', price);
+    }
+    
+    salersOffices.listen('squareMeter88', fn)
+
+    salersOffices.listen('squareMeter110', function (price) {
+      console.log('价格', price);
+    })
+
+    salersOffices.trigger('squareMeter88', 2000000);
+    salersOffices.trigger('squareMeter110', 3000000);
+
+    salersOffices.remove('squareMeter88', fn);
+
+  </script>
+</body>
+
+</html>

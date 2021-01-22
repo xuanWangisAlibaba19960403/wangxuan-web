@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Player {
+            constructor(name) {
+                this.name = name;
+                this.enemy = null;
+            }
+
+            win() {
+                console.log(`${this.name} won`);
+            }
+
+            lose() {
+                console.log(`${this.name} lost`);
+            }
+
+            die() {
+                this.lose();
+                this.enemy.win();
+            }
+        }
+
+        var player1 = new Player('小明');
+        var player2 = new Player('小乖');
+
+        player1.enemy = player2;
+        player2.enemy = player1;
+
+        player1.die()
+    </script>
+</body>
+
+</html>

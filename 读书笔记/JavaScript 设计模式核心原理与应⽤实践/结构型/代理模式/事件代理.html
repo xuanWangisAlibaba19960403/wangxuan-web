@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="father">
+        <a href="#">链接1号</a>
+        <a href="#">链接2号</a>
+        <a href="#">链接3号</a>
+        <a href="#">链接4号</a>
+        <a href="#">链接5号</a>
+        <a href="#">链接6号</a>
+    </div>
+    <script>
+        // const aNodes = document.getElementById('father').children;
+        // for (let node of aNodes) {
+        //     node.addEventListener('click', function(e) {
+        //         e.preventDefault();
+        //         console.log(this.innerText);
+        //     });
+        // }
+        // 事件代理
+        const father = document.getElementById('father');
+        father.addEventListener('click', function (e) {
+            if (e.target.tagName === 'A') {
+                e.preventDefault();
+                console.log(e.target.innerText);
+            }
+        })
+    </script>
+</body>
+
+</html>

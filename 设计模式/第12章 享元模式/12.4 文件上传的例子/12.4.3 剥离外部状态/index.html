@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*
+      Upload.prototype.init函数也不再需要，
+      因为upload对象初始化的工作被放在了upload - Manager.add函数里面，
+      接下来只需要定义Upload.prototype.del函数即可：
+    */
+    class Upload {
+      constructor(uploadType) {
+        this.uploadType = uploadType;
+      }
+
+      delFile(id) {
+        uploadManager.setExternalState(id, this);
+        if (this.fileSize < 3000) {
+          return this.container.parentNode.removeChild(this.container);
+        }
+        if (window.confirm(`确定要删除该文件吗？${this.fileName}`)) {
+          return this.container.parentNode.removeChild(this.container);
+        }
+      }
+    }
+    /*
+      在开始删除文件之前，需要读取文件的实际大小，
+      而文件的实际大小被储存在外部管理器uploadManager中，
+      所以在这里需要通过uploadManager.setExternalState方法给共享对象设置正确的fileSize，
+      上段代码中的(1)处表示把当前id对应的对象的外部状态都组装到共享对象中。
+    */
+  </script>
+</body>
+
+</html>

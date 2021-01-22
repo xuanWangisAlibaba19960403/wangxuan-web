@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 接下来，我们引入代理B，即小明通过B来给A送花
+        class Flower {
+
+        }
+
+        const xiaoming = {
+            sendFlower(target) {
+                const flower = new Flower();
+                target.receiveFlower(flower);
+            }
+        }
+        const A = {
+            receiveFlower(flower) {
+                console.log('收到花');
+            }
+        }
+
+        const proxy = {
+            receiveFlower(flower) {
+                A.receiveFlower(flower);
+            }
+        }
+
+
+        xiaoming.sendFlower(A);
+
+        /*
+            很显然，执行结果跟第一段代码一致，至此我们就完成了一个最简单的代理模式的编写。
+            也许读者会疑惑，小明自己去送花和代理B帮小明送花，
+            二者看起来并没有本质的区别，引入一个代理对象看起来只是把事情搞复杂了而已。
+            的确，此处的代理模式毫无用处，它所做的只是把请求简单地转交给本体。
+            但不管怎样，我们开始引入了代理，这是一个不错的起点。
+        */
+    </script>
+</body>
+
+</html>

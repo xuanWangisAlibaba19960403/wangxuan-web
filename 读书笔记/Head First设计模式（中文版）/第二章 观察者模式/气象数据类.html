@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class WeatherData {
+            constructor() {
+
+            }
+
+            getTemperature() {
+
+            }
+
+            getHumidity() {
+
+            }
+
+            getPressure() {
+
+            }
+
+            measurementsChanged() {
+                const temperature = this.getTemperature();
+                const humidity = this.getHumidity();
+                const pressure = this.getPressure();
+
+                /*
+                    针对具体实现编程，会导致我们以后在增加和删除布告板时必须修改程序
+                */
+                currentConditionsDisplay.update(temperature, humidity, pressure);
+                statisticsDsplay.update(temperature, humidity, pressure);
+                forecastDisplay.update(temperature, humidity, pressure);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Flower {
+      constructor() {
+
+      }
+    }
+  </script>
+  <script>
+    /* 
+    虽然这只是个虚拟的例子，但我们可以从中找到两种代理模式的身影。
+    代理B可以帮助A过滤掉一些请求，
+    比如送花的人中年龄太大的或者没有宝马的，这种请求就可以直接在代理B处被拒绝掉。
+    这种代理叫作保护代理。
+    A和B一个充当白脸，一个充当黑脸。
+    白脸A继续保持良好的女神形象，不希望直接拒绝任何人，
+    于是找了黑脸B来控制对A的访问。
+    */
+    var xiaoming = {
+      sendFlower(target) {
+        target.receiveFlower();
+      }
+    }
+
+    /*
+    另外，假设现实中的花价格不菲，
+    导致在程序世界里，new Flower也是一个代价昂贵的操作，
+    那么我们可以把new Flower的操作交给代理B去执行，代理B会选择在A心情好时再执行new Flower，
+    这是代理模式的另一种形式，叫作虚拟代理。
+    虚拟代理把一些开销很大的对象，延迟到真正需要它的时候才去创建。
+    */
+    
+    var B = {
+      receiveFlower() {
+        A.listenGoodMoon(function () {
+          var flower = new Flower();
+          A.receiveFlower(flower);
+        });
+      }
+    }
+
+    var A = {
+      receiveFlower(flower) {
+        console.log('收到花' + flower);
+      },
+      listenGoodMoon(fn) {
+        setTimeout(() => {
+          fn();
+        }, 3000);
+      }
+    }
+
+    xiaoming.sendFlower(B);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    选择颜色：<select id="colorSelect">
+        <option value="">请选择</option>
+        <option value="red">红色</option>
+        <option value="blue">蓝色</option>
+    </select>
+    输入购买数量：<input id="numberInput" type="text" />
+    <div>你选择了颜色：<span id="colorInfo"></span></div>
+    <div>你输入了数量：<span id="numberInfo"></span></div>
+    <button id="nextBtn" disabled="true">请选择手机颜色和购买数量</button>
+    <script>
+        var colorSelect = document.getElementById('colorSelect');
+        var numberInput = document.getElementById('numberInput');
+        var colorInfo = document.getElementById('colorInfo');
+        var numberInfo = document.getElementById('numberInfo');
+        var nextBtn = document.getElementById('nextBtn');
+
+        var goods = {
+            red: 3,
+            blue: 6
+        }
+
+        colorSelect.onchange = function () {
+            var color = this.value,
+                number = numberInput.value,
+                stock = goods[color];
+
+            colorInfo.innerText = color;
+
+            if (!color) {
+                nextBtn.disabled = true;
+                nextBtn.innerText = '请选择手机颜色';
+                return;
+            }
+
+            if (!/^[1-9]\d*/.test(number)) {
+                nextBtn.disabled = true;
+                nextBtn.innerText = '库存不足';
+                return;
+            }
+
+            nextBtn.disabled = false;
+            nextBtn.innerText = '放入购物车';
+        }
+    </script>
+</body>
+
+</html>

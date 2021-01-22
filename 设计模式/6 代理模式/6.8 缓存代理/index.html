@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const mult = function (...args) {
+            let a = 1;
+            for (let i = 0; i < args.length; i++) {
+                a *= args[i];
+            }
+            return a;
+        }
+
+        const proxyMult = (function () {
+            const cache = {};
+            return function (...args) {
+                console.log(cache);
+                const key = args.join(',');
+                if (Object.prototype.hasOwnProperty.call(cache, key)) {
+                    return cache[key];
+                }
+                return cache[key] = mult.apply(this, args);
+            }
+        })();
+
+        proxyMult(1, 2);
+        proxyMult(1, 2);
+    </script>
+</body>
+
+</html>

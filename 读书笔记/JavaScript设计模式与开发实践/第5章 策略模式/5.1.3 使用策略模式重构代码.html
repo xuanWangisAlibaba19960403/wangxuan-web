@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const performanceS = {
+            calculate(salary) {
+                return salary * 4;
+            }
+        }
+
+        const performanceA = {
+            calculate(salary) {
+                return salary * 3;
+            }
+        }
+
+        const performanceB = {
+            calculate(salary) {
+                return salary * 2;
+            }
+        }
+
+        class Bonus {
+            constructor() {
+                this.salary = null;
+                this.strategy = null;
+            }
+
+            setSalary(salary) {
+                this.salary = salary;
+            }
+
+            setStrategy(strategy) {
+                this.strategy = strategy;
+            }
+
+            getBonus() {
+                return this.strategy.calculate(this.salary);
+            }
+        }
+
+        // 定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换[插图]。
+        /*
+            定义一系列的算法，把它们各自封装成策略类，算法被封装在策略类内部的方法里。
+            在客户对Context发起请求的时候，Context总是把请求委托给这些策略对象中间的某一个进行计算。
+        */
+    </script>
+</body>
+
+</html>

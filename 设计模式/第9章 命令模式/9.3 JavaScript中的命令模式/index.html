@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn1">按钮1</button>
+    <button id="btn2">按钮2</button>
+    <button id="btn3">按钮3</button>
+    <script>
+        const btn1 = document.getElementById('btn1');
+        const btn2 = document.getElementById('btn2');
+        const btn3 = document.getElementById('btn3');
+
+        const bindClick = function (button, fn) {
+            button.onclick = fn;
+        }
+
+        const MenuBar = {
+            refresh() {
+                console.log('刷新菜单界面');
+            }
+        }
+
+        const SubMenu = {
+            add() {
+                console.log('增加子菜单');
+            },
+            del() {
+                console.log('删除子菜单');
+            }
+        }
+
+        bindClick(btn1, MenuBar.refresh);
+        bindClick(btn2, SubMenu.add);
+        bindClick(btn3, SubMenu.del);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn1">按钮1</button>
+    <button id="btn2">按钮2</button>
+    <button id="btn3">按钮3</button>
+    <script>
+        const btn1 = document.getElementById('btn1');
+        const btn2 = document.getElementById('btn2');
+        const btn3 = document.getElementById('btn3');
+
+        const setCommand = function (button, command) {
+            button.onclick = function () {
+                command.execute();
+            };
+        }
+
+        const menuBar = {
+            refresh() {
+                console.log('刷新菜单目录');
+            }
+        }
+
+        const menuBar1 = {
+            refresh() {
+                console.log('刷新header目录');
+            }
+        }
+
+        const subMenu = {
+            add() {
+                console.log('增加子菜单');
+            },
+            del() {
+                console.log('删除子菜单');
+            }
+        }
+
+        class RefreshMenuBarCommand {
+            constructor(receiver) {
+                this.receiver = receiver;
+            }
+
+            execute() {
+                this.receiver.refresh();
+            }
+        }
+
+        class AddSubMenuCommand {
+            constructor(receiver) {
+                this.receiver = receiver;
+            }
+
+            execute() {
+                this.receiver.add();
+            }
+        }
+
+        class DelSubMenuCommand {
+            constructor(receiver) {
+                this.receiver = receiver;
+            }
+
+            execute() {
+                console.log('删除子菜单');
+            }
+        }
+
+        const refreshMenuBarCommand = new RefreshMenuBarCommand(menuBar);
+        const addSubMenuCommand = new AddSubMenuCommand(subMenu);
+        const delSubMenuCommand = new DelSubMenuCommand(subMenu);
+
+        setCommand(btn1, refreshMenuBarCommand);
+        setCommand(btn2, addSubMenuCommand);
+        setCommand(btn3, delSubMenuCommand);
+    </script>
+</body>
+
+</html>

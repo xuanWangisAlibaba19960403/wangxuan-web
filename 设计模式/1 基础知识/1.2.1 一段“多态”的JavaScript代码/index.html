@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Duck {
+      constructor() {
+
+      }
+
+      sound() {
+        console.log('嘎嘎嘎');
+      }
+    }
+
+    class Chicken {
+      constructor() {
+
+      }
+
+      sound() {
+        console.log('咯咯咯');
+      }
+    }
+
+    /*
+    * 发出声音
+    * @param {object} animal
+    */
+    /*
+      多态最根本的作用就是通过把过程化的条件分支语句转化为对象的多态性，从而消除这些条件分支语句。
+      Martin Fowler的话可以用下面这个例子很好地诠释：
+      在电影的拍摄现场，当导演喊出“action”时，主角开始背台词，照明师负责打灯光，后面的群众演员假装中枪倒地，道具师往镜头里撒上雪花。
+      在得到同一个消息时，每个对象都知道自己应该做什么。
+
+      如果不利用对象的多态性，
+      而是用面向过程的方式来编写这一段代码，
+      那么相当于在电影开始拍摄之后，导演每次都要走到每个人的面前，确认它们的职业分工（类型），然后告诉他们要做什么。
+
+      如果映射到程序中，那么程序中将充斥着条件分支语句。
+      利用对象的多态性，导演在发布消息时，就不必考虑各个对象接到消息后应该做什么。
+      对象应该做什么并不是临时决定的，而是已经事先约定和排练完毕的。
+      每个对象应该做什么，已经成为了该对象的一个方法，被安装在对象的内部，每个对象负责它们自己的行为。
+      所以这些对象可以根据同一个消息，有条不紊地分别进行各自的工作。
+    */
+    const makeSound = function (animal) {
+      if (animal &&
+        typeof animal === 'object' &&
+        typeof animal.sound === 'function') {
+        animal.sound();
+      }
+    }
+
+    const duck = new Duck();
+    const chicken = new Chicken();
+
+    makeSound(duck);
+    makeSound(chicken);
+
+    /*
+        由此可见，某一种动物能否发出叫声，只取决于它有没有makeSound方法，而不取决于它是否是某种类型的对象，这里不存在任何程度上的“类型耦合”。
+        这正是我们从上一节的鸭子类型中领悟的道理。
+        在JavaScript中，并不需要诸如向上转型之类的技术来取得多态的效果。
+    */
+  </script>
+</body>
+
+</html>

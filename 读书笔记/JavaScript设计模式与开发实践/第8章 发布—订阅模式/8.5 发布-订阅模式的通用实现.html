@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const event = {
+            clientList: [],
+            listen(key, fn) {
+                if (!this.clientList[key]) {
+                    this.clientList[key] = [];
+                }
+                this.clientList[key].push(fn);
+            },
+            trigger(key, ...args) {
+                const fns = this.clientList[key];
+                if (!fns) {
+                    return false;
+                }
+                for (const fn of fns) {
+                    fn.apply(this, args);
+                }
+            },
+            remove(key, fn) {
+                const fns = this.clientList[key];
+                if (!fns) {
+                    return false;
+                }
+                if (!fn) {
+                    fns && (fns.length === 0)
+                } else {
+                    for (let i = fns.length - 1; i >= 0; i--) {
+                        const _fn = fns[i];
+                        if (_fn === fn) {
+                            fns.splice(i, 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        const installEvent = function (target) {
+            Object.keys(event).forEach((key) => {
+                target[key] = event[key];
+            })
+        }
+
+        const sales = {};
+
+        installEvent(sales);
+
+        sales.listen('squareMeter88', function (price) {
+            console.log('价格', price);
+        });
+
+        sales.listen('squareMeter110', function (price) {
+            console.log('价格', price);
+        });
+
+        sales.trigger('squareMeter88', 2000000);
+        sales.trigger('squareMeter110', 3000000);
+    </script>
+</body>
+
+</html>

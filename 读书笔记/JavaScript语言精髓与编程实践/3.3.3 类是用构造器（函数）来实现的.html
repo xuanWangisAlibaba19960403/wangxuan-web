@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // class MyObjectEx extends MyObject {
+        // }
+
+        // function MyObject() {}
+
+        // function MyObjectEx() {}
+
+        // Object.setPrototypeOf(MyObjectEx.prototype, MyObject.prototype);
+
+        // Object.setPrototypeOf(MyObjectEx, MyObject);
+
+        // console.dir(MyObjectEx);
+
+        // console.log(Object.getPrototypeOf(MyObjectEx) === MyObject);
+
+        class MyObject extends null {
+        }
+        try {
+            new MyObject();
+        } catch (error) {
+            console.log(error);
+        }
+    </script>
+</body>
+</html>

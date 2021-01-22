@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    /*
+      既然原型模式是通过克隆来创建对象的，那么很自然地会想到，
+      如果需要一个跟某个对象一模一样的对象，就可以使用原型模式。
+      假设我们在编写一个飞机大战的网页游戏。
+      某种飞机拥有分身技能，当它使用分身技能的时候，要在页面中创建一些跟它一模一样的飞机。
+      如果不使用原型模式，那么在创建分身之前，
+      无疑必须先保存该飞机的当前血量、炮弹等级、防御等级等信息，
+      随后将这些信息设置到新创建的飞机上面，这样才能得到一架一模一样的新飞机。
+      如果使用原型模式，
+      我们只需要调用负责克隆的方法，便能完成同样的功能。
+    */
+
+    class Plane {
+      constructor() {
+        this.blood = 100;
+        this.attackLevel = 1;
+        this.defenseLevel = 1;
+      }
+
+      hit() {
+        console.log('hit, hit, hit');
+      }
+    }
+
+    var plane = new Plane();
+    plane.blood = 87;
+    plane.attackLevel = 10;
+    plane.defenseLevel = 7;
+
+    var clonePlane = Object.create(plane);
+
+    /*
+      现在我们明白了原型编程中的一个重要特性，即当对象无法响应某个请求时，会把该请求委托给它自己的原型。
+      原型编程范型至少包括以下基本规则。
+      ❏ 所有的数据都是对象。
+      ❏ 要得到一个对象，不是通过实例化类，而是找到一个对象作为原型并克隆它。
+      ❏ 对象会记住它的原型。
+      ❏ 如果对象无法响应某个请求，它会把这个请求委托给它自己的原型。
+
+      原型模式十分重要，和JavaScript开发者的关系十分密切。
+      通过原型来实现的面向对象系统虽然简单，但能力同样强大。
+    */
+  </script>
+</body>
+
+</html>

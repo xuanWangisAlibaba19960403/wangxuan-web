@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createDiv = (function () {
+            let instance = null;
+            const CreateDiv = function (html) {
+                if (instance) {
+                    return instance;
+                }
+                // 创建对象
+                this.html = html;
+                this.init(); // 执行init方法
+                return instance = this;
+            }
+
+            CreateDiv.prototype.init = function() {
+                const div = document.createElement('div');
+                div.innerHTML = this.html;
+                document.body.appendChild(div)
+            }
+
+            return CreateDiv;
+        })();
+    </script>
+</body>
+
+</html>

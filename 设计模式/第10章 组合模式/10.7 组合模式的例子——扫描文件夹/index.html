@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*
+      文件夹和文件之间的关系，非常适合用组合模式来描述。
+      文件夹里既可以包含文件，又可以包含其他文件夹，最终可能组合成一棵树，组合模式在文件夹的应用中有以下两层好处。
+      ❏ 例如，
+          我在同事的移动硬盘里找到了一些电子书，想把它们复制到F盘中的学习资料文件夹。
+          在复制这些电子书的时候，我并不需要考虑这批文件的类型，不管它们是单独的电子书还是被放在了文件夹中。
+          组合模式让Ctrl+V、Ctrl+C成为了一个统一的操作。
+      ❏ 当我用杀毒软件扫描该文件夹时，往往不会关心里面有多少文件和子文件夹，组合模式使得我们只需要操作最外层的文件夹进行扫描。
+    */
+  </script>
+  <script>
+    class Folder {
+      constructor(name) {
+        this.name = name;
+        this.files = [];
+      }
+
+      add(file) {
+        this.files.push(file);
+      }
+
+      scan() {
+        console.log(`开始扫描文件夹：${this.name}`);
+        for (let i = 0; i < this.files.length; i++) {
+          this.files[i].scan();
+        }
+      }
+    }
+
+    class File {
+      constructor(name) {
+        this.name = name;
+      }
+
+      add(file) {
+        throw new Error('文件下面不能再添加文件夹')
+      }
+
+      scan() {
+        console.log(`开始扫描文件夹：${this.name}`);
+      }
+    }
+  </script>
+  <script>
+    var folder = new Folder('学习资料');
+    var folder1 = new Folder('JavaScript');
+    var folder2 = new Folder('jQuery');
+
+    var file1 = new File('重构与模式');
+    var file2 = new File('JavaScript设计模式与开发实践');
+    var file3 = new File('精通jQuery');
+
+    folder1.add(file1);
+    folder2.add(file2);
+
+    folder.add(folder1);
+    folder.add(folder2);
+    folder.add(file3);
+
+    var folder3 = new Folder('Nodejs');
+    var file4 = new File('深入浅出Node.js');
+
+    folder3.add(file4);
+
+    var file5 = new File('JavaScript语言精髓与编程实践');
+
+    folder.add(folder3);
+    folder.add(file5);
+
+    folder.scan();
+  </script>
+</body>
+
+</html>

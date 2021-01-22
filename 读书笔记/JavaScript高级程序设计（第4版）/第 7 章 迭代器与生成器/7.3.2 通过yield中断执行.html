@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // function* generatorFn() {
+        //     yield 'foo';
+        //     yield 'bar';
+        //     return 'baz';
+        // }
+
+        // let generatorObject1 = generatorFn();
+        // let generatorObject2 = generatorFn();
+
+        // console.log(generatorObject1.next());
+        // console.log(generatorObject2.next());
+        // console.log(generatorObject2.next());
+        // console.log(generatorObject1.next());
+
+        // for (const x of generatorFn()) {
+        //     console.log('x', x);
+        // }
+
+
+        // function* nTimes(n) {
+        //     while (n--) {
+        //         yield;
+        //     }
+        // }
+
+        // for (let _ of nTimes(3)) {
+        //     console.log('foo');
+        // }
+
+        // 2.使用yield实现输入和输出
+        // function* generatorFn(initial) {
+        //     console.log(initial);
+        //     console.log(yield);
+        //     console.log(yield);
+        // }
+
+        // let generatorObject = generatorFn('foo');
+
+        // generatorObject.next('bar');
+        // generatorObject.next('baz');
+        // generatorObject.next('qux');
+
+        function* generatorFn(initial) {
+            console.log(initial);
+            setTimeout(() => {
+                console.log(yield);
+            }, 5000)
+            console.log(yield);
+        }
+
+        let generatorObject = generatorFn('foo');
+
+        generatorObject.next('bar');
+        generatorObject.next();
+        generatorObject.next('qux');
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function createIterator(items) {
+            var i = 0;
+            return {
+                next() {
+                    var done = i >= items.length;
+                    var value = done ? undefined : items[i++];
+
+                    return {
+                        done,
+                        value
+                    }
+                }
+            }
+        }
+
+        var iterator = createIterator([1, 2, 3]);
+
+        console.log(iterator.next());
+        console.log(iterator.next());
+        console.log(iterator.next());
+        console.log(iterator.next());
+        console.log(iterator.next());
+        console.log(iterator.next());
+
+    </script>
+</body>
+
+</html>
